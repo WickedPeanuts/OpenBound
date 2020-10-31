@@ -1,0 +1,24 @@
+﻿@using Avatar_API.Data.Models
+
+@model List<DonationPackage>
+
+@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/select-product.css">
+
+<div class="wrapper">
+    <div class="product container">
+        <h3>Select your donation package:</h3>
+        <form>
+
+            @foreach (var package in Model)
+            {
+                @await Html.PartialAsync("_DonationPackage", package)
+            }
+
+            <hr />
+        </form>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model Avatar_API.Data.Models.AuthenticateModel
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+<div class="container">
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Openbound Sign In</div>
+
+            </div>
+
+            <div style="padding-top:30px" class="panel-body">
+
+                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                @using (Html.BeginForm("LoginPost", "Login", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-Mail" })
+                    </div>
+
+
+
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                    </div>
+
+                    <div style="margin-top:10px" class="form-group">
+                        <div class="col-sm-12 controls">
+                            <button id="btn-login" type="submit" class="btn btn-success">Login  </button>
+                        </div>
+                    </div>
+
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

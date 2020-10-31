@@ -1,0 +1,10 @@
+﻿@using Avatar_API.Data.Models 
+@model DonationPackage
+
+<div class="card">
+    <div class="card-body">
+        <p class="card-text">@Model.Amount cash</p>
+        <p class="card-text">@Model.Price @ViewBag.Currency</p>
+        <a href=@Url.Action("Gateway", "Donation", new { price = Model.Price})>Proceed</a>
+    </div>
+</div>  

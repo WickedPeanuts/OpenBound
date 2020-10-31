@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  openbound-mssql-server:
+    image: microsoft/mssql-server-linux:latest
+    container_name: openbound-mssql-server
+    volumes:
+        - openbound-mssql-server-data:/var/opt/mssql/data
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=my-secret-pw-xD
+    ports:
+        - "1433:1433"
+  avatar-api-mssql-server:
+    image: microsoft/mssql-server-linux:latest
+    container_name: avatar-api-mssql-server
+    volumes:
+        - avatar-api-mssql-server-data:/var/opt/mssql/data
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=my-secret-pw-xD
+    ports:
+        - "1434:1433"
+
+volumes:
+  avatar-api-mssql-server-data:
+  openbound-mssql-server-data:

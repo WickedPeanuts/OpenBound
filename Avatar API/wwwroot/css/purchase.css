@@ -1,0 +1,63 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+    *, *::after, *::before {
+        box-sizing: border-box;
+    }
+
+body {
+    background-color: rgb(60, 60, 231);
+}
+
+h3 {
+    font-size: 3rem;
+    margin-top: 5%;
+}
+
+.wrapper {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+    background: white;
+    height: 100%;
+    width: 80%;
+    border: solid 1.5px black;
+    /* display:flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center; */
+}
+
+.card {
+    font-size: 1.5rem;
+    margin: 5px;
+    padding: 10px;
+}
+
+.bt-drop-in-wrapper {
+    width: 60%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 10%;
+}
+
+.braintree-heading {
+    font-size: 1.25rem;
+}
+
+.btn {
+    width: 200px;
+    height: 40px;
+    box-shadow: 4px 4px 6px black;
+    background: rgb(80, 255, 103);
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+    .btn:hover {
+        background: rgb(68, 212, 87);
+    }

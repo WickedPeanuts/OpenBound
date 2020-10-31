@@ -1,0 +1,25 @@
+@{
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/select-product.css">
+
+<div class="wrapper">
+    <div class="product container">
+        <h3>Choose a payment gateway:</h3>
+        <form>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">Stripe</p>
+                    <a href=@Url.Action("Donation", "Stripe", new { price = ViewBag.Price})>Checkout</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">Paypal</p>
+                    <a href=@Url.Action("Donation", "Paypal", new { price = ViewBag.Price})>Checkout</a>
+                </div>
+            </div>
+            <hr />
+        </form>
+    </div>
+</div>

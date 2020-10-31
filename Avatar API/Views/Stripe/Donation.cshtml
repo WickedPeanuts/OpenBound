@@ -1,0 +1,40 @@
+﻿@using Avatar_API.Data.Models
+@model DonationCheckout
+
+@{
+    ViewData["Title"] = "Purchase";
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="~/css/purchase.css">
+
+<div class="wrapper">
+    <div class="checkout container">
+        <h3>Your purchase</h3>
+        <form id="payment-form" method="post" asp-controller="Stripe" asp-action="Checkout">
+            @Html.HiddenFor(n => n.Cash)
+            @Html.HiddenFor(n => n.Price)
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">@Model.Description</p>
+                    <p class="card-text">Price: @Model.Price @ViewBag.Currency</p>
+                </div>
+
+            </div>
+            <section>
+                <script src="https://checkout.stripe.com/checkout.js"
+                        class="stripe-button"
+                        data-key="@ViewBag.PublishableKey"
+                        data-name="Openbound Recharge"
+                        data-description="@Model.Description"
+                        data-locale="en"
+                        data-amount="@(Model.Price * 100)"
+                        data-label="Confirm Payment"
+                        data-currency="@ViewBag.Currency">
+                </script>
+            </section>
+
+
+        </form>
+    </div>
+</div>
