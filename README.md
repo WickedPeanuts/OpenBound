@@ -2,10 +2,13 @@
 
 This solution contains four applications that works together to make the game work.
 
-1. Login Server
-2. Lobby Server
-3. Game Server
-4. Game Application
+1. Avatar API
+2. OpenBound Asset Tools
+3. OpenBound Game Launcher
+4. OpenBound (Game Application)
+5. OpenBound Login Server
+6. OpenBound Lobby Server
+7. OpenBound Game Server
 
 Remember to build'em all beforehand.
 
@@ -14,6 +17,25 @@ In the current version is MANDATORY that all servers are opened in the same orde
 All the necessary configuration (IP tables, public/local IPs and database address) can be edited by changing the configuration files that each application creates when are opened.
 
 <h3>Configuring the Solution</h3>
+
+<h2>Avatar API</h2>
+
+Avatar API includes easy and understandable .NET CORE implementations for PayPal and Stripe, two payment gateways. It is already configured and integrated with the database. It is easy to use and all configuration instruction lies whithin AvatarAPI readme.md.
+
+<h2>Game Application</h2>
+
+OpenBound Game requires an texture pack in order to be built. Since all the textures belongs to it's owners, I can not share it in here. If you want to know more info about it, feel free to join my discord channel here: https://discord.gg/rVnAb5t
+
+Assuming you have a texture pack in your machine, all you have to do is unzip it on OpenBound/Content folder. After that, your folder structure is going to look like this:
+- OpenBound
+   - Content
+      - Audio
+      - Debug
+      - Fonts
+      - ...
+      - Content.mgcb
+
+<h2>Game Servers</h2>
 
 1. First of all, you have to generate the config files, for that, all you have to do is open the LoginServer, LobbyServer and GameServer executables at least once and edit the generated .txt files.
 
@@ -26,7 +48,7 @@ The default paths for the configuration files are:
 Further instructions on how to proceed and a few specifics about configurations are written on the default configuration .txt files.
 In case you have made a mess on any file, delete it and let the application create new ones!
 
-Database connections are handled by Entity Framework. In case you prefer a free database, such as MySQL, all you have to do is download It's driver and change the contexts on
+Database connections are handled by Entity Framework. In case you prefer a free database, such as MySQL, you have to do is download It's driver and change the contexts on
 Openbound Network Object/OpenboundDatabaseContext. But it would require a few programming understanding.
 
 2. Configure your database custom user to have admin privilleges. It is mandatory because of the EntityFramework's (flawed?) design.
