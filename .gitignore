@@ -264,5 +264,5 @@ __pycache__/
 Avatar API/appsettings.Development.json
 
 #OpenBound Engine
-!.mgcb
+!OpenBound/Content/Content.mgcb
 OpenBound/Content
