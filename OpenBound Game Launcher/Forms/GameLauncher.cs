@@ -47,7 +47,7 @@ namespace OpenBound_Game_Launcher.Forms
 
             txtNickname.Text = Parameter.GameClientSettingsInformation.SavedNickname;
 
-            CheckFiles();
+            //CheckFiles();
         }
 
         public LauncherInformation OpenDialog()
