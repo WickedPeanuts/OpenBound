@@ -224,13 +224,15 @@ namespace OpenBound.GameComponents.MobileAction
             if (st == ShotType.Dummy) return;
 
             //Change audio output in order to accomodate the SFX logic
-            switch (Mobile.MobileType)
+            /*switch (Mobile.MobileType)
             {
-                /*case MobileType.Knight:
+                case MobileType.Knight:
                     if (st == ShotType.Satellite)
                         st = ShotType.S1;
-                    break;*/
+                    break;
+
             }
+            */
 
             AudioHandler.PlaySoundEffect(SoundEffectParameter.MobileProjectileExplosion(Mobile.MobileType, st));
         }

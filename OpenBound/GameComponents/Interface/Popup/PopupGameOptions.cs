@@ -19,7 +19,8 @@ using OpenBound.GameComponents.Audio;
 using OpenBound.GameComponents.Interface.Interactive;
 using OpenBound.GameComponents.Interface.Text;
 using OpenBound_Network_Object_Library.Entity.Text;
-using OpenBound_Network_Object_Library.FileOutput;
+using OpenBound_Network_Object_Library.FileManagement;
+using OpenBound_Network_Object_Library.FileManager;
 using System;
 using System.Collections.Generic;
 

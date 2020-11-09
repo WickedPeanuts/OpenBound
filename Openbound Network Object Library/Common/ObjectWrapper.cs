@@ -84,7 +84,7 @@ namespace OpenBound_Network_Object_Library.Common
         {
             string str = "";
 
-            File.ReadAllLines(filePath)
+            System.IO.File.ReadAllLines(filePath)
                 .ToList()
                 .Where((x) => x.Length > 0 && (x.Trim()[0] != '/'))
                 .ToList()

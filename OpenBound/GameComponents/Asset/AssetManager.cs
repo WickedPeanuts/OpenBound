@@ -59,12 +59,14 @@ namespace OpenBound.GameComponents.Asset
 
         internal void LoadAsset<T>(string[] AssetPaths)
         {
-            foreach (string s in AssetPaths) LoadAsset<T>(s);
+            foreach (string s in AssetPaths)
+                LoadAsset<T>(s);
         }
 
         internal void LoadAsset<T>(List<string> AssetPaths)
         {
-            foreach (string s in AssetPaths) LoadAsset<T>(s);
+            foreach (string s in AssetPaths)
+                LoadAsset<T>(s);
         }
 
         internal object RequestAsset(string AssetPath)

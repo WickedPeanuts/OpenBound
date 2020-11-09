@@ -146,7 +146,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                 Player newPlayer = null;
 
                 ClientServiceProvider csp = new ClientServiceProvider(
-                    NetworkObjectParameters.LoginServerInformation.ServerLocalAddress,
+                    NetworkObjectParameters.LoginServerInformation.ServerPublicAddress,
                     NetworkObjectParameters.LoginServerInformation.ServerPort,
                     NetworkObjectParameters.LoginServerBufferSize,
                     (serviceProvider, message) =>

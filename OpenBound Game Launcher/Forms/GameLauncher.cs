@@ -11,12 +11,16 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using OpenBound_Game_Launcher.Common;
 using OpenBound_Game_Launcher.Launcher.Connection;
 using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Entity;
+using OpenBound_Network_Object_Library.FileManagement;
+using OpenBound_Network_Object_Library.FileManager;
 
 namespace OpenBound_Game_Launcher.Forms
 {
@@ -42,6 +46,8 @@ namespace OpenBound_Game_Launcher.Forms
             launcherRequestManager = new LauncherRequestManager();
 
             txtNickname.Text = Parameter.GameClientSettingsInformation.SavedNickname;
+
+            CheckFiles();
         }
 
         public LauncherInformation OpenDialog()
@@ -55,6 +61,12 @@ namespace OpenBound_Game_Launcher.Forms
             else
                 return new LauncherInformation(LauncherOperationStatus.Closed,
                     null, null);
+        }
+
+        public void CheckFiles()
+        {
+            Dictionary<string, byte[]> cs = Checksum.GenerateMD5Checksum(@"C:\Users\Carlo\source\repos\OpenBound\OpenBound Game Launcher\bin\Debug\netcoreapp3.1");
+            var x = Checksum.GetMissingInvalidAndOutdatedFiles(cs);
         }
 
         #region Element Actions

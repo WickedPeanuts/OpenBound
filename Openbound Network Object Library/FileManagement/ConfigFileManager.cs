@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenBound_Network_Object_Library.FileOutput
+namespace OpenBound_Network_Object_Library.FileManager
 {
     public enum RequesterApplication
     {
