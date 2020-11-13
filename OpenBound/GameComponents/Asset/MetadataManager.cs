@@ -116,7 +116,7 @@ namespace OpenBound.GameComponents.Asset
                 string fileContent = File.ReadAllText(str);
 
                 string dicPath = str.Replace($"{basePivotPath}\\", "").Replace("\\","/").Split('.')[0];
-                ElementMetadata.Add($@"{metadataPath}/{dicPath}", ObjectWrapper.DeserializeRequest<T>(fileContent));
+                ElementMetadata.Add($@"{metadataPath}/{dicPath}", ObjectWrapper.Deserialize<T>(fileContent));
             }
         }
     }

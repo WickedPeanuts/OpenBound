@@ -38,7 +38,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                Player player = ObjectWrapper.DeserializeRequest<Player>(param);
+                Player player = ObjectWrapper.Deserialize<Player>(param);
                 lock (NetworkObjectParameters.GameServerInformation)
                 {
                     if (NetworkObjectParameters.GameServerInformation.ConnectedClients + 1 > NetworkObjectParameters.GameServerInformation.ConnectedClientCapacity)
@@ -91,7 +91,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                Player player = ObjectWrapper.DeserializeRequest<Player>(param);
+                Player player = ObjectWrapper.Deserialize<Player>(param);
                 lock (GameServerObjects.Instance.PlayerHashtable)
                 {
                     return GameServerObjects.Instance.PlayerHashtable.ContainsKey(player.ID);
@@ -108,7 +108,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                RoomMetadata room = ObjectWrapper.DeserializeRequest<RoomMetadata>(param);
+                RoomMetadata room = ObjectWrapper.Deserialize<RoomMetadata>(param);
 
                 lock (GameServerObjects.Instance.RoomMetadataSortedList)
                 {
@@ -143,7 +143,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                RoomMetadata filter = ObjectWrapper.DeserializeRequest<RoomMetadata>(param);
+                RoomMetadata filter = ObjectWrapper.Deserialize<RoomMetadata>(param);
 
                 lock (GameServerObjects.Instance.RoomMetadataSortedList)
                 {
@@ -172,7 +172,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                RoomMetadata filter = ObjectWrapper.DeserializeRequest<RoomMetadata>(param);
+                RoomMetadata filter = ObjectWrapper.Deserialize<RoomMetadata>(param);
 
                 lock (GameServerObjects.Instance.RoomMetadataSortedList)
                 {
@@ -275,7 +275,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                MobileType mobileType = ObjectWrapper.DeserializeRequest<MobileType>(param);
+                MobileType mobileType = ObjectWrapper.Deserialize<MobileType>(param);
 
                 RoomMetadata room = playerSession.RoomMetadata;
 
@@ -393,7 +393,7 @@ namespace OpenBound_Game_Server.Service
                 {
                     if (room.RoomOwner != player) return;
 
-                    int mapIndex = ObjectWrapper.DeserializeRequest<int>(param);
+                    int mapIndex = ObjectWrapper.Deserialize<int>(param);
 
                     if (mapIndex == NetworkObjectParameters.ChangeMapLeft) room.Map = Map.GetPreviousMap(room.Map);
                     else if (mapIndex == NetworkObjectParameters.ChangeMapRight) room.Map = Map.GetNextMap(room.Map);
@@ -496,7 +496,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                SyncMobile filter = ObjectWrapper.DeserializeRequest<SyncMobile>(param);
+                SyncMobile filter = ObjectWrapper.Deserialize<SyncMobile>(param);
 
                 MatchManager mm = playerSession.MatchManager;
                 Player player = playerSession.Player;
@@ -543,7 +543,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                SyncMobile filter = ObjectWrapper.DeserializeRequest<SyncMobile>(param);
+                SyncMobile filter = ObjectWrapper.Deserialize<SyncMobile>(param);
                 MatchManager mm = playerSession.MatchManager;
 
                 lock (mm)
@@ -562,7 +562,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                SyncMobile filter = ObjectWrapper.DeserializeRequest<SyncMobile>(param);
+                SyncMobile filter = ObjectWrapper.Deserialize<SyncMobile>(param);
                 RoomMetadata room = playerSession.RoomMetadata;
                 MatchManager mm = playerSession.MatchManager;
 
@@ -583,7 +583,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                SyncMobile filter = ObjectWrapper.DeserializeRequest<SyncMobile>(param);
+                SyncMobile filter = ObjectWrapper.Deserialize<SyncMobile>(param);
                 MatchManager mm = playerSession.MatchManager;
 
                 lock (mm)
@@ -604,7 +604,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                ProjectileDamage filter = ObjectWrapper.DeserializeRequest<ProjectileDamage>(param);
+                ProjectileDamage filter = ObjectWrapper.Deserialize<ProjectileDamage>(param);
                 MatchManager mm = playerSession.MatchManager;
 
                 List<Player> pList;
@@ -936,7 +936,7 @@ namespace OpenBound_Game_Server.Service
         {
             try
             {
-                SyncMobile filter = ObjectWrapper.DeserializeRequest<SyncMobile>(param);
+                SyncMobile filter = ObjectWrapper.Deserialize<SyncMobile>(param);
                 MatchManager mm = playerSession.MatchManager;
 
                 lock (mm)
@@ -1024,7 +1024,7 @@ namespace OpenBound_Game_Server.Service
             try
             {
                 //Parse it back to string in order to remove string formatation
-                param = ObjectWrapper.DeserializeRequest<string>(param);
+                param = ObjectWrapper.Deserialize<string>(param);
                 GameServerChatEnter(param, playerSession);
             }
             catch(Exception ex)
@@ -1165,7 +1165,7 @@ namespace OpenBound_Game_Server.Service
             {
                 if (!playerSession.IsChatConnected) return;
 
-                PlayerMessage pm = ObjectWrapper.DeserializeRequest<PlayerMessage>(param);
+                PlayerMessage pm = ObjectWrapper.Deserialize<PlayerMessage>(param);
 
                 //Parse the player selected channel to find out its index
                 (char, int) tuple = playerSession.GetCurrentConnectChatAsTuple();
@@ -1252,7 +1252,7 @@ namespace OpenBound_Game_Server.Service
         #region Avatar Shop / Transactions
         public static AvatarMetadata GameServerAvatarShopBuyAvatar(string param, PlayerSession playerSession, PaymentMethod paymentMethod)
         {
-            AvatarMetadata avatar = ObjectWrapper.DeserializeRequest<AvatarMetadata>(param);
+            AvatarMetadata avatar = ObjectWrapper.Deserialize<AvatarMetadata>(param);
             bool success = new PlayerController().PurchaseAvatar(playerSession.Player, avatar, paymentMethod);
 
             if (success)
@@ -1263,7 +1263,7 @@ namespace OpenBound_Game_Server.Service
 
         public static void GameServerAvatarShopUpdatePlayerMetadata(string param, PlayerSession playerSession)
         {
-            Player player = ObjectWrapper.DeserializeRequest<Player>(param);
+            Player player = ObjectWrapper.Deserialize<Player>(param);
             PlayerController pc = new PlayerController();
 
             //Validate attributes

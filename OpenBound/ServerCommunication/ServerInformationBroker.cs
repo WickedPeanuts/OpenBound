@@ -116,106 +116,106 @@ namespace OpenBound.ServerCommunication
             switch (service)
             {
                 case NetworkObjectParameters.GameServerPlayerAccessRequest:
-                    answer = ObjectWrapper.DeserializeRequest<bool>(request[1]);
+                    answer = ObjectWrapper.Deserialize<bool>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerPlayerAccessRequest](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomListCreateRoom:
-                    answer = ObjectWrapper.DeserializeRequest<RoomMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<RoomMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomListCreateRoom](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomListRequestList:
-                    answer = ObjectWrapper.DeserializeRequest<RoomMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<RoomMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomListRequestList](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomListRoomEnter:
-                    answer = ObjectWrapper.DeserializeRequest<RoomMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<RoomMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomListRoomEnter](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomRefreshMetadata:
-                    answer = ObjectWrapper.DeserializeRequest<RoomMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<RoomMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomRefreshMetadata](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomLeaveRoom:
-                    answer = ObjectWrapper.DeserializeRequest<bool>(request[1]);
+                    answer = ObjectWrapper.Deserialize<bool>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomLeaveRoom](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomReadyRoom:
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomReadyRoom](null);
                     break;
                 case NetworkObjectParameters.GameServerRoomRefreshLoadingPercentage:
-                    answer = ObjectWrapper.DeserializeRequest<KeyValuePair<int, int>>(request[1]);
+                    answer = ObjectWrapper.Deserialize<KeyValuePair<int, int>>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomRefreshLoadingPercentage](answer);
                     break;
                 case NetworkObjectParameters.GameServerRoomStartInGameScene:
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerRoomStartInGameScene](null);
                     break;
                 case NetworkObjectParameters.GameServerInGameStartMatch:
-                    answer = ObjectWrapper.DeserializeRequest<List<SyncMobile>>(request[1]);
+                    answer = ObjectWrapper.Deserialize<List<SyncMobile>>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameStartMatch](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRefreshSyncMobile:
-                    answer = ObjectWrapper.DeserializeRequest<SyncMobile>(request[1]);
+                    answer = ObjectWrapper.Deserialize<SyncMobile>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRefreshSyncMobile](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestNextPlayerTurn:
-                    answer = ObjectWrapper.DeserializeRequest<MatchManager>(request[1]);
+                    answer = ObjectWrapper.Deserialize<MatchManager>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestNextPlayerTurn](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestShot:
-                    answer = ObjectWrapper.DeserializeRequest<SyncMobile>(request[1]);
+                    answer = ObjectWrapper.Deserialize<SyncMobile>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestShot](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestItemUsage:
-                    answer = ObjectWrapper.DeserializeRequest<SyncMobile>(request[1]);
+                    answer = ObjectWrapper.Deserialize<SyncMobile>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestItemUsage](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestDeath:
-                    answer = ObjectWrapper.DeserializeRequest<SyncMobile>(request[1]);
+                    answer = ObjectWrapper.Deserialize<SyncMobile>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestDeath](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestGameEnd:
-                    answer = ObjectWrapper.DeserializeRequest<PlayerTeam>(request[1]);
+                    answer = ObjectWrapper.Deserialize<PlayerTeam>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestGameEnd](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestDisconnect:
-                    answer = ObjectWrapper.DeserializeRequest<SyncMobile>(request[1]);
+                    answer = ObjectWrapper.Deserialize<SyncMobile>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestDisconnect](answer);
                     break;
                 case NetworkObjectParameters.GameServerInGameRequestDamage:
-                    answer = ObjectWrapper.DeserializeRequest<int>(request[1]);
+                    answer = ObjectWrapper.Deserialize<int>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerInGameRequestDamage](answer);
                     break;
 
                 //Chat
                 case NetworkObjectParameters.GameServerChatJoinChannel:
-                    answer = ObjectWrapper.DeserializeRequest<int>(request[1]);
+                    answer = ObjectWrapper.Deserialize<int>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerChatJoinChannel](answer);
                     break;
                 case NetworkObjectParameters.GameServerChatEnter:
-                    answer = ObjectWrapper.DeserializeRequest<Player>(request[1]);
+                    answer = ObjectWrapper.Deserialize<Player>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerChatEnter](answer);
                     break;
                 case NetworkObjectParameters.GameServerChatLeave:
-                    answer = ObjectWrapper.DeserializeRequest<Player>(request[1]);
+                    answer = ObjectWrapper.Deserialize<Player>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerChatLeave](answer);
                     break;
                 case NetworkObjectParameters.GameServerChatSendPlayerMessage:
-                    answer = ObjectWrapper.DeserializeRequest<PlayerMessage>(request[1]);
+                    answer = ObjectWrapper.Deserialize<PlayerMessage>(request[1]);
                     if (ObjectValidator.ValidateAndModify((PlayerMessage)answer))
                         ActionCallbackDictionary[NetworkObjectParameters.GameServerChatSendPlayerMessage](answer);
                     break;
                 case NetworkObjectParameters.GameServerChatSendSystemMessage:
-                    answer = ObjectWrapper.DeserializeRequest<List<CustomMessage>>(request[1]);
+                    answer = ObjectWrapper.Deserialize<List<CustomMessage>>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerChatSendSystemMessage](answer);
                     break;
 
                 //Avatar Shop
                 case NetworkObjectParameters.GameServerAvatarShopBuyAvatarGold:
-                    answer = ObjectWrapper.DeserializeRequest<AvatarMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<AvatarMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerAvatarShopBuyAvatarGold](answer);
                     break;
                 case NetworkObjectParameters.GameServerAvatarShopBuyAvatarCash:
-                    answer = ObjectWrapper.DeserializeRequest<AvatarMetadata>(request[1]);
+                    answer = ObjectWrapper.Deserialize<AvatarMetadata>(request[1]);
                     ActionCallbackDictionary[NetworkObjectParameters.GameServerAvatarShopBuyAvatarCash](answer);
                     break;
             }

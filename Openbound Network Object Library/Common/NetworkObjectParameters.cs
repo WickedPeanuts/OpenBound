@@ -279,5 +279,11 @@ namespace OpenBound_Network_Object_Library.Common
 
         // SS Lock
         public const int SSCooldownTimer = 3;
+
+        // Manifest
+        public const string ManifestFilename = "FileManifest";
+        public const string ManifestExtension = ".json";
+        public const string GamePatchFilename = "Patch";
+        public const string GamePatchExtension = ".obup"; //OpenBound Update Patch
     }
 }

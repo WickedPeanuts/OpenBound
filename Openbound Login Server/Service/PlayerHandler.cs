@@ -34,7 +34,7 @@ namespace OpenBound_Login_Server.Service
             {
                 PlayerController pc = new PlayerController();
 
-                Player deserializedPlayer = ObjectWrapper.DeserializeRequest<Player>(param);
+                Player deserializedPlayer = ObjectWrapper.Deserialize<Player>(param);
                 Player player = pc.LoginPlayer(deserializedPlayer);
 
                 Player answer = null;
@@ -47,7 +47,7 @@ namespace OpenBound_Login_Server.Service
                         NetworkObjectParameters.LobbyServerBufferSize,
                         (_provider, _request) =>
                         {
-                            answer = ObjectWrapper.DeserializeRequest<Player>(_request[1]);
+                            answer = ObjectWrapper.Deserialize<Player>(_request[1]);
                         });
                     csp.StartOperation();
                     csp.RequestQueue.Enqueue(NetworkObjectParameters.LobbyServerPlayerUIDRequest, player);
@@ -100,7 +100,7 @@ namespace OpenBound_Login_Server.Service
         {
             try
             {
-                PlayerDTO deserializedAccount = ObjectWrapper.DeserializeRequest<PlayerDTO>(param);
+                PlayerDTO deserializedAccount = ObjectWrapper.Deserialize<PlayerDTO>(param);
                 return new PlayerController().RegisterPlayer(deserializedAccount);
             }
             catch (Exception ex)

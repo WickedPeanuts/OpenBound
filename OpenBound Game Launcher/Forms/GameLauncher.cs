@@ -39,6 +39,8 @@ namespace OpenBound_Game_Launcher.Forms
 
         public GameLauncher()
         {
+            CheckFiles();
+
             InitializeComponent();
             Parameter.Initialize();
 
@@ -65,8 +67,8 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void CheckFiles()
         {
-            Dictionary<string, byte[]> cs = Checksum.GenerateMD5Checksum(@"C:\Users\Carlo\source\repos\OpenBound\OpenBound Game Launcher\bin\Debug\netcoreapp3.1");
-            var x = Checksum.GetMissingInvalidAndOutdatedFiles(cs);
+            GamePatcher.GenerateUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound OLD", @"C:\Users\Carlo\Desktop\OpenBound NEW", @"C:\Users\Carlo\Desktop");
+            GamePatcher.ApplyUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound PATCHED", @"C:\Users\Carlo\Desktop\Patch.obup");
         }
 
         #region Element Actions

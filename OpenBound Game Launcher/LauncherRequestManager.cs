@@ -53,7 +53,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                     {
                         if (message.Length == 2)
                         {
-                            player = ObjectWrapper.DeserializeRequest<Player>(message[1]);
+                            player = ObjectWrapper.Deserialize<Player>(message[1]);
 
                             if (player == null)
                             {
@@ -63,7 +63,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                         }
                         else
                         {
-                            List<int> idList = ObjectWrapper.DeserializeRequest<List<int>>(message[2]);
+                            List<int> idList = ObjectWrapper.Deserialize<List<int>>(message[2]);
 
                             if (idList == null)
                             {
@@ -151,7 +151,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                     NetworkObjectParameters.LoginServerBufferSize,
                     (serviceProvider, message) =>
                     {
-                        newPlayer = ObjectWrapper.DeserializeRequest<Player>(message[1]);
+                        newPlayer = ObjectWrapper.Deserialize<Player>(message[1]);
                         waiting = true;
                     });
                 csp.OnFailToEstabilishConnection += () =>

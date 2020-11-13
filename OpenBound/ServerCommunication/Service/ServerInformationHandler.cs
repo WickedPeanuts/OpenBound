@@ -38,7 +38,7 @@ namespace OpenBound.ServerCommunication.Service
         {
             try
             {
-                GameServerInformation si = ObjectWrapper.DeserializeRequest<GameServerInformation>(request);
+                GameServerInformation si = ObjectWrapper.Deserialize<GameServerInformation>(request);
 
                 lock (GameInformation.Instance.ServerList)
                 {

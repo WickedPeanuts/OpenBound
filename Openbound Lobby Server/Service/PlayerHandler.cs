@@ -26,7 +26,7 @@ namespace OpenBound_Lobby_Server.Service
         {
             try
             {
-                Player player = ObjectWrapper.DeserializeRequest<Player>(param);
+                Player player = ObjectWrapper.Deserialize<Player>(param);
 
                 lock (LobbyServerObjects.RequestedLoginPlayers)
                 {
@@ -59,7 +59,7 @@ namespace OpenBound_Lobby_Server.Service
         {
             try
             {
-                Player player = ObjectWrapper.DeserializeRequest<Player>(param);
+                Player player = ObjectWrapper.Deserialize<Player>(param);
 
                 lock (LobbyServerObjects.RequestedLoginPlayers)
                 {

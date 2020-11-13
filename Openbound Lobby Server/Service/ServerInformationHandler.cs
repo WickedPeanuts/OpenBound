@@ -28,7 +28,7 @@ namespace OpenBound_Lobby_Server.Service
         {
             try
             {
-                GameServerInformation information = ObjectWrapper.DeserializeRequest<GameServerInformation>(param);
+                GameServerInformation information = ObjectWrapper.Deserialize<GameServerInformation>(param);
 
                 if (!NetworkObjectParameters.GameServerRequestIPWhitelist.Contains(information.ServerPublicAddress))
                 {
