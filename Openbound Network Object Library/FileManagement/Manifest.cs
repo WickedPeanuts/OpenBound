@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO.Compression;
+using OpenBound_Network_Object_Library.Extension;
 
 namespace OpenBound_Network_Object_Library.FileManagement
 {
@@ -17,15 +18,51 @@ namespace OpenBound_Network_Object_Library.FileManagement
         public FileList CurrentVersionFileList;
         public DateTime CreationDate;
         public ApplicationManifest PreviousManifest;
+        public List<Guid> VersionHistory;
 
         public ApplicationManifest() { }
+
+        public ApplicationManifest(ApplicationManifest applicationManifest1, ApplicationManifest applicationManifest2)
+        {
+            ID = Guid.NewGuid();
+            
+            CreationDate = DateTime.UtcNow;
+            
+            PreviousManifest = applicationManifest1.PreviousManifest;
+
+            VersionHistory = (applicationManifest2.VersionHistory == null) ? new List<Guid>() : applicationManifest2.VersionHistory.ToList();
+            VersionHistory.Add(ID);
+
+            CurrentVersionFileList = new FileList();
+            CurrentVersionFileList.ToBeDeleted =
+                applicationManifest1.CurrentVersionFileList.ToBeDeleted.Union(
+                    applicationManifest2.CurrentVersionFileList.ToBeDeleted).Except(
+                    applicationManifest2.CurrentVersionFileList.ToBeDownloaded).ToList();
+
+            CurrentVersionFileList.ToBeIgnored = 
+                applicationManifest1.CurrentVersionFileList.ToBeIgnored.Intersect(
+                    applicationManifest2.CurrentVersionFileList.ToBeIgnored).ToList();
+
+            foreach (KeyValuePair<string, byte[]> kvp in applicationManifest1.CurrentVersionFileList.Checksum)
+            {
+                if (!CurrentVersionFileList.ToBeDeleted.Contains(kvp.Key))
+                    CurrentVersionFileList.Checksum.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (KeyValuePair<string, byte[]> kvp in applicationManifest2.CurrentVersionFileList.Checksum)
+            {
+                CurrentVersionFileList.Checksum.AddOrReplace(kvp.Key, kvp.Value);
+            }
+        }
 
         public ApplicationManifest(ApplicationManifest previousManifest, FileList currentVersionFileList)
         {
             ID = Guid.NewGuid();
             CurrentVersionFileList = currentVersionFileList;
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.UtcNow;
             PreviousManifest = previousManifest;
+            VersionHistory = previousManifest?.VersionHistory;
+            VersionHistory?.Add(ID);
         }
     }
 
@@ -57,7 +94,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
             {
                 using (var md5 = MD5.Create())
                 {
-                    using (var stream = new StreamReader($@"{basePath}/{file}"))
+                    using (var stream = new StreamReader($@"{basePath}\{file}"))
                     {
                         if (!(result &= checksum[file].SequenceEqual(md5.ComputeHash(stream.BaseStream))))
                             return false;
@@ -75,7 +112,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
             foreach (string filename in IOManager.ListAllFiles(baseDirectory))
             {
                 //Ignore manifest
-                if (filename.Contains(NetworkObjectParameters.ManifestFilename))
+                if (filename.Contains(NetworkObjectParameters.ManifestFilename) && filename.Contains(NetworkObjectParameters.ManifestExtension))
                     continue;
 
                 using (var md5 = MD5.Create())
@@ -144,32 +181,19 @@ namespace OpenBound_Network_Object_Library.FileManagement
 
             if (sourceDirectoryFileList.Checksum.ContainsKey(NetworkObjectParameters.ManifestFilename))
             {
-                string manifestFilename = $@"{currentVersionFolderPath}/{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
+                string manifestFilename = $@"{currentVersionFolderPath}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
                 string fileContent = File.ReadAllText(manifestFilename);
 
                 previousManifest = ObjectWrapper.Deserialize<ApplicationManifest>(fileContent);
                 previousManifest.PreviousManifest = null; // Erase older manifest information in order to avoid unecessary data to be written
 
                 //Rename old manifest
-                string newFileName = $@"{currentVersionFolderPath}/{NetworkObjectParameters.ManifestFilename}.{previousManifest.ID}.{NetworkObjectParameters.ManifestExtension}";
+                string newFileName = $@"{currentVersionFolderPath}\{NetworkObjectParameters.ManifestFilename}.{previousManifest.ID}.{NetworkObjectParameters.ManifestExtension}";
                 File.Move(manifestFilename, newFileName);
             }
 
             //Create the current (newest) manifest
             return new ApplicationManifest(previousManifest, sourceDirectoryFileList);
         }
-
-        /// <summary>
-        /// Compare the current's directory checksum with the most recently downloaded checksum
-        /// </summary>
-        /// <param name="updatedChecksumPath"></param>
-        /// <returns></returns>
-        /*public static FileList CompareChecksumManifest(string updatedChecksumPath)
-        {
-            ApplicationManifest manifest = ObjectWrapper.Deserialize<ApplicationManifest>(File.ReadAllText(updatedChecksumPath));
-
-            //Create checksum of source directory
-            return GetMissingInvalidAndOutdatedFiles(manifest.CurrentVersionFileList.Checksum, Directory.GetCurrentDirectory());
-        }*/
     }
 }

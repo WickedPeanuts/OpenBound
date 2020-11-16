@@ -34,9 +34,4 @@
     </None>
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="WebRequest\" />
-  </ItemGroup>
-
 </Project>

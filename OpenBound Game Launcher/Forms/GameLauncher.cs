@@ -10,17 +10,14 @@
  * You should have received a copy of the GNU General Public License along with OpenBound. If not, see http://www.gnu.org/licenses/.
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
 using OpenBound_Game_Launcher.Common;
 using OpenBound_Game_Launcher.Launcher.Connection;
 using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Entity;
 using OpenBound_Network_Object_Library.FileManagement;
-using OpenBound_Network_Object_Library.FileManager;
+using OpenBound_Network_Object_Library.WebRequest;
+using System;
+using System.Windows.Forms;
 
 namespace OpenBound_Game_Launcher.Forms
 {
@@ -67,8 +64,18 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void CheckFiles()
         {
-            GamePatcher.GenerateUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound OLD", @"C:\Users\Carlo\Desktop\OpenBound NEW", @"C:\Users\Carlo\Desktop");
-            GamePatcher.ApplyUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound PATCHED", @"C:\Users\Carlo\Desktop\Patch.obup");
+            //var x = GamePatcher.GenerateUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound 1", @"C:\Users\Carlo\Desktop\OpenBound 2", @"C:\Users\Carlo\Desktop");
+            //var y = GamePatcher.GenerateUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound 2", @"C:\Users\Carlo\Desktop\OpenBound 3", @"C:\Users\Carlo\Desktop");
+            HttpWebRequest.AsyncDownloadFile(
+                "https://mirrors.edge.kernel.org/tails/stable/tails-amd64-4.12/tails-amd64-4.12.img",
+                @"C:\Users\Carlo\Desktop\Tails.iso",
+                (f) =>
+                {
+                    System.Diagnostics.Debug.WriteLine(f);
+                });
+            //WebRequestManager wrM = new WebRequestManager(RegionEndpoint.SAEast1, "arn:aws:s3:sa-east-1:414350350235:accesspoint/openbound-ap1", "OpenBound v1.1b/Castle.Core.dll");
+            //GamePatcher.MergeUpdatePatch(@"C:\Users\Carlo\Desktop\Patch-14-11-2020-5fb2e263-f66d-456b-8474-59b34fecd86b.obup", @"C:\Users\Carlo\Desktop\Patch-14-11-2020-5b6c6bb7-b0d2-411a-a0cc-4184ce079822.obup", @"C:\Users\Carlo\Desktop");
+            //GamePatcher.ApplyUpdatePatch(@"C:\Users\Carlo\Desktop\OpenBound PATCHED", @"C:\Users\Carlo\Desktop\Patch.obup");
         }
 
         #region Element Actions
