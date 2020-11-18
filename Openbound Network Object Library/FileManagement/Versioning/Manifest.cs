@@ -1,86 +1,12 @@
-﻿using Newtonsoft.Json;
-using OpenBound_Network_Object_Library.Common;
+﻿using OpenBound_Network_Object_Library.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.IO.Compression;
-using OpenBound_Network_Object_Library.Extension;
 
-namespace OpenBound_Network_Object_Library.FileManagement
+namespace OpenBound_Network_Object_Library.FileManagement.Versioning
 {
-    public class ApplicationManifest
-    {
-        public Guid ID;
-        public FileList CurrentVersionFileList;
-        public DateTime CreationDate;
-        public ApplicationManifest PreviousManifest;
-        public List<Guid> VersionHistory;
-
-        public ApplicationManifest() { }
-
-        public ApplicationManifest(ApplicationManifest applicationManifest1, ApplicationManifest applicationManifest2)
-        {
-            ID = Guid.NewGuid();
-            
-            CreationDate = DateTime.UtcNow;
-            
-            PreviousManifest = applicationManifest1.PreviousManifest;
-
-            VersionHistory = (applicationManifest2.VersionHistory == null) ? new List<Guid>() : applicationManifest2.VersionHistory.ToList();
-            VersionHistory.Add(ID);
-
-            CurrentVersionFileList = new FileList();
-            CurrentVersionFileList.ToBeDeleted =
-                applicationManifest1.CurrentVersionFileList.ToBeDeleted.Union(
-                    applicationManifest2.CurrentVersionFileList.ToBeDeleted).Except(
-                    applicationManifest2.CurrentVersionFileList.ToBeDownloaded).ToList();
-
-            CurrentVersionFileList.ToBeIgnored = 
-                applicationManifest1.CurrentVersionFileList.ToBeIgnored.Intersect(
-                    applicationManifest2.CurrentVersionFileList.ToBeIgnored).ToList();
-
-            foreach (KeyValuePair<string, byte[]> kvp in applicationManifest1.CurrentVersionFileList.Checksum)
-            {
-                if (!CurrentVersionFileList.ToBeDeleted.Contains(kvp.Key))
-                    CurrentVersionFileList.Checksum.Add(kvp.Key, kvp.Value);
-            }
-
-            foreach (KeyValuePair<string, byte[]> kvp in applicationManifest2.CurrentVersionFileList.Checksum)
-            {
-                CurrentVersionFileList.Checksum.AddOrReplace(kvp.Key, kvp.Value);
-            }
-        }
-
-        public ApplicationManifest(ApplicationManifest previousManifest, FileList currentVersionFileList)
-        {
-            ID = Guid.NewGuid();
-            CurrentVersionFileList = currentVersionFileList;
-            CreationDate = DateTime.UtcNow;
-            PreviousManifest = previousManifest;
-            VersionHistory = previousManifest?.VersionHistory;
-            VersionHistory?.Add(ID);
-        }
-    }
-
-    public class FileList
-    {
-        [JsonIgnore] public List<string> ToBeDownloaded => Checksum.Keys.ToList();
-        [JsonIgnore] public List<string> ToBeIgnored;
-        public List<string> ToBeDeleted;
-        public Dictionary<string, byte[]> Checksum;
-
-        public FileList()
-        {
-            ToBeDeleted = new List<string>();
-            ToBeIgnored = new List<string>();
-            Checksum = new Dictionary<string, byte[]>();
-        }
-    }
-
     public class Manifest
     {
         public static bool VerifyMD5Checksum(string basePath, ApplicationManifest applicationManifest)

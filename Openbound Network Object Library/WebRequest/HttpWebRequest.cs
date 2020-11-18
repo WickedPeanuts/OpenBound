@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenBound_Network_Object_Library.Common;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -18,6 +19,21 @@ namespace OpenBound_Network_Object_Library.WebRequest
                     webClient.DownloadProgressChanged += (sender, e) => onReceiveData?.Invoke(e.BytesReceived / (float)e.TotalBytesToReceive);
                     webClient.DownloadFileCompleted += (sender, e) => onFinishDownload?.Invoke();
                     webClient.DownloadFileAsync(new Uri(url), destinationFolder);
+                }
+            });
+
+            downloadThread.IsBackground = true;
+            downloadThread.Start();
+        }
+
+        public static void AsyncDownloadJsonObject<T>(string url, Action<T> onFinishDownload)
+        {
+            Thread downloadThread = new Thread(() =>
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    string jsonObject = webClient.DownloadString(new Uri(url));
+                    onFinishDownload?.Invoke(ObjectWrapper.Deserialize<T>(jsonObject));
                 }
             });
 

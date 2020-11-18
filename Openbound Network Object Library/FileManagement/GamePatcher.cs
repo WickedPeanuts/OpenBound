@@ -7,13 +7,14 @@ using System.IO.Compression;
 using System.Text;
 using OpenBound_Network_Object_Library.FileManagement;
 using System.Linq;
+using OpenBound_Network_Object_Library.FileManagement.Versioning;
 
 namespace OpenBound_Network_Object_Library.FileManagement
 {
     public class GamePatcher
     {
         private static string BuildPatchPath(string outputPath, ApplicationManifest applicationManifest) =>
-            @$"{outputPath}\{NetworkObjectParameters.GamePatchFilename}-{DateTime.UtcNow:dd-MM-yyyy}-{applicationManifest.ID}{NetworkObjectParameters.GamePatchExtension}";
+            @$"{outputPath}\{applicationManifest.BuildPatchPath}";
 
         /// <summary>
         /// Extracts and verifies if the extracted file is correct. Returns true if the extracted file is correct.
@@ -43,7 +44,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
             return Manifest.VerifyMD5Checksum(gameFolderPath, appManifest);
         }
 
-        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath)
+        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath, string patchHistoryFilePath)
         {
             //Create ApplicationManifest given the new and the old game folder
             ApplicationManifest appManifest = Manifest.GenerateChecksumManifest(currentVersionFolderPath, newVersionFolderPath);
@@ -61,9 +62,14 @@ namespace OpenBound_Network_Object_Library.FileManagement
                 File.WriteAllText(tmpAppManifestFilename, ObjectWrapper.Serialize(appManifest, Formatting.Indented));
                 zipArchive.CreateEntryFromFile(tmpAppManifestFilename, NetworkObjectParameters.ManifestFilename + NetworkObjectParameters.ManifestExtension);
                 File.Delete(tmpAppManifestFilename);
-
-                return appManifest;
             }
+
+            //Save the patch history 
+            PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(patchHistoryFilePath);
+            patchHistory.AddPatchEntry(appManifest);
+            File.WriteAllText(patchHistoryFilePath, ObjectWrapper.Serialize(patchHistory, Formatting.Indented));
+
+            return appManifest;
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
         /// <param name="patch2"></param>
         /// <param name="outputPackagePath"></param>
         /// <returns></returns>
-        public static ApplicationManifest MergeUpdatePatch(string patch1, string patch2, string outputPackagePath)
+        public static ApplicationManifest MergeUpdatePatch(string patch1, string patch2, string outputPackagePath, string patchHistoryFilePath)
         {
             using (ZipArchive zipArchive1 = ZipFile.Open(patch1, ZipArchiveMode.Read))
             using (ZipArchive zipArchive2 = ZipFile.Open(patch2, ZipArchiveMode.Read))
@@ -98,7 +104,12 @@ namespace OpenBound_Network_Object_Library.FileManagement
                     outputZipArchive.CreateEntryFromFile(manifestFilePath, $@"{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}", CompressionLevel.Optimal);
                 }
 
-                Directory.Delete(tmpFolder);
+                Directory.Delete(tmpFolder, true);
+
+                //Save the patch history 
+                PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(patchHistoryFilePath);
+                patchHistory.MergePatchEntry(appManifest1, appManifest2, newManifest);
+                File.WriteAllText(patchHistoryFilePath, ObjectWrapper.Serialize(patchHistory, Formatting.Indented));
 
                 return newManifest;
             }
