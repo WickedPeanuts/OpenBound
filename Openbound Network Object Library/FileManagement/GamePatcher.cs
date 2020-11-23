@@ -44,10 +44,10 @@ namespace OpenBound_Network_Object_Library.FileManagement
             return Manifest.VerifyMD5Checksum(gameFolderPath, appManifest);
         }
 
-        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath, string patchHistoryFilePath)
+        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName, string outputPackagePath, string patchHistoryFilePath)
         {
             //Create ApplicationManifest given the new and the old game folder
-            ApplicationManifest appManifest = Manifest.GenerateChecksumManifest(currentVersionFolderPath, newVersionFolderPath);
+            ApplicationManifest appManifest = Manifest.GenerateChecksumManifest(currentVersionFolderPath, newVersionFolderPath, newPatchVersionName);
 
             string tmpAppManifestFilename = Path.GetTempFileName();
 

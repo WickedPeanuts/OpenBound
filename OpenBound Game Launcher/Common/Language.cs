@@ -31,5 +31,28 @@ namespace OpenBound_Game_Launcher.Common
 
         public const string NoAspectRatioFound = "Custom Ratio";
         public const string BadResolutionSelection = "Bad resolution parameters were entered.\n\nIt is recommended that In-Game resolutions should be lesser or equal to windowed resolution. Preferably both resolutions should use the same aspect ratio.";
+
+        //----------------
+        // Game Updater
+
+        public const string GameUpdaterLabel1ReadyToDownload = "Ready to begin updating proccess.";
+        public const string GameUpdaterLabel2ReadyToDownload = "Current Version: %currentversion%";
+        public const string GameUpdaterLabel3ReadyToDownload = "Next Version: %nextversion%";
+
+        public const string GameUpdaterLabel1Downloading = "Downloading in progress...";
+        public const string GameUpdaterLabel2Downloading = "File: %filename% (%current%/%total%)";
+        public const string GameUpdaterLabel3Downloading = "Remaining: %remaining%, Downloaded: %downloaded%, Speed: %speed%";
+
+        public const string GameUpdaterLabel1Installing = "Installing updates...";
+        public const string GameUpdaterLabel2Installing = "Extracting ...";
+        public const string GameUpdaterLabel3Installing = "...";
+
+        public const string GameUpdaterLabel1Done = "Updating proccess finished.";
+        public const string GameUpdaterLabel2Done = "Updated at: %updatedat%";
+        public const string GameUpdaterLabel3Done = "Applying the new patches in: %secondstopatch% seconds.";
+
+        public const string GameUpdaterLabel1Error = "One or more erros have happened during the patch proccess.";
+        public const string GameUpdaterLabel2Error = "Check the log bellow for more information.";
+        public const string GameUpdaterLabel3Error = "Log saved at: %logdestinationpath%.";
     }
 }

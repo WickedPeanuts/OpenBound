@@ -17,6 +17,7 @@ using OpenBound_Network_Object_Library.Models;
 using System.Data;
 using Microsoft.Xna.Framework;
 using System.Security.Policy;
+using OpenBound_Network_Object_Library.FileManagement.Versioning;
 
 namespace OpenBound_Network_Object_Library.Common
 {
@@ -97,6 +98,9 @@ namespace OpenBound_Network_Object_Library.Common
         public static ServerInformation LoginServerInformation;
         public static ServerInformation LobbyServerInformation;
         public static GameServerInformation GameServerInformation;
+
+        //Client Patch Information
+        public static PatchHistory PatchHistory;
 
         //Database Information
         public static string DatabaseAddress;

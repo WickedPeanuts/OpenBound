@@ -97,7 +97,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
         /// </summary>
         /// <param name="currentVersionFolderPath"></param>
         /// <param name="newVersionFolderPath"></param>
-        public static ApplicationManifest GenerateChecksumManifest(string currentVersionFolderPath, string newVersionFolderPath)
+        public static ApplicationManifest GenerateChecksumManifest(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName)
         {
             //Create checksum of source directory
             FileList sourceDirectoryFileList = GetMissingInvalidAndOutdatedFiles(GenerateMD5Checksum(newVersionFolderPath), currentVersionFolderPath);
@@ -119,7 +119,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             }
 
             //Create the current (newest) manifest
-            return new ApplicationManifest(previousManifest, sourceDirectoryFileList);
+            return new ApplicationManifest(previousManifest, sourceDirectoryFileList, newPatchVersionName);
         }
     }
 }

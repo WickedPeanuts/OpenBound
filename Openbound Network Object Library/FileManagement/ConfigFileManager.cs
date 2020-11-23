@@ -13,6 +13,7 @@
 using Newtonsoft.Json;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
+using OpenBound_Network_Object_Library.FileManagement.Versioning;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,6 +88,9 @@ namespace OpenBound_Network_Object_Library.FileManager
         public int BackgroundColorRedChannel;
         public int BackgroundColorGreenChannel;
         public int BackgroundColorBlueChannel;
+
+        //Patching
+        public PatchHistory ClientVersionHistory;
     }
 
     public class ConfigFileManager
@@ -236,6 +240,18 @@ namespace OpenBound_Network_Object_Library.FileManager
                 BackgroundColorRedChannel = 0,
                 BackgroundColorGreenChannel = 0,
                 BackgroundColorBlueChannel = 0,
+
+                ClientVersionHistory = new PatchHistory()
+                {
+                    PatchEntryList = new List<PatchEntry>()
+                    {
+                        new PatchEntry()
+                        {
+                            ID = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ReleaseDate = DateTime.UtcNow,
+                        }
+                    }
+                }
             };
 
         private static ServerInformation LoginServerPlaceholder

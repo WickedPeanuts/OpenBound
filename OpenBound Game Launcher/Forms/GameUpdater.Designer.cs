@@ -30,40 +30,46 @@ namespace OpenBound_Game_Launcher.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameUpdater));
             this.currentProgressBar = new System.Windows.Forms.ProgressBar();
             this.totalProgressBar = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.downloadLabel3 = new System.Windows.Forms.Label();
             this.downloadLabel2 = new System.Windows.Forms.Label();
             this.downloadLabel1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.abortButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.logGroupBox = new System.Windows.Forms.GroupBox();
+            this.logListBox = new System.Windows.Forms.ListBox();
+            this.toggleLogButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
+            this.logGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // currentProgressBar
             // 
-            this.currentProgressBar.Location = new System.Drawing.Point(74, 70);
+            this.currentProgressBar.Location = new System.Drawing.Point(74, 95);
             this.currentProgressBar.Name = "currentProgressBar";
-            this.currentProgressBar.Size = new System.Drawing.Size(255, 23);
+            this.currentProgressBar.Size = new System.Drawing.Size(266, 23);
             this.currentProgressBar.TabIndex = 0;
             // 
             // totalProgressBar
             // 
-            this.totalProgressBar.Location = new System.Drawing.Point(74, 99);
+            this.totalProgressBar.Location = new System.Drawing.Point(74, 124);
             this.totalProgressBar.Name = "totalProgressBar";
-            this.totalProgressBar.Size = new System.Drawing.Size(255, 23);
+            this.totalProgressBar.Size = new System.Drawing.Size(266, 23);
             this.totalProgressBar.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 74);
+            this.label1.Location = new System.Drawing.Point(6, 99);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 15);
             this.label1.TabIndex = 2;
@@ -72,7 +78,7 @@ namespace OpenBound_Game_Launcher.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 103);
+            this.label2.Location = new System.Drawing.Point(6, 128);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 15);
             this.label2.TabIndex = 3;
@@ -80,18 +86,28 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.downloadLabel3);
             this.groupBox1.Controls.Add(this.downloadLabel2);
             this.groupBox1.Controls.Add(this.downloadLabel1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.currentProgressBar);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.totalProgressBar);
-            this.groupBox1.Location = new System.Drawing.Point(12, 274);
+            this.groupBox1.Location = new System.Drawing.Point(12, 188);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(335, 132);
+            this.groupBox1.Size = new System.Drawing.Size(346, 156);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Update Progress";
+            // 
+            // downloadLabel3
+            // 
+            this.downloadLabel3.AutoSize = true;
+            this.downloadLabel3.Location = new System.Drawing.Point(6, 68);
+            this.downloadLabel3.Name = "downloadLabel3";
+            this.downloadLabel3.Size = new System.Drawing.Size(94, 15);
+            this.downloadLabel3.TabIndex = 6;
+            this.downloadLabel3.Text = "downloadLabel3";
             // 
             // downloadLabel2
             // 
@@ -107,21 +123,13 @@ namespace OpenBound_Game_Launcher.Forms
             this.downloadLabel1.AutoSize = true;
             this.downloadLabel1.Location = new System.Drawing.Point(6, 22);
             this.downloadLabel1.Name = "downloadLabel1";
-            this.downloadLabel1.Size = new System.Drawing.Size(88, 15);
+            this.downloadLabel1.Size = new System.Drawing.Size(94, 15);
             this.downloadLabel1.TabIndex = 4;
-            this.downloadLabel1.Text = "downloadLabel";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(335, 256);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.downloadLabel1.Text = "downloadLabel1";
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(265, 412);
+            this.closeButton.Location = new System.Drawing.Point(276, 495);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(82, 26);
             this.closeButton.TabIndex = 6;
@@ -130,7 +138,7 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // abortButton
             // 
-            this.abortButton.Location = new System.Drawing.Point(177, 412);
+            this.abortButton.Location = new System.Drawing.Point(188, 495);
             this.abortButton.Name = "abortButton";
             this.abortButton.Size = new System.Drawing.Size(82, 26);
             this.abortButton.TabIndex = 7;
@@ -139,7 +147,7 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(89, 412);
+            this.updateButton.Location = new System.Drawing.Point(100, 495);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(82, 26);
             this.updateButton.TabIndex = 8;
@@ -151,21 +159,65 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // logGroupBox
+            // 
+            this.logGroupBox.Controls.Add(this.logListBox);
+            this.logGroupBox.Location = new System.Drawing.Point(12, 350);
+            this.logGroupBox.Name = "logGroupBox";
+            this.logGroupBox.Size = new System.Drawing.Size(346, 139);
+            this.logGroupBox.TabIndex = 9;
+            this.logGroupBox.TabStop = false;
+            this.logGroupBox.Text = "Update Log";
+            // 
+            // logListBox
+            // 
+            this.logListBox.FormattingEnabled = true;
+            this.logListBox.ItemHeight = 15;
+            this.logListBox.Location = new System.Drawing.Point(6, 22);
+            this.logListBox.Name = "logListBox";
+            this.logListBox.Size = new System.Drawing.Size(334, 109);
+            this.logListBox.TabIndex = 0;
+            // 
+            // toggleLogButton
+            // 
+            this.toggleLogButton.Location = new System.Drawing.Point(12, 495);
+            this.toggleLogButton.Name = "toggleLogButton";
+            this.toggleLogButton.Size = new System.Drawing.Size(82, 26);
+            this.toggleLogButton.TabIndex = 10;
+            this.toggleLogButton.Text = "Hide Log";
+            this.toggleLogButton.UseVisualStyleBackColor = true;
+            this.toggleLogButton.Click += new System.EventHandler(this.toggleLogButton_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(13, 12);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(344, 170);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
+            // 
             // GameUpdater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 450);
+            this.ClientSize = new System.Drawing.Size(370, 533);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.toggleLogButton);
+            this.Controls.Add(this.logGroupBox);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.abortButton);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GameUpdater";
             this.Text = "Game Updater";
             this.Load += new System.EventHandler(this.GameUpdater_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.logGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -180,10 +232,14 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label downloadLabel2;
         private System.Windows.Forms.Label downloadLabel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button abortButton;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label downloadLabel3;
+        private System.Windows.Forms.GroupBox logGroupBox;
+        private System.Windows.Forms.ListBox logListBox;
+        private System.Windows.Forms.Button toggleLogButton;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

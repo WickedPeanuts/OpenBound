@@ -79,5 +79,15 @@ namespace OpenBound_Game_Launcher.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UpdaterFrame {
+            get {
+                object obj = ResourceManager.GetObject("UpdaterFrame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -90,7 +90,6 @@ namespace OpenBound_Game_Launcher.Forms
         #region Element Actions
         private void GameLauncher_Load(object sender, EventArgs e)
         {
-            pictureBox1.Image = Resources.LauncherFrame;
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)

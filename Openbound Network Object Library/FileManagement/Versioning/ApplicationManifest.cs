@@ -10,6 +10,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
     public class ApplicationManifest
     {
         public Guid ID;
+        public string PatchVersionName;
         public FileList CurrentVersionFileList;
         public DateTime CreationDate;
         public ApplicationManifest PreviousManifest;
@@ -50,9 +51,11 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             {
                 CurrentVersionFileList.Checksum.AddOrReplace(kvp.Key, kvp.Value);
             }
+
+            PatchVersionName = $"{applicationManifest1.PatchVersionName}+{applicationManifest2.PatchVersionName}";
         }
 
-        public ApplicationManifest(ApplicationManifest previousManifest, FileList currentVersionFileList)
+        public ApplicationManifest(ApplicationManifest previousManifest, FileList currentVersionFileList, string patchVersionName)
         {
             ID = Guid.NewGuid();
             CurrentVersionFileList = currentVersionFileList;
@@ -60,6 +63,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             PreviousManifest = previousManifest;
             LocalHistory = previousManifest?.LocalHistory;
             LocalHistory?.Add(ID);
+            PatchVersionName = patchVersionName;
         }
     }
 }
