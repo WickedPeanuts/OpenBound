@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Language = OpenBound_Game_Launcher.Common.Language;
@@ -26,12 +29,15 @@ namespace OpenBound_Game_Launcher.Forms
     public partial class GameUpdater : Form
     {
         public AsynchronousAction TickAction;
+        public Action RepeatedTickAction;
         
         private MenuState menuState;
         private bool shouldShowLog;
 
-        private PatchHistory patchHistory;
         private Label[] interfaceLabels;
+
+        private PatchEntry currentPatchEntry;
+        private List<PatchEntry> patchesToBeDownload;
 
         public GameUpdater()
         {
@@ -41,22 +47,26 @@ namespace OpenBound_Game_Launcher.Forms
             interfaceLabels = new Label[] { downloadLabel1, downloadLabel2, downloadLabel3 };
 
             InitializeComponent();
+
+            UpdateMenuLabels(MenuState.ReadyToDownload);
         }
 
-        public void Initialize(PatchHistory patchHistory)
+        public void Initialize(PatchHistory serverPatchHistory)
         {
-            this.patchHistory = patchHistory;
+            currentPatchEntry = NetworkObjectParameters.PatchHistory.PatchEntryList
+                .OrderBy((x) => x.ReleaseDate).First();
+
+            patchesToBeDownload = serverPatchHistory.PatchEntryList
+                .Where((x) => x.ReleaseDate < currentPatchEntry.ReleaseDate)
+                .OrderBy((x) => x.ReleaseDate).ToList();
         }
 
         private void GameUpdater_Load(object sender, EventArgs e)
         {
-            downloadLabel3.Text = downloadLabel2.Text = downloadLabel1.Text = "";
-
             //Calculate remaining versions
+            downloadLabel3.Text = downloadLabel2.Text = downloadLabel1.Text = "";
             
-
             UpdateMenuButtons(MenuState.ReadyToDownload);
-            //UpdateMenuLabels()
         }
 
         private void UpdateMenuButtons(MenuState menuState)
@@ -90,6 +100,12 @@ namespace OpenBound_Game_Launcher.Forms
             switch (menuState)
             {
                 case MenuState.ReadyToDownload:
+                    replacingTextDictionary = new Dictionary<string, string>()
+                    {
+                        { "currentversion", currentPatchEntry.PatchVersionName },
+                        { "nextversion", patchesToBeDownload.Last().PatchVersionName },
+                    };
+
                     downloadLabel1.Text = Language.GameUpdaterLabel1ReadyToDownload;
                     downloadLabel2.Text = Language.GameUpdaterLabel2ReadyToDownload;
                     downloadLabel3.Text = Language.GameUpdaterLabel3ReadyToDownload;
@@ -105,6 +121,11 @@ namespace OpenBound_Game_Launcher.Forms
                     downloadLabel3.Text = Language.GameUpdaterLabel3Installing;
                     break;
                 case MenuState.Done:
+                    replacingTextDictionary = new Dictionary<string, string>()
+                    {
+                        { "updatedat", DateTime.Now.ToString("G", CultureInfo.CurrentCulture) },
+                    };
+
                     downloadLabel1.Text = Language.GameUpdaterLabel1Done;
                     downloadLabel2.Text = Language.GameUpdaterLabel2Done;
                     downloadLabel3.Text = Language.GameUpdaterLabel3Done;
@@ -116,20 +137,50 @@ namespace OpenBound_Game_Launcher.Forms
                     break;
             }
 
+            if (replacingTextDictionary == null) return;
+
             foreach (Label label in interfaceLabels)
                 foreach (KeyValuePair<string, string> kvp in replacingTextDictionary)
                     label.Text = label.Text.Replace($"%{kvp.Key}%", kvp.Value);
         }
 
-        private void calculateRemaining
+        private string PatchDirectory => @$"{Directory.GetCurrentDirectory()}/tmp/";
 
         private void updateButton_Click(object sender, EventArgs e)
         {
             UpdateMenuButtons(MenuState.Downloading);
-            UpdateMenuLabels(MenuState.Downloading, new Dictionary<string, string>()
-            {
 
-            });
+            int currentFile = 0;
+
+            Stack<Action> actStack = new Stack<Action>();
+
+            foreach(PatchEntry pE in patchesToBeDownload)
+            {
+                actStack.Push(() =>
+                {
+                    string patchDir = PatchDirectory;
+                    Directory.CreateDirectory(patchDir);
+
+                    DateTime downloadStartTime = DateTime.Now;
+
+                    HttpWebRequest.AsyncDownloadFile(
+                        pE.PatchPath,
+                        $@"{patchDir}/{pE.PatchPath}",
+                        (p, r, t) => OnReceiveData(pE.PatchPath, currentFile, p, r, t, downloadStartTime),
+                        () =>
+                        {
+                            TickAction += () =>
+                            {
+                                currentFile++;
+
+                                if (actStack.Count > 0)
+                                    actStack.Pop().Invoke();
+                            };
+                        });
+                });
+            }
+
+            actStack.Pop().Invoke();
 
             HttpWebRequest.AsyncDownloadJsonObject<object>(
                 "http://www.json-generator.com/api/json/get/cglxbuiiUO?indent=2",
@@ -137,6 +188,29 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     MessageBox.Show(ObjectWrapper.Serialize(o));
                 });
+        }
+
+        private void OnReceiveData(string filename, int downloadedFiles, float downloadPercentage, long receivedBytes, long totalBytes, DateTime downloadStartTime)
+        {
+            TickAction += () =>
+            {
+                double totalElapsedSeconds = (DateTime.Now - downloadStartTime).TotalSeconds;
+                float totalReceivedMB = (receivedBytes / 1024);
+                float maxSizeMB = (totalBytes / 1024);
+                float remainingMB = totalReceivedMB - maxSizeMB;
+
+                UpdateMenuLabels(MenuState.Downloading, new Dictionary<string, string>()
+                {
+                    { "downloadedfiles", $"{downloadedFiles}" },
+                    { "totalfiles", $"{patchesToBeDownload.Count}" },
+                    { "filename", filename },
+                    { "totalsize", totalReceivedMB.ToString("0.00") },
+                    { "downloadedsize", remainingMB.ToString("0.00") },
+                    { "speed", (totalReceivedMB / totalElapsedSeconds).ToString("0.00") }
+                });
+
+                currentProgressBar.Value = (int)downloadPercentage;
+            };
         }
 
         private void toggleLogButton_Click(object sender, EventArgs e)
@@ -168,6 +242,7 @@ namespace OpenBound_Game_Launcher.Forms
         private void timer1_Tick(object sender, EventArgs e)
         {
             TickAction.AsynchronousInvokeAndDestroy();
+            RepeatedTickAction?.Invoke();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace OpenBound_Game_Launcher.Common
         public const string GameUpdaterLabel2ReadyToDownload = "Current Version: %currentversion%";
         public const string GameUpdaterLabel3ReadyToDownload = "Next Version: %nextversion%";
 
-        public const string GameUpdaterLabel1Downloading = "Downloading in progress...";
+        public const string GameUpdaterLabel1Downloading = "Download in progress...";
         public const string GameUpdaterLabel2Downloading = "File: %filename% (%current%/%total%)";
         public const string GameUpdaterLabel3Downloading = "Remaining: %remaining%, Downloaded: %downloaded%, Speed: %speed%";
 
