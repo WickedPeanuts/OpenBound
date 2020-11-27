@@ -36,7 +36,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         public GameLauncher()
         {
-            CheckFiles();
+            //CheckFiles();
 
             InitializeComponent();
             Parameter.Initialize();

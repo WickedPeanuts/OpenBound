@@ -43,9 +43,9 @@ namespace OpenBound_Game_Launcher.Common
         public const string GameUpdaterLabel2Downloading = "File: %filename% (%current%/%total%)";
         public const string GameUpdaterLabel3Downloading = "Remaining: %remaining%, Downloaded: %downloaded%, Speed: %speed%";
 
-        public const string GameUpdaterLabel1Installing = "Installing updates...";
-        public const string GameUpdaterLabel2Installing = "Extracting ...";
-        public const string GameUpdaterLabel3Installing = "...";
+        public const string GameUpdaterLabel1Unpacking = "Unpacking updates...";
+        public const string GameUpdaterLabel2Unpacking = "Extracting %patchname%";
+        public const string GameUpdaterLabel3Unpacking = "";
 
         public const string GameUpdaterLabel1Done = "Updating proccess finished.";
         public const string GameUpdaterLabel2Done = "Updated at: %updatedat%";

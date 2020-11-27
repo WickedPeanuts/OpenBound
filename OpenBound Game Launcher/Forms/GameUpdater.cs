@@ -1,6 +1,7 @@
 ﻿using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
+using OpenBound_Network_Object_Library.FileManagement;
 using OpenBound_Network_Object_Library.FileManagement.Versioning;
 using OpenBound_Network_Object_Library.WebRequest;
 using System;
@@ -21,7 +22,7 @@ namespace OpenBound_Game_Launcher.Forms
     {
         ReadyToDownload,
         Downloading,
-        Installing,
+        Unpacking,
         Done,
         Error,
     }
@@ -35,6 +36,8 @@ namespace OpenBound_Game_Launcher.Forms
         private bool shouldShowLog;
 
         private Label[] interfaceLabels;
+
+        private int currentDownloadedFile;
 
         private PatchEntry currentPatchEntry;
         private List<PatchEntry> patchesToBeDownload;
@@ -84,7 +87,7 @@ namespace OpenBound_Game_Launcher.Forms
                     abortButton.Enabled = true;
                     updateButton.Enabled = false;
                     break;
-                case MenuState.Installing:
+                case MenuState.Unpacking:
                     abortButton.Enabled = false;
                     updateButton.Enabled = false;
                     break;
@@ -115,10 +118,10 @@ namespace OpenBound_Game_Launcher.Forms
                     downloadLabel2.Text = Language.GameUpdaterLabel2Downloading;
                     downloadLabel3.Text = Language.GameUpdaterLabel3Downloading;
                     break;
-                case MenuState.Installing:
-                    downloadLabel1.Text = Language.GameUpdaterLabel1Installing;
-                    downloadLabel2.Text = Language.GameUpdaterLabel2Installing;
-                    downloadLabel3.Text = Language.GameUpdaterLabel3Installing;
+                case MenuState.Unpacking:
+                    downloadLabel1.Text = Language.GameUpdaterLabel1Unpacking;
+                    downloadLabel2.Text = Language.GameUpdaterLabel2Unpacking;
+                    downloadLabel3.Text = Language.GameUpdaterLabel3Unpacking;
                     break;
                 case MenuState.Done:
                     replacingTextDictionary = new Dictionary<string, string>()
@@ -144,50 +147,55 @@ namespace OpenBound_Game_Launcher.Forms
                     label.Text = label.Text.Replace($"%{kvp.Key}%", kvp.Value);
         }
 
-        private string PatchDirectory => @$"{Directory.GetCurrentDirectory()}/tmp/";
-
         private void updateButton_Click(object sender, EventArgs e)
         {
             UpdateMenuButtons(MenuState.Downloading);
 
-            int currentFile = 0;
+            Queue<Action> actStack = new Queue<Action>();
+            string patchDir = @$"{Directory.GetCurrentDirectory()}/{NetworkObjectParameters.PatchTemporaryPath}/";
 
-            Stack<Action> actStack = new Stack<Action>();
+            Directory.CreateDirectory(patchDir);
 
-            foreach(PatchEntry pE in patchesToBeDownload)
+            foreach (PatchEntry pE in patchesToBeDownload)
             {
-                actStack.Push(() =>
+                actStack.Enqueue(() =>
                 {
-                    string patchDir = PatchDirectory;
-                    Directory.CreateDirectory(patchDir);
-
                     DateTime downloadStartTime = DateTime.Now;
 
                     HttpWebRequest.AsyncDownloadFile(
                         pE.PatchPath,
                         $@"{patchDir}/{pE.PatchPath}",
-                        (p, r, t) => OnReceiveData(pE.PatchPath, currentFile, p, r, t, downloadStartTime),
-                        () =>
-                        {
-                            TickAction += () =>
-                            {
-                                currentFile++;
-
-                                if (actStack.Count > 0)
-                                    actStack.Pop().Invoke();
-                            };
-                        });
+                        (p, r, t) => OnReceiveData(pE.PatchPath, currentDownloadedFile, p, r, t, downloadStartTime),
+                        () => { OnFinalizeDownloadingFile(actStack); },
+                        (ex) => { OnFailToDownloadPatch(ex, pE); } );
                 });
             }
 
-            actStack.Pop().Invoke();
+            //Start triggeting the asynchronous callback hell
+            actStack.Dequeue().Invoke();
+        }
 
-            HttpWebRequest.AsyncDownloadJsonObject<object>(
-                "http://www.json-generator.com/api/json/get/cglxbuiiUO?indent=2",
-                (o) =>
+        private void OnFailToDownloadPatch(Exception exception, PatchEntry patchEntry)
+        {
+            MessageBox.Show(exception.Message);
+        }
+
+        #region Download Async Callback Hell
+        private void OnFinalizeDownloadingFile(Queue<Action> nextDownloadActionStack)
+        {
+            TickAction += new Action(() =>
+            {
+                currentDownloadedFile++;
+
+                if (nextDownloadActionStack.Count > 0)
                 {
-                    MessageBox.Show(ObjectWrapper.Serialize(o));
-                });
+                    nextDownloadActionStack.Dequeue().Invoke();
+                }
+                else
+                {
+                    StartUnpackingFiles();
+                }
+            });
         }
 
         private void OnReceiveData(string filename, int downloadedFiles, float downloadPercentage, long receivedBytes, long totalBytes, DateTime downloadStartTime)
@@ -212,6 +220,18 @@ namespace OpenBound_Game_Launcher.Forms
                 currentProgressBar.Value = (int)downloadPercentage;
             };
         }
+        #endregion
+
+        private void StartUnpackingFiles()
+        {
+            Queue<Action> actStack = new Queue<Action>();
+            GamePatcher.UnpackPatchList(
+                Directory.GetCurrentDirectory(),
+                patchesToBeDownload,
+#warning I WAS HERE
+                () => { });
+        }
+
 
         private void toggleLogButton_Click(object sender, EventArgs e)
         {

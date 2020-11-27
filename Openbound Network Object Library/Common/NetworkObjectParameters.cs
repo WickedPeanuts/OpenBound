@@ -289,5 +289,9 @@ namespace OpenBound_Network_Object_Library.Common
         public const string ManifestExtension = ".json";
         public const string GamePatchFilename = "Patch";
         public const string GamePatchExtension = ".obup"; //OpenBound Update Patch
+
+        // Patch
+        public const string PatchTemporaryPath = "tmp";
+        public const string PatchUnpackPath = "tmpUnpack";
     }
 }

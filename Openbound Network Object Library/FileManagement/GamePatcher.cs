@@ -16,24 +16,69 @@ namespace OpenBound_Network_Object_Library.FileManagement
         private static string BuildPatchPath(string outputPath, ApplicationManifest applicationManifest) =>
             @$"{outputPath}\{applicationManifest.BuildPatchPath}";
 
+        private static string BuildUnpackTemporaryFolder(string baseDirectory) =>
+            $@"{baseDirectory}\{NetworkObjectParameters.PatchTemporaryPath}";
+
+        private static string BuildUnpackDestinationPatchPath(string baseDirectory) =>
+            $@"{BuildUnpackTemporaryFolder(baseDirectory)}\{NetworkObjectParameters.PatchUnpackPath}";
+
         /// <summary>
-        /// Extracts and verifies if the extracted file is correct. Returns true if the extracted file is correct.
+        /// Unpack a list of patchs, given the folder the patchs are in and a list of <see cref="PatchEntry"/>.
         /// </summary>
-        /// <param name="gameFolderPath"></param>
+        /// <param name="patchListBaseFolder"></param>
+        /// <param name="patchEntryList"></param>
+        /// <returns></returns>
+        public static List<PatchEntry> UnpackPatchList(string gameFolder, List<PatchEntry> patchEntryList, Action<PatchEntry, bool> onUnpack = null)
+        {
+            List<PatchEntry> failedPatchList = new List<PatchEntry>();
+
+            string patchUnpackDestinationPath = BuildUnpackDestinationPatchPath(gameFolder);
+            string patchListBaseFolder = BuildUnpackTemporaryFolder(gameFolder);
+
+            //Creates the output directory
+            Directory.CreateDirectory(patchUnpackDestinationPath);
+
+            foreach (PatchEntry pE in patchEntryList)
+            {
+                try
+                {
+                    if (UnpackPatch(patchUnpackDestinationPath, $@"{patchListBaseFolder}\{pE.PatchPath}"))
+                    {
+                        onUnpack?.Invoke(pE, true);
+                    }
+                    else
+                    {
+                        failedPatchList.Add(pE);
+                        onUnpack?.Invoke(pE, true);
+                    }
+                }
+                catch(Exception)
+                {
+                    failedPatchList.Add(pE);
+                }
+            }
+
+            return failedPatchList;
+        }
+
+        /// <summary>
+        /// Extracts the files on the patch and returns true verified files are correct.
+        /// </summary>
+        /// <param name="destinationFolder"></param>
         /// <param name="patchPath"></param>
         /// <returns></returns>
-        public static bool ApplyUpdatePatch(string gameFolderPath, string patchPath)
+        private static bool UnpackPatch(string destinationFolder, string patchPath)
         {
             //Extracting zip files into the directory
             using (ZipArchive patch = ZipFile.OpenRead(patchPath))
-                patch.ExtractToDirectory(gameFolderPath, overwriteFiles: true);
+                patch.ExtractToDirectory(destinationFolder, overwriteFiles: true);
 
             //Reading Manifest
-            string manifestOldPath = $@"{gameFolderPath}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
+            string manifestOldPath = $@"{destinationFolder}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
             ApplicationManifest appManifest = ObjectWrapper.Deserialize<ApplicationManifest>(File.ReadAllText(manifestOldPath));
 
             //Moving Manifest
-            string manifestNewPath = $@"{gameFolderPath}\{NetworkObjectParameters.ManifestFilename}-{appManifest.ID}{NetworkObjectParameters.ManifestExtension}";
+            string manifestNewPath = $@"{destinationFolder}\{NetworkObjectParameters.ManifestFilename}-{appManifest.ID}{NetworkObjectParameters.ManifestExtension}";
             File.Move(manifestOldPath, manifestNewPath);
 
             //Files to be deleted
@@ -41,7 +86,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
                 File.Delete(toBeDeletedFile);
 
             //Verify game cache integrity
-            return Manifest.VerifyMD5Checksum(gameFolderPath, appManifest);
+            return Manifest.VerifyMD5Checksum(destinationFolder, appManifest);
         }
 
         public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName, string outputPackagePath, string patchHistoryFilePath)
