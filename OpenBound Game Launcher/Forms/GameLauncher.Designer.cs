@@ -190,7 +190,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.btnGameSettings.TabIndex = 3;
             this.btnGameSettings.Text = "Game Settings";
             this.btnGameSettings.UseVisualStyleBackColor = true;
-            this.btnGameSettings.Click += new System.EventHandler(this.btnGameSettings_Click);
+            this.btnGameSettings.Click += new System.EventHandler(this.BtnGameSettings_Click);
             // 
             // button1
             // 

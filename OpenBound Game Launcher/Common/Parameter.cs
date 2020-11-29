@@ -18,6 +18,7 @@ namespace OpenBound_Game_Launcher.Common
         {
             ConfigFileManager.CreateConfigFile(RequesterApplication.Launcher);
             ConfigFileManager.LoadConfigFile(RequesterApplication.Launcher);
+
             GameClientSettingsInformation = ConfigFileManager.ReadClientInformation();
         }
     }

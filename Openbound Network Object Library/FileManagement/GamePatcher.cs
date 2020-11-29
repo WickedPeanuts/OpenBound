@@ -28,7 +28,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
         /// <param name="patchListBaseFolder"></param>
         /// <param name="patchEntryList"></param>
         /// <returns></returns>
-        public static List<PatchEntry> UnpackPatchList(string gameFolder, List<PatchEntry> patchEntryList, Action<PatchEntry, bool> onUnpack = null)
+        public static List<PatchEntry> UnpackPatchList(string gameFolder, List<PatchEntry> patchEntryList, Action<PatchEntry> onStartUnpacking = null, Action<PatchEntry, bool> onUnpack = null)
         {
             List<PatchEntry> failedPatchList = new List<PatchEntry>();
 
@@ -40,21 +40,24 @@ namespace OpenBound_Network_Object_Library.FileManagement
 
             foreach (PatchEntry pE in patchEntryList)
             {
+                onStartUnpacking?.Invoke(pE);
+
                 try
                 {
-                    if (UnpackPatch(patchUnpackDestinationPath, $@"{patchListBaseFolder}\{pE.PatchPath}"))
+                    if (UnpackPatch(patchUnpackDestinationPath, $@"{patchListBaseFolder}\{pE.Path}"))
                     {
                         onUnpack?.Invoke(pE, true);
                     }
                     else
                     {
                         failedPatchList.Add(pE);
-                        onUnpack?.Invoke(pE, true);
+                        onUnpack?.Invoke(pE, false);
                     }
                 }
                 catch(Exception)
                 {
                     failedPatchList.Add(pE);
+                    onUnpack?.Invoke(pE, false);
                 }
             }
 
@@ -89,7 +92,7 @@ namespace OpenBound_Network_Object_Library.FileManagement
             return Manifest.VerifyMD5Checksum(destinationFolder, appManifest);
         }
 
-        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName, string outputPackagePath, string patchHistoryFilePath)
+        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath, string patchHistoryFilePath, string newPatchVersionName)
         {
             //Create ApplicationManifest given the new and the old game folder
             ApplicationManifest appManifest = Manifest.GenerateChecksumManifest(currentVersionFolderPath, newVersionFolderPath, newPatchVersionName);

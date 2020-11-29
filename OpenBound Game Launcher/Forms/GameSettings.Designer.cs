@@ -225,7 +225,6 @@
             // 
             // fetchServerPortTextBox
             // 
-            this.fetchServerPortTextBox.Enabled = false;
             this.fetchServerPortTextBox.Location = new System.Drawing.Point(138, 52);
             this.fetchServerPortTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.fetchServerPortTextBox.Name = "fetchServerPortTextBox";
@@ -234,7 +233,6 @@
             // 
             // fetchServerIPTextBox
             // 
-            this.fetchServerIPTextBox.Enabled = false;
             this.fetchServerIPTextBox.Location = new System.Drawing.Point(138, 22);
             this.fetchServerIPTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.fetchServerIPTextBox.Name = "fetchServerIPTextBox";

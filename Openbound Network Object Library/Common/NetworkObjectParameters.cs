@@ -97,10 +97,8 @@ namespace OpenBound_Network_Object_Library.Common
         //Server Information
         public static ServerInformation LoginServerInformation;
         public static ServerInformation LobbyServerInformation;
+        public static ServerInformation FetchServerInformation;
         public static GameServerInformation GameServerInformation;
-
-        //Client Patch Information
-        public static PatchHistory PatchHistory;
 
         //Database Information
         public static string DatabaseAddress;
@@ -116,6 +114,7 @@ namespace OpenBound_Network_Object_Library.Common
         public const int PlayerSession = 0x01;
 
         //Server Default Behaviour
+        public const int FetchServerDefaultPort = 80;
         public const int LoginServerDefaultPort = 8022;
         public const int LobbyServerDefaultPort = 8023;
         public const int GameServerDefaultStartingPort = 8024;
@@ -291,7 +290,12 @@ namespace OpenBound_Network_Object_Library.Common
         public const string GamePatchExtension = ".obup"; //OpenBound Update Patch
 
         // Patch
+        public const string PatchHistoryFilename = "PatchHistory.json";
         public const string PatchTemporaryPath = "tmp";
         public const string PatchUnpackPath = "tmpUnpack";
+        public const string FetchServerVersioningFolder = "versioning";
+        public const string FetchServerPatchesFolder = "game_patches";
+        public const string PatcherProcessName = "OpenBound Patcher.exe";
+        public const string GameClientProcessName = "OpenBound.exe";
     }
 }

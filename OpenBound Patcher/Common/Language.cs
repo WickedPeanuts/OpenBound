@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenBound_Game_Launcher.Common
+namespace OpenBound_Patcher.Common
 {
     public class Language
     {
@@ -40,8 +40,8 @@ namespace OpenBound_Game_Launcher.Common
         public const string GameUpdaterLabel3ReadyToDownload = "Next Version: %nextversion%";
 
         public const string GameUpdaterLabel1Downloading = "Download in progress...";
-        public const string GameUpdaterLabel2Downloading = "File: %filename% (%current%/%total%) - Speed: %speed% MB/s";
-        public const string GameUpdaterLabel3Downloading = "Remaining: %remaining% MB, Downloaded: %downloaded% MB";
+        public const string GameUpdaterLabel2Downloading = "File: %filename% (%current%/%total%)";
+        public const string GameUpdaterLabel3Downloading = "Remaining: %remaining%, Downloaded: %downloaded%, Speed: %speed%";
 
         public const string GameUpdaterLabel1Unpacking = "Unpacking updates...";
         public const string GameUpdaterLabel2Unpacking = "Extracting %patchname%";

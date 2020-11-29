@@ -56,8 +56,8 @@ namespace OpenBound_Game_Launcher.Forms
             loginServerPortTextBox.Text = $"{NetworkObjectParameters.LoginServerInformation.ServerPort}";
             lobbyServerIPTextBox.Text = NetworkObjectParameters.LobbyServerInformation.ServerPublicAddress;
             lobbyServerPortTextBox.Text = $"{NetworkObjectParameters.LobbyServerInformation.ServerPort}";
-            fetchServerIPTextBox.Text = "127.0.0.1";
-            fetchServerPortTextBox.Text = "0";
+            fetchServerIPTextBox.Text = NetworkObjectParameters.FetchServerInformation.ServerPublicAddress;
+            fetchServerPortTextBox.Text = $"{NetworkObjectParameters.FetchServerInformation.ServerPort}";
 
             //Graphic Settings
             //-- Windowed Settings
@@ -110,7 +110,6 @@ namespace OpenBound_Game_Launcher.Forms
             shouldRenderBackgroundCheckBox.Checked = Parameter.GameClientSettingsInformation.IsBackgroundOn;
             shouldRenderBackgroundCheckBox.CheckedChanged += (e, args) => RefreshRenderBackground();
             RefreshRenderBackground();
-
 
             redBackgroundColorTextBox.Text   = $"{Parameter.GameClientSettingsInformation.BackgroundColorRedChannel}";
             greenBackgroundColorTextBox.Text = $"{Parameter.GameClientSettingsInformation.BackgroundColorGreenChannel}";
@@ -181,11 +180,12 @@ namespace OpenBound_Game_Launcher.Forms
             Parameter.GameClientSettingsInformation.SavedNickname = nicknameTextBox.Text;
             NetworkObjectParameters.LoginServerInformation.ServerPublicAddress = loginServerIPTextBox.Text;
             NetworkObjectParameters.LoginServerInformation.ServerPort = int.Parse(loginServerPortTextBox.Text);
+            
             NetworkObjectParameters.LobbyServerInformation.ServerPublicAddress = lobbyServerIPTextBox.Text;
             NetworkObjectParameters.LobbyServerInformation.ServerPort = int.Parse(lobbyServerPortTextBox.Text);
-            
-            //fetchServerIPTextBox.Text = "127.0.0.1";
-            //fetchServerPortTextBox.Text = "0";
+
+            NetworkObjectParameters.FetchServerInformation.ServerPublicAddress = fetchServerIPTextBox.Text;
+            NetworkObjectParameters.FetchServerInformation.ServerPort = int.Parse(fetchServerPortTextBox.Text);
 
             //Graphic Settings
             //-- Windowed Settings
@@ -221,7 +221,8 @@ namespace OpenBound_Game_Launcher.Forms
             
             ConfigFileManager.OverwriteLauncherServerSettings(new List<ServerInformation>() {
                 NetworkObjectParameters.LoginServerInformation,
-                NetworkObjectParameters.LobbyServerInformation
+                NetworkObjectParameters.LobbyServerInformation,
+                NetworkObjectParameters.FetchServerInformation
             });
         }
     }

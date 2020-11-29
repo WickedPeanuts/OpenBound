@@ -11,6 +11,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenBound_Network_Object_Library.Entity
 {
@@ -19,8 +20,8 @@ namespace OpenBound_Network_Object_Library.Entity
         #region Async Variable 
         private readonly object asyncLock;
 
-        private Action value;
-        public Action Value
+        private Queue<Action> value;
+        public Queue<Action> Value
         {
             get
             {
@@ -41,7 +42,8 @@ namespace OpenBound_Network_Object_Library.Entity
         public static AsynchronousAction operator +(AsynchronousAction a, AsynchronousAction b)
         {
             lock (a.asyncLock)
-                a.value += b.Value;
+                foreach (Action act in b.Value)
+                    a.value.Enqueue(act);
 
             return a;
         }
@@ -49,7 +51,7 @@ namespace OpenBound_Network_Object_Library.Entity
         public static AsynchronousAction operator +(AsynchronousAction a, Action b)
         {
             lock (a.asyncLock)
-                a.value += b;
+                a.value.Enqueue(b);
 
             return a;
         }
@@ -63,21 +65,30 @@ namespace OpenBound_Network_Object_Library.Entity
         public AsynchronousAction(Action action = default)
         {
             asyncLock = new object();
-            value = action;
+            value = new Queue<Action>();
+            value.Enqueue(action);
         }
 
         public void AsynchronousInvoke()
         {
             lock (asyncLock)
-                value?.Invoke();
+            {
+                foreach (Action act in value)
+                {
+                    act.Invoke();
+                }
+            }
         }
 
         public void AsynchronousInvokeAndDestroy()
         {
             lock (asyncLock)
             {
-                value?.Invoke();
-                value = default;
+                if (value != null && value.Count > 0)
+                {
+                    Action act = value.Dequeue();
+                    act?.Invoke();
+                }
             }
         }
     }

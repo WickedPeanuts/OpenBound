@@ -47,6 +47,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.logListBox = new System.Windows.Forms.ListBox();
             this.toggleLogButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.logGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -157,6 +158,7 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // timer1
             // 
+            this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // logGroupBox
@@ -198,6 +200,10 @@ namespace OpenBound_Game_Launcher.Forms
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
+            // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // GameUpdater
             // 
@@ -241,5 +247,6 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.ListBox logListBox;
         private System.Windows.Forms.Button toggleLogButton;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Timer timer2;
     }
 }

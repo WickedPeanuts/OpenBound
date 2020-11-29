@@ -11,7 +11,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
     {
         public Guid ID;
         public DateTime ReleaseDate;
-        public string PatchPath;
+        public string Path;
         public string PatchVersionName;
     }
 
@@ -30,7 +30,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             {
                 ID = applicationManifest.ID,
                 ReleaseDate = applicationManifest.CreationDate,
-                PatchPath = applicationManifest.BuildPatchPath,
+                Path = applicationManifest.BuildPatchPath,
                 PatchVersionName = applicationManifest.PatchVersionName
             });
         }
@@ -52,15 +52,17 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             PatchEntryList.Remove(previousPE1);
 
             previousPE2.ID = appManifest2.ID;
-            previousPE2.PatchPath = appManifest2.BuildPatchPath;
+            previousPE2.Path = appManifest2.BuildPatchPath;
             previousPE2.ReleaseDate = appManifest2.CreationDate;
             previousPE2.PatchVersionName = newAppManifest.PatchVersionName;
         }
 
-        public static PatchHistory CreatePatchHistoryInstance(string previousPatchHistoryPath = null)
+        public static PatchHistory CreatePatchHistoryInstance(string patchHistoryPath = null)
         {
-            string fileContent = File.ReadAllText(previousPatchHistoryPath);
-            return ObjectWrapper.Deserialize<PatchHistory>(fileContent);
+            if (patchHistoryPath == null)
+                return new PatchHistory();
+
+            return ObjectWrapper.Deserialize<PatchHistory>(File.ReadAllText(patchHistoryPath));
         }
     }
 }
