@@ -58,7 +58,7 @@ namespace OpenBound_Game_Launcher.Forms
                 .OrderBy((x) => x.ReleaseDate).First();
 
             patchesToBeDownload = serverPatchHistory.PatchEntryList
-                .Where((x) => x.ReleaseDate < currentPatchEntry.ReleaseDate)
+                .Where((x) => x.ReleaseDate > currentPatchEntry.ReleaseDate)
                 .OrderBy((x) => x.ReleaseDate).ToList();
 
             UpdateMenuLabels(MenuState.ReadyToDownload);
@@ -256,7 +256,7 @@ namespace OpenBound_Game_Launcher.Forms
             };
         }
 
-        private void OnUnpackPatch(PatchEntry patch, bool success)
+        private void OnUnpackPatch(PatchEntry patch, bool isMD5Valid, Exception exception)
         {
             Timer1TickAction += () =>
             {
@@ -265,19 +265,20 @@ namespace OpenBound_Game_Launcher.Forms
 
                 totalProgressBar.Value = currentProgressBar.Value = 100 * ((current + 1) / total);
 
-                if (success)
+                if (!isMD5Valid || exception != null)
                 {
-
+                    //MessageBox.Show("Deu merda capitão: " + patch.Path + " " + exception.Message);
                 }
                 else
                 {
-                    MessageBox.Show("Deu merda capitão: " + patch.Path);
                 }
 
                 if (patchesToBeDownload.Last() == patch)
                 {
                     timer2.Enabled = true;
-                    Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(DateTime.Now); };
+
+                    DateTime date = DateTime.Now;
+                    Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(date); };
                 }
             };
         }
@@ -310,7 +311,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void CloseClientAndApplyPatchTickAction(DateTime unpackingFinalizationTime)
         {
-            double timediff = (unpackingFinalizationTime - DateTime.Now).TotalSeconds;
+            double timediff = (DateTime.Now - unpackingFinalizationTime).TotalSeconds;
             int secdiff = 10 - (int)timediff;
 
             if (secdiff > 0)
@@ -319,7 +320,7 @@ namespace OpenBound_Game_Launcher.Forms
                     MenuState.Done,
                     new Dictionary<string, string>()
                     {
-                        { "updatedat", DateTime.Now.ToString("G", CultureInfo.CurrentCulture) },
+                        { "updatedat", unpackingFinalizationTime.ToString("G", CultureInfo.CurrentCulture) },
                         { "secondstopatch", $"{secdiff}" },
                     });
             }
@@ -337,11 +338,14 @@ namespace OpenBound_Game_Launcher.Forms
                     @$"{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchUnpackPath}"
                 };
 
-            Process.Start(
-                $@"{Directory.GetCurrentDirectory()}/{NetworkObjectParameters.PatcherProcessName}",
-                string.Join(' ', applicationParameter));
+            Process process = new Process();
+            process.StartInfo.FileName = $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatcherProcessName}";
+            //process.StartInfo.UseShellExecute = true;
+            process.StartInfo.Arguments = string.Join(' ', applicationParameter);
+            process.Start();
 
-            Process.GetCurrentProcess().Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void timer2_Tick(object sender, EventArgs e)

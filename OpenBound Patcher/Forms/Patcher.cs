@@ -20,6 +20,11 @@ namespace OpenBound_Patcher.Forms
 
         public Patcher(string[] args)
         {
+            InitializeComponent();
+
+            foreach (string arg in args)
+                MessageBox.Show(arg);
+            
             gameClientPath = args[1];
             tmpFolderPath = args[2];
 
@@ -28,22 +33,20 @@ namespace OpenBound_Patcher.Forms
             Process process = Process.GetProcessById(int.Parse(args[0]));
             process.WaitForExit();
 
-            InitializeComponent();
         }
 
         private void Patcher_Load(object sender, EventArgs e)
         {
-            List<string> fileList = Directory.GetFiles(
-                Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories).ToList();
+            List<string> fileList = Directory.GetFiles(tmpFolderPath, "*", SearchOption.AllDirectories).ToList();
 
             for(int i = 0; i < fileList.Count; i++)
             {
-                string filename = fileList[i].Split(@"\").Last();
+                string newfilepath = fileList[i].Replace($@"{gameClientPath}\", "");
 
                 copyActionQueue.Enqueue(() =>
                 {
                     progressBar1.Value = Math.Min(100 * (int)((i + 1) / (float)fileList.Count), 100);
-                    Directory.Move(fileList[i], $@"{Directory.GetCurrentDirectory()}\{tmpFolderPath}\{filename}");
+                    Directory.Move(fileList[i], $@"{gameClientPath}\{newfilepath}");
                 });
             }
 

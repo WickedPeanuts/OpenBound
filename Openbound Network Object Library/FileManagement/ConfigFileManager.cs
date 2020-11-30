@@ -248,7 +248,7 @@ namespace OpenBound_Network_Object_Library.FileManager
                         new PatchEntry()
                         {
                             ID = new Guid("00000000-0000-0000-0000-000000000000"),
-                            ReleaseDate = DateTime.UtcNow,
+                            ReleaseDate = DateTime.MinValue,
                             PatchVersionName = "v0.1.0",
                         }
                     }

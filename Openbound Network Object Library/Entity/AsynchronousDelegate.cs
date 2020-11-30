@@ -20,19 +20,19 @@ namespace OpenBound_Network_Object_Library.Entity
         #region Async Variable 
         private readonly object asyncLock;
 
-        private Queue<Action> value;
-        public Queue<Action> Value
+        private Queue<Action> _value;
+        private Queue<Action> value
         {
             get
             {
                 lock (asyncLock)
-                    return value;
+                    return _value;
             }
             set
             {
                 lock (asyncLock)
                 {
-                    this.value = value;
+                    _value = value;
                 }
             }
         }
@@ -42,8 +42,8 @@ namespace OpenBound_Network_Object_Library.Entity
         public static AsynchronousAction operator +(AsynchronousAction a, AsynchronousAction b)
         {
             lock (a.asyncLock)
-                foreach (Action act in b.Value)
-                    a.value.Enqueue(act);
+                foreach (Action act in b.value)
+                    a._value.Enqueue(act);
 
             return a;
         }
@@ -51,7 +51,7 @@ namespace OpenBound_Network_Object_Library.Entity
         public static AsynchronousAction operator +(AsynchronousAction a, Action b)
         {
             lock (a.asyncLock)
-                a.value.Enqueue(b);
+                a._value.Enqueue(b);
 
             return a;
         }
@@ -65,15 +65,22 @@ namespace OpenBound_Network_Object_Library.Entity
         public AsynchronousAction(Action action = default)
         {
             asyncLock = new object();
-            value = new Queue<Action>();
-            value.Enqueue(action);
+            _value = new Queue<Action>();
+
+            if (action != default)
+                _value.Enqueue(action);
+        }
+
+        public void Clear()
+        {
+            value.Clear();
         }
 
         public void AsynchronousInvoke()
         {
             lock (asyncLock)
             {
-                foreach (Action act in value)
+                foreach (Action act in _value)
                 {
                     act.Invoke();
                 }
@@ -84,9 +91,9 @@ namespace OpenBound_Network_Object_Library.Entity
         {
             lock (asyncLock)
             {
-                if (value != null && value.Count > 0)
+                if (_value != null && _value.Count > 0)
                 {
-                    Action act = value.Dequeue();
+                    Action act = _value.Dequeue();
                     act?.Invoke();
                 }
             }

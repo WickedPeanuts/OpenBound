@@ -74,10 +74,15 @@ namespace OpenBound_Network_Object_Library.Common
             }
         }
 
-        public static T Deserialize<T>(string Param)
+        public static T Deserialize<T>(string param)
         {
-            if (!ObjectValidator.ValidateString(Param)) throw new Exception();
-            return JsonConvert.DeserializeObject<T>(Param);
+            if (!ObjectValidator.ValidateString(param)) throw new Exception();
+            return JsonConvert.DeserializeObject<T>(param);
+        }
+
+        public static T DeserializeFile<T>(string filePath)
+        {
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath));
         }
 
         public static T DeserializeCommentedJSONFile<T>(string filePath)

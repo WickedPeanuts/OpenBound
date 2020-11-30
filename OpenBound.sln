@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenBound Asset Tools", "Op
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avatar API", "Avatar API\Avatar API.csproj", "{73A4FFA0-A3BA-4279-A0AE-E1D45ED69116}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenBound Patcher", "OpenBound Patcher\OpenBound Patcher.csproj", "{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenBound Patcher", "OpenBound Patcher\OpenBound Patcher.csproj", "{B68F0FD2-0189-4168-9A21-F180A58E4CBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,18 +141,18 @@ Global
 		{73A4FFA0-A3BA-4279-A0AE-E1D45ED69116}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73A4FFA0-A3BA-4279-A0AE-E1D45ED69116}.Release|x86.ActiveCfg = Release|Any CPU
 		{73A4FFA0-A3BA-4279-A0AE-E1D45ED69116}.Release|x86.Build.0 = Release|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Debug|x86.Build.0 = Debug|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.DebugScene|Any CPU.ActiveCfg = DebugScene|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.DebugScene|Any CPU.Build.0 = DebugScene|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.DebugScene|x86.ActiveCfg = DebugScene|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.DebugScene|x86.Build.0 = DebugScene|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Release|x86.ActiveCfg = Release|Any CPU
-		{BA1C3CB6-CA5D-4512-AB90-C4C9F2E62F17}.Release|x86.Build.0 = Release|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.DebugScene|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.DebugScene|Any CPU.Build.0 = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.DebugScene|x86.ActiveCfg = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.DebugScene|x86.Build.0 = Debug|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

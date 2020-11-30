@@ -25,10 +25,12 @@ namespace OpenBound_Network_Object_Library.FileManagement
         /// <summary>
         /// Unpack a list of patchs, given the folder the patchs are in and a list of <see cref="PatchEntry"/>.
         /// </summary>
-        /// <param name="patchListBaseFolder"></param>
+        /// <param name="gameFolder"></param>
         /// <param name="patchEntryList"></param>
+        /// <param name="onStartUnpacking"></param>
+        /// <param name="onUnpack"></param>
         /// <returns></returns>
-        public static List<PatchEntry> UnpackPatchList(string gameFolder, List<PatchEntry> patchEntryList, Action<PatchEntry> onStartUnpacking = null, Action<PatchEntry, bool> onUnpack = null)
+        public static List<PatchEntry> UnpackPatchList(string gameFolder, List<PatchEntry> patchEntryList, Action<PatchEntry> onStartUnpacking = null, Action<PatchEntry, bool, Exception> onUnpack = null)
         {
             List<PatchEntry> failedPatchList = new List<PatchEntry>();
 
@@ -46,18 +48,18 @@ namespace OpenBound_Network_Object_Library.FileManagement
                 {
                     if (UnpackPatch(patchUnpackDestinationPath, $@"{patchListBaseFolder}\{pE.Path}"))
                     {
-                        onUnpack?.Invoke(pE, true);
+                        onUnpack?.Invoke(pE, true, null);
                     }
                     else
                     {
                         failedPatchList.Add(pE);
-                        onUnpack?.Invoke(pE, false);
+                        onUnpack?.Invoke(pE, false, null);
                     }
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
                     failedPatchList.Add(pE);
-                    onUnpack?.Invoke(pE, false);
+                    onUnpack?.Invoke(pE, false, ex);
                 }
             }
 
@@ -77,27 +79,25 @@ namespace OpenBound_Network_Object_Library.FileManagement
                 patch.ExtractToDirectory(destinationFolder, overwriteFiles: true);
 
             //Reading Manifest
-            string manifestOldPath = $@"{destinationFolder}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
-            ApplicationManifest appManifest = ObjectWrapper.Deserialize<ApplicationManifest>(File.ReadAllText(manifestOldPath));
+            string patchHistoryPath = $@"{destinationFolder}\{NetworkObjectParameters.PatchHistoryFilename}";
+            PatchHistory patchHistory = ObjectWrapper.DeserializeFile<PatchHistory>(patchHistoryPath);
 
             //Moving Manifest
-            string manifestNewPath = $@"{destinationFolder}\{NetworkObjectParameters.ManifestFilename}-{appManifest.ID}{NetworkObjectParameters.ManifestExtension}";
-            File.Move(manifestOldPath, manifestNewPath);
+            //string manifestNewPath = $@"{destinationFolder}\{NetworkObjectParameters.ManifestFilename}-{appManifest.ID}{NetworkObjectParameters.ManifestExtension}";
+            //File.Move(patchHistoryPath, manifestNewPath);
 
             //Files to be deleted
-            foreach (string toBeDeletedFile in appManifest.CurrentVersionFileList.ToBeDeleted)
-                File.Delete(toBeDeletedFile);
+            //foreach (string toBeDeletedFile in appManifest.CurrentVersionFileList.ToBeDeleted)
+                //File.Delete(toBeDeletedFile);
 
             //Verify game cache integrity
-            return Manifest.VerifyMD5Checksum(destinationFolder, appManifest);
+            return Manifest.VerifyMD5Checksum(destinationFolder, patchHistory.ApplicationManifest);
         }
 
-        public static ApplicationManifest GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath, string patchHistoryFilePath, string newPatchVersionName)
+        public static PatchHistory GenerateUpdatePatch(string currentVersionFolderPath, string newVersionFolderPath, string outputPackagePath, string patchHistoryFilePath, string newPatchVersionName)
         {
             //Create ApplicationManifest given the new and the old game folder
             ApplicationManifest appManifest = Manifest.GenerateChecksumManifest(currentVersionFolderPath, newVersionFolderPath, newPatchVersionName);
-
-            string tmpAppManifestFilename = Path.GetTempFileName();
 
             using (ZipArchive zipArchive = ZipFile.Open(BuildPatchPath(outputPackagePath, appManifest), ZipArchiveMode.Update))
             {
@@ -106,18 +106,16 @@ namespace OpenBound_Network_Object_Library.FileManagement
                     zipArchive.CreateEntryFromFile($@"{newVersionFolderPath}\{filePath}", filePath, CompressionLevel.Optimal);
                 }
 
-                //Save the manifest file into the temporary folder, add it into the zip and delete it
-                File.WriteAllText(tmpAppManifestFilename, ObjectWrapper.Serialize(appManifest, Formatting.Indented));
-                zipArchive.CreateEntryFromFile(tmpAppManifestFilename, NetworkObjectParameters.ManifestFilename + NetworkObjectParameters.ManifestExtension);
-                File.Delete(tmpAppManifestFilename);
+                //Save the patch history 
+                PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(patchHistoryFilePath);
+                patchHistory.AddPatchEntry(appManifest);
+                File.WriteAllText(patchHistoryFilePath, ObjectWrapper.Serialize(patchHistory, Formatting.Indented));
+
+                //Save the PatchHistory file into the temporary folder, add it into the zip and delete it
+                zipArchive.CreateEntryFromFile(patchHistoryFilePath, NetworkObjectParameters.PatchHistoryFilename);
+                
+                return patchHistory;
             }
-
-            //Save the patch history 
-            PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(patchHistoryFilePath);
-            patchHistory.AddPatchEntry(appManifest);
-            File.WriteAllText(patchHistoryFilePath, ObjectWrapper.Serialize(patchHistory, Formatting.Indented));
-
-            return appManifest;
         }
 
         /// <summary>
@@ -127,40 +125,43 @@ namespace OpenBound_Network_Object_Library.FileManagement
         /// <param name="patch2"></param>
         /// <param name="outputPackagePath"></param>
         /// <returns></returns>
+        /*
         public static ApplicationManifest MergeUpdatePatch(string patch1, string patch2, string outputPackagePath, string patchHistoryFilePath)
         {
             using (ZipArchive zipArchive1 = ZipFile.Open(patch1, ZipArchiveMode.Read))
             using (ZipArchive zipArchive2 = ZipFile.Open(patch2, ZipArchiveMode.Read))
             {
                 string tmpFolder = @$"{Path.GetTempPath()}{Guid.NewGuid()}";
-                string manifestFilePath = $@"{tmpFolder}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
+                string extractedFilePatchHistoryPath = $@"{tmpFolder}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
 
                 zipArchive1.ExtractToDirectory(tmpFolder, true);
-                ApplicationManifest appManifest1 = ObjectWrapper.Deserialize<ApplicationManifest>(File.ReadAllText(manifestFilePath));
+                ApplicationManifest appManifest1 = ObjectWrapper.Deserialize<PatchHistory>(File.ReadAllText(extractedFilePatchHistoryPath)).ApplicationManifest;
 
                 zipArchive2.ExtractToDirectory(tmpFolder, true);
-                ApplicationManifest appManifest2 = ObjectWrapper.Deserialize<ApplicationManifest>(File.ReadAllText(manifestFilePath));
+                ApplicationManifest appManifest2 = ObjectWrapper.Deserialize<PatchHistory>(File.ReadAllText(extractedFilePatchHistoryPath)).ApplicationManifest;
 
                 ApplicationManifest newManifest = new ApplicationManifest(appManifest1, appManifest2);
-                File.WriteAllText(manifestFilePath, ObjectWrapper.Serialize(newManifest, Formatting.Indented));
+                File.WriteAllText(extractedFilePatchHistoryPath, ObjectWrapper.Serialize(newManifest, Formatting.Indented));
 
                 using (ZipArchive outputZipArchive = ZipFile.Open(BuildPatchPath(outputPackagePath, newManifest), ZipArchiveMode.Update))
                 {
                     foreach (string filePath in newManifest.CurrentVersionFileList.ToBeDownloaded)
                         outputZipArchive.CreateEntryFromFile($@"{tmpFolder}\{filePath}", filePath, CompressionLevel.Optimal);
 
-                    outputZipArchive.CreateEntryFromFile(manifestFilePath, $@"{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}", CompressionLevel.Optimal);
+                    outputZipArchive.CreateEntryFromFile(extractedFilePatchHistoryPath, $@"{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}", CompressionLevel.Optimal);
                 }
 
                 Directory.Delete(tmpFolder, true);
 
                 //Save the patch history 
+                //patchHistoryFilePath
                 PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(patchHistoryFilePath);
                 patchHistory.MergePatchEntry(appManifest1, appManifest2, newManifest);
+                //patchHistoryFilePath
                 File.WriteAllText(patchHistoryFilePath, ObjectWrapper.Serialize(patchHistory, Formatting.Indented));
 
                 return newManifest;
             }
-        }
+        }*/
     }
 }

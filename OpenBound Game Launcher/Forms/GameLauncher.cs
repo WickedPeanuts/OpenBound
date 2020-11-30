@@ -23,6 +23,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 using System.ComponentModel;
+using OpenBound_Patcher.Forms;
 
 namespace OpenBound_Game_Launcher.Forms
 {
@@ -71,9 +72,51 @@ namespace OpenBound_Game_Launcher.Forms
                     null, null);
         }
 
+        private void CheckLatestUpdateFiles()
+        {
+            //If this file exists, it means the application is being re-opened after an update
+            //and it must delete all unused files
+            if (!File.Exists(latestPatchHistoryPath))
+                return;
+
+            PatchHistory pH = ObjectWrapper.DeserializeFile<PatchHistory>(latestPatchHistoryPath);
+
+            FileList fl = Manifest.GetMissingInvalidAndOutdatedFiles(
+                pH.ApplicationManifest.CurrentVersionFileList.Checksum,
+                Directory.GetCurrentDirectory());
+
+            foreach (string toBeDeleted in fl.ToBeDeleted)
+            {
+                File.Delete($@"{Directory.GetCurrentDirectory()}\{toBeDeleted}");
+            }
+
+            Directory.Delete(@$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}", true);
+        }
+
+        public void GenerateDummyPatches()
+        {
+            var x = GamePatcher.GenerateUpdatePatch(
+                @"C:\Users\Carlo\Desktop\OpenBound 1",
+                @"C:\Users\Carlo\Desktop\OpenBound 2",
+                @"C:\Users\Carlo\Desktop",
+                @"C:\Users\Carlo\Desktop\PatchHistory.json",
+                @"v0.1.1a");
+
+            var y = GamePatcher.GenerateUpdatePatch(
+                @"C:\Users\Carlo\Desktop\OpenBound 2",
+                @"C:\Users\Carlo\Desktop\OpenBound 3",
+                @"C:\Users\Carlo\Desktop",
+                @"C:\Users\Carlo\Desktop\PatchHistory.json",
+                @"v0.1.2a");
+        }
+
         public void CheckFiles()
         {
+            //GenerateDummyPatches();
+
             latestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchHistoryFilename}";
+
+            //CheckLatestUpdateFiles();
 
             HttpWebRequest.AsyncDownloadFile(
                 "http://192.168.0.50/versioning/PatchHistory.json",
@@ -81,39 +124,6 @@ namespace OpenBound_Game_Launcher.Forms
                 onFinishDownload: OnFinishDownloadPatchHistory,
                 onFailToDownload: OnFailToDownloadPatchHistory
                 );
-            //new GameUpdater().ShowDialog();
-
-            /*var x = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound 1", 
-                @"C:\Users\Carlo\Desktop\OpenBound 2",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\History.json", 
-                @"v0.1.1a");
-
-            var y = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound 2", 
-                @"C:\Users\Carlo\Desktop\OpenBound 3",
-                @"C:\Users\Carlo\Desktop", 
-                @"C:\Users\Carlo\Desktop\History.json", 
-                @"v0.1.2a");*/
-
-            /*
-            GamePatcher.MergeUpdatePatch(
-                $@"C:\Users\Carlo\Desktop\{x.BuildPatchPath}",
-                $@"C:\Users\Carlo\Desktop\{y.BuildPatchPath}",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\History.json");
-            */
-
-            /*
-            HttpWebRequest.AsyncDownloadFile(
-                "https://mirrors.edge.kernel.org/tails/stable/tails-amd64-4.12/tails-amd64-4.12.img",
-                @"C:\Users\Carlo\Desktop\Tails.iso",
-                (f) =>
-                {
-                    System.Diagnostics.Debug.WriteLine(f);
-                });
-            */
         }
 
         #region Element Actions
@@ -134,7 +144,9 @@ namespace OpenBound_Game_Launcher.Forms
                 PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(latestPatchHistoryPath);
                 if (patchHistory.PatchEntryList.Last().ID != Parameter.GameClientSettingsInformation.ClientVersionHistory.PatchEntryList.Last().ID)
                 {
-                    new GameUpdater(patchHistory).ShowDialog();
+                    GameUpdater gU = new GameUpdater(patchHistory);
+                    gU.ShowDialog();
+
                     DialogResult = DialogResult.Cancel;
                     base.Close();
                 }

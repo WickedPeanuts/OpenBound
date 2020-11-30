@@ -18,6 +18,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
     public class PatchHistory
     {
         public List<PatchEntry> PatchEntryList;
+        public ApplicationManifest ApplicationManifest;
 
         public PatchHistory()
         {
@@ -33,6 +34,8 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
                 Path = applicationManifest.BuildPatchPath,
                 PatchVersionName = applicationManifest.PatchVersionName
             });
+
+            ApplicationManifest = applicationManifest;
         }
 
         public void MergePatchEntry(ApplicationManifest appManifest1, ApplicationManifest appManifest2, ApplicationManifest newAppManifest)
@@ -62,7 +65,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
             if (patchHistoryPath == null)
                 return new PatchHistory();
 
-            return ObjectWrapper.Deserialize<PatchHistory>(File.ReadAllText(patchHistoryPath));
+            return ObjectWrapper.DeserializeFile<PatchHistory>(patchHistoryPath);
         }
     }
 }
