@@ -13,6 +13,11 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
         public DateTime ReleaseDate;
         public string Path;
         public string PatchVersionName;
+
+        public override string ToString()
+        {
+            return $"{PatchVersionName}-{ID}";
+        }
     }
 
     public class PatchHistory

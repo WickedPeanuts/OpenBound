@@ -72,7 +72,7 @@ namespace OpenBound_Game_Launcher.Forms
                     null, null);
         }
 
-        private void CheckLatestUpdateFiles()
+        /*private void CheckLatestUpdateFiles()
         {
             //If this file exists, it means the application is being re-opened after an update
             //and it must delete all unused files
@@ -91,7 +91,7 @@ namespace OpenBound_Game_Launcher.Forms
             }
 
             Directory.Delete(@$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}", true);
-        }
+        }*/
 
         public void GenerateDummyPatches()
         {
@@ -112,11 +112,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void CheckFiles()
         {
-            //GenerateDummyPatches();
-
             latestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchHistoryFilename}";
-
-            //CheckLatestUpdateFiles();
 
             HttpWebRequest.AsyncDownloadFile(
                 "http://192.168.0.50/versioning/PatchHistory.json",
@@ -146,9 +142,16 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     GameUpdater gU = new GameUpdater(patchHistory);
                     gU.ShowDialog();
-
-                    DialogResult = DialogResult.Cancel;
-                    base.Close();
+                    if (gU.DialogResult == DialogResult.OK)
+                    {
+                        DialogResult = DialogResult.Cancel;
+                        base.Close();
+                    }
+                    else
+                    {
+                        SetEnableInterfaceButtons(true);
+                        SetEnableTextBox(false);
+                    }
                 }
                 else
                 {
@@ -180,7 +183,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void SetEnableTextBox(bool isEnabled)
         {
-            txtPassword.Enabled = txtNickname.Enabled = isEnabled;
+            btnLogin.Enabled = txtPassword.Enabled = txtNickname.Enabled = isEnabled;
         }
 
         private void LoginTextbox_TextChanged(object sender, EventArgs e)

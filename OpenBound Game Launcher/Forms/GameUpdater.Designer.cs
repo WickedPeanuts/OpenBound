@@ -217,8 +217,12 @@ namespace OpenBound_Game_Launcher.Forms
             this.Controls.Add(this.abortButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.MaximizeBox = false;
             this.Name = "GameUpdater";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Updater";
             this.Load += new System.EventHandler(this.GameUpdater_Load);
             this.groupBox1.ResumeLayout(false);

@@ -5,6 +5,7 @@ using OpenBound_Network_Object_Library.Entity;
 using OpenBound_Network_Object_Library.FileManagement;
 using OpenBound_Network_Object_Library.FileManagement.Versioning;
 using OpenBound_Network_Object_Library.WebRequest;
+using OpenBound_Patcher.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using Language = OpenBound_Game_Launcher.Common.Language;
 
@@ -278,7 +280,7 @@ namespace OpenBound_Game_Launcher.Forms
                     timer2.Enabled = true;
 
                     DateTime date = DateTime.Now;
-                    Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(date); };
+                    CloseClientAndApplyPatchTickAction(date);
                 }
             };
         }
@@ -323,6 +325,8 @@ namespace OpenBound_Game_Launcher.Forms
                         { "updatedat", unpackingFinalizationTime.ToString("G", CultureInfo.CurrentCulture) },
                         { "secondstopatch", $"{secdiff}" },
                     });
+
+                Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(unpackingFinalizationTime); };
             }
             else
             {
@@ -334,9 +338,16 @@ namespace OpenBound_Game_Launcher.Forms
         {
             string[] applicationParameter = new string[]{
                     $"{Process.GetCurrentProcess().Id}",
-                    NetworkObjectParameters.GameClientProcessName,
-                    @$"{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchUnpackPath}"
+                    $"{Directory.GetCurrentDirectory()}",
+                    @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchUnpackPath}",
+                    patchesToBeDownload.Last().ToString(),
+                    currentPatchEntry.ToString(),
+                    $"{NetworkObjectParameters.GameClientProcessName}"
                 };
+
+            /*
+            Patcher p = new Patcher(applicationParameter);
+            p.ShowDialog();*/
 
             Process process = new Process();
             process.StartInfo.FileName = $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatcherProcessName}";
@@ -350,7 +361,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            Timer2TickAction.AsynchronousInvoke();
+            Timer2TickAction.AsynchronousInvokeAndDestroy();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
