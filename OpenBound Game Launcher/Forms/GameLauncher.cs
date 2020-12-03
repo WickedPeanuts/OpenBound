@@ -142,6 +142,7 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     GameUpdater gU = new GameUpdater(patchHistory);
                     gU.ShowDialog();
+
                     if (gU.DialogResult == DialogResult.OK)
                     {
                         DialogResult = DialogResult.Cancel;

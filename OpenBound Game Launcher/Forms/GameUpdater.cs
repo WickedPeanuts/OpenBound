@@ -64,6 +64,17 @@ namespace OpenBound_Game_Launcher.Forms
                 .OrderBy((x) => x.ReleaseDate).ToList();
 
             UpdateMenuLabels(MenuState.ReadyToDownload);
+
+            InsertOnLogListBox("Ready to begin patching...");
+        }
+
+        private void InsertOnLogListBox(string text)
+        {
+            Timer1TickAction += () =>
+            {
+                logListBox.Items.Add(text);
+                logListBox.SelectedItem = text;
+            };
         }
 
         private void GameUpdater_Load(object sender, EventArgs e) { }
@@ -156,6 +167,8 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     DateTime downloadStartTime = DateTime.Now;
 
+                    InsertOnLogListBox($"Downloading {pE.Path}...");
+
                     UpdateMenuLabels(MenuState.Downloading, new Dictionary<string, string>()
                     {
                         { "filename", pE.Path },
@@ -187,13 +200,17 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void OnFailToDownloadPatch(Exception exception, PatchEntry patchEntry)
         {
-            MessageBox.Show(exception.Message);
+            InsertOnLogListBox($"Failed to download {patchEntry.Path}.");
+            InsertOnLogListBox($"You are not longer connected to the server.");
+            HaltPatchingProcess(exception);
         }
 
         private void OnFinalizeDownloadingFile(Queue<Action> actionQueue)
         {
             Timer1TickAction += new Action(() =>
             {
+                InsertOnLogListBox($"Download complete.");
+
                 currentDownloadedFile++;
 
                 totalProgressBar.Value = (int)Math.Ceiling(100 * (currentDownloadedFile / (float)patchesToBeDownload.Count));
@@ -240,6 +257,8 @@ namespace OpenBound_Game_Launcher.Forms
             currentProgressBar.Value = 0;
             totalProgressBar.Value = 0;
 
+            InsertOnLogListBox($"Starting unpacking process...");
+
             GamePatcher.UnpackPatchList(
                 Directory.GetCurrentDirectory(),
                 patchesToBeDownload,
@@ -251,6 +270,8 @@ namespace OpenBound_Game_Launcher.Forms
         {
             Timer1TickAction += () =>
             {
+                InsertOnLogListBox($"Unpacking: {patch.Path}.");
+
                 UpdateMenuLabels(MenuState.Unpacking, new Dictionary<string, string>()
                 {
                     { "patchname", $"{patch.PatchVersionName} - {patch.Path}"  }
@@ -267,12 +288,20 @@ namespace OpenBound_Game_Launcher.Forms
 
                 totalProgressBar.Value = currentProgressBar.Value = 100 * ((current + 1) / total);
 
-                if (!isMD5Valid || exception != null)
+                if (exception != null)
                 {
-                    //MessageBox.Show("Deu merda capitão: " + patch.Path + " " + exception.Message);
+                    InsertOnLogListBox($"Unexpected error while unpacking: {patch.Path}.");
+                    InsertOnLogListBox($"The received data is corrupted or the updater have no administrator privilleges.");
+                    HaltPatchingProcess(exception);
+                } else if (!isMD5Valid)
+                {
+                    InsertOnLogListBox($"Unexpected error while unpacking: {patch.Path}.");
+                    InsertOnLogListBox($"The integrity check of the extracted files has failed.");
+                    HaltPatchingProcess();
                 }
                 else
                 {
+                    InsertOnLogListBox($"Patch unpacked sucessfully: {patch.Path}");
                 }
 
                 if (patchesToBeDownload.Last() == patch)
@@ -311,22 +340,27 @@ namespace OpenBound_Game_Launcher.Forms
             shouldShowLog = !shouldShowLog;
         }
 
-        private void CloseClientAndApplyPatchTickAction(DateTime unpackingFinalizationTime)
+        private void CloseClientAndApplyPatchTickAction(DateTime unpackingFinalizationTime, int lastSecDiff = 10)
         {
             double timediff = (DateTime.Now - unpackingFinalizationTime).TotalSeconds;
             int secdiff = 10 - (int)timediff;
 
             if (secdiff > 0)
             {
-                UpdateMenuLabels(
-                    MenuState.Done,
-                    new Dictionary<string, string>()
-                    {
+                if (secdiff != lastSecDiff)
+                {
+                    InsertOnLogListBox($"Applying all patches in: {secdiff} seconds.");
+
+                    UpdateMenuLabels(
+                        MenuState.Done,
+                        new Dictionary<string, string>()
+                        {
                         { "updatedat", unpackingFinalizationTime.ToString("G", CultureInfo.CurrentCulture) },
                         { "secondstopatch", $"{secdiff}" },
-                    });
+                        });
+                }
 
-                Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(unpackingFinalizationTime); };
+                Timer2TickAction += () => { CloseClientAndApplyPatchTickAction(unpackingFinalizationTime, secdiff); };
             }
             else
             {
@@ -334,24 +368,41 @@ namespace OpenBound_Game_Launcher.Forms
             }
         }
 
+        private void HaltPatchingProcess(Exception exception = null)
+        {
+            Timer1TickAction.Clear();
+
+            Timer1TickAction += () =>
+            {
+                InsertOnLogListBox($"The patching process will halt.");
+
+                if (exception != null)
+                {
+                    InsertOnLogListBox($"Error: {exception.Message}.");
+
+                    if (exception.InnerException != null)
+                    {
+                        InsertOnLogListBox($"Error - Inner: {exception.InnerException.Message}.");
+                    }
+                }
+
+                timer2.Enabled = false;
+            };
+        }
+
         private void OpenPatcher()
         {
             string[] applicationParameter = new string[]{
-                    $"{Process.GetCurrentProcess().Id}",
-                    $"{Directory.GetCurrentDirectory()}",
-                    @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchUnpackPath}",
-                    patchesToBeDownload.Last().ToString(),
-                    currentPatchEntry.ToString(),
-                    $"{NetworkObjectParameters.GameClientProcessName}"
+                    $"\"{Process.GetCurrentProcess().Id}\"",
+                    $"\"{Directory.GetCurrentDirectory()}\"",
+                    $"\"{Directory.GetCurrentDirectory()}\\{NetworkObjectParameters.PatchTemporaryPath}\\{NetworkObjectParameters.PatchUnpackPath}\"",
+                    $"\"{patchesToBeDownload.Last()}\"",
+                    $"\"{currentPatchEntry}\"",
+                    $"\"{NetworkObjectParameters.GameClientProcessName}\""
                 };
-
-            /*
-            Patcher p = new Patcher(applicationParameter);
-            p.ShowDialog();*/
 
             Process process = new Process();
             process.StartInfo.FileName = $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatcherProcessName}";
-            //process.StartInfo.UseShellExecute = true;
             process.StartInfo.Arguments = string.Join(' ', applicationParameter);
             process.Start();
 
@@ -362,6 +413,11 @@ namespace OpenBound_Game_Launcher.Forms
         private void timer2_Tick(object sender, EventArgs e)
         {
             Timer2TickAction.AsynchronousInvokeAndDestroy();
+        }
+
+        private void GameUpdater_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            timer1.Enabled = timer2.Enabled = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

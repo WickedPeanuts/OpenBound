@@ -21,29 +21,19 @@ namespace OpenBound_Network_Object_Library.Entity
         private readonly object asyncLock;
 
         private Queue<Action> _value;
-        private Queue<Action> value
-        {
-            get
-            {
-                lock (asyncLock)
-                    return _value;
-            }
-            set
-            {
-                lock (asyncLock)
-                {
-                    _value = value;
-                }
-            }
-        }
         #endregion
 
         #region Operators
         public static AsynchronousAction operator +(AsynchronousAction a, AsynchronousAction b)
         {
             lock (a.asyncLock)
-                foreach (Action act in b.value)
-                    a._value.Enqueue(act);
+            {
+                lock (b.asyncLock)
+                {
+                    foreach (Action act in b._value)
+                        a._value.Enqueue(act);
+                }
+            }
 
             return a;
         }
@@ -73,7 +63,8 @@ namespace OpenBound_Network_Object_Library.Entity
 
         public void Clear()
         {
-            value.Clear();
+            lock (asyncLock)
+                _value.Clear();
         }
 
         public void AsynchronousInvoke()

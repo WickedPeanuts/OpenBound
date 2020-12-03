@@ -41,7 +41,7 @@ namespace OpenBound_Patcher.Forms
             copyActionQueue = new Queue<Action>();
 
             Process process = Process.GetProcessById(int.Parse(args[0]));
-            //process.WaitForExit();
+            process.WaitForExit();
         }
 
         private void Patcher_Load(object sender, EventArgs e)

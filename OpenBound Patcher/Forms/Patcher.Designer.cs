@@ -68,10 +68,10 @@ namespace OpenBound_Patcher.Forms
             this.installingLabel.TabIndex = 2;
             this.installingLabel.Text = "text1";
             // 
-            // label1
+            // statusLabel
             // 
             this.statusLabel.Location = new System.Drawing.Point(6, 19);
-            this.statusLabel.Name = "label1";
+            this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(500, 19);
             this.statusLabel.TabIndex = 1;
             this.statusLabel.Text = "Patching in progress...";
@@ -89,7 +89,7 @@ namespace OpenBound_Patcher.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(536, 130);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Patcher";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

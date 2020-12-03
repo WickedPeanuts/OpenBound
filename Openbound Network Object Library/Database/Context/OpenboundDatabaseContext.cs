@@ -10,11 +10,10 @@
  * You should have received a copy of the GNU General Public License along with OpenBound. If not, see http://www.gnu.org/licenses/.
  */
 
-using OpenBound_Network_Object_Library.Common;
 using Microsoft.EntityFrameworkCore;
 using OpenBound_Network_Object_Library.Models;
-using Microsoft.EntityFrameworkCore.Metadata;
 using OpenBound_Network_Object_Library.Extension;
+using OpenBound_Network_Object_Library.Common;
 
 namespace OpenBound_Network_Object_Library.Database.Context
 {
@@ -23,8 +22,8 @@ namespace OpenBound_Network_Object_Library.Database.Context
         private readonly string _connectionString;
         public OpenBoundDatabaseContext() : base()
         {
-           // _connectionString = $"Data Source={NetworkObjectParameters.DatabaseAddress};Initial Catalog={NetworkObjectParameters.DatabaseName};Persist Security Info=True;User ID={NetworkObjectParameters.DatabaseLogin};Password={NetworkObjectParameters.DatabasePassword};PersistSecurityInfo=True";
-            _connectionString = "Data Source=localhost,1433;User ID=sa;Password=my-secret-pw-xD;Database=Openbound;Initial Catalog=Openbound;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            _connectionString = $"Data Source={NetworkObjectParameters.DatabaseAddress};Initial Catalog={NetworkObjectParameters.DatabaseName};Persist Security Info=True;User ID={NetworkObjectParameters.DatabaseLogin};Password={NetworkObjectParameters.DatabasePassword};PersistSecurityInfo=True";
+            //_connectionString = "Data Source=localhost,1433;User ID=sa;Password=my-secret-pw-xD;Database=Openbound;Initial Catalog=Openbound;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             Database.EnsureCreated();
         }
 

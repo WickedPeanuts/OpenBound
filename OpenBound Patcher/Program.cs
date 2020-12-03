@@ -12,8 +12,8 @@ namespace OpenBound_Patcher
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                return;
+            //if (args.Length == 0)
+            //  return;
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
