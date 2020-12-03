@@ -65,7 +65,7 @@ namespace OpenBound_Game_Launcher.Forms
 
             UpdateMenuLabels(MenuState.ReadyToDownload);
 
-            InsertOnLogListBox("Ready to begin patching...");
+            InsertOnLogListBox(Language.Patching1Ready);
         }
 
         private void InsertOnLogListBox(string text)
@@ -157,6 +157,8 @@ namespace OpenBound_Game_Launcher.Forms
             Queue<Action> actQueue = new Queue<Action>();
             List<PatchEntry> downloadedFileList = new List<PatchEntry>();
 
+            InsertOnLogListBox(Language.Patching1Downloading);
+
             string patchDir = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\";
 
             Directory.CreateDirectory(patchDir);
@@ -167,7 +169,7 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     DateTime downloadStartTime = DateTime.Now;
 
-                    InsertOnLogListBox($"Downloading {pE.Path}...");
+                    InsertOnLogListBox($"{Language.Patching2Downloading} {pE.Path}");
 
                     UpdateMenuLabels(MenuState.Downloading, new Dictionary<string, string>()
                     {
@@ -189,7 +191,7 @@ namespace OpenBound_Game_Launcher.Forms
                         {
                             OnReceiveData(pE.Path, currentDownloadedFile, percentage, receivedBytes, totalBytes, downloadStartTime);
                         },
-                        onFinishDownload: () => { OnFinalizeDownloadingFile(actQueue); },
+                        onFinishDownload: () => { OnFinalizeDownloadingFile(actQueue, pE); },
                         onFailToDownload: (ex) => { OnFailToDownloadPatch(ex, pE); });
                 });
             }
@@ -200,16 +202,16 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void OnFailToDownloadPatch(Exception exception, PatchEntry patchEntry)
         {
-            InsertOnLogListBox($"Failed to download {patchEntry.Path}.");
-            InsertOnLogListBox($"You are not longer connected to the server.");
+            InsertOnLogListBox($"{Language.Patching4ExceptionUnpack} {patchEntry.Path}");
+            InsertOnLogListBox($"{Language.Patching5ExceptionUnpack}");
             HaltPatchingProcess(exception);
         }
 
-        private void OnFinalizeDownloadingFile(Queue<Action> actionQueue)
+        private void OnFinalizeDownloadingFile(Queue<Action> actionQueue, PatchEntry patchEntry)
         {
             Timer1TickAction += new Action(() =>
             {
-                InsertOnLogListBox($"Download complete.");
+                InsertOnLogListBox($"{Language.Patching3Downloading} {patchEntry.Path}");
 
                 currentDownloadedFile++;
 
@@ -257,7 +259,8 @@ namespace OpenBound_Game_Launcher.Forms
             currentProgressBar.Value = 0;
             totalProgressBar.Value = 0;
 
-            InsertOnLogListBox($"Starting unpacking process...");
+            InsertOnLogListBox(Language.Patching1Done);
+            InsertOnLogListBox(Language.Patching1Unpacking);
 
             GamePatcher.UnpackPatchList(
                 Directory.GetCurrentDirectory(),
@@ -270,7 +273,7 @@ namespace OpenBound_Game_Launcher.Forms
         {
             Timer1TickAction += () =>
             {
-                InsertOnLogListBox($"Unpacking: {patch.Path}.");
+                InsertOnLogListBox($"{Language.Patching2Unpacking} {patch.Path}");
 
                 UpdateMenuLabels(MenuState.Unpacking, new Dictionary<string, string>()
                 {
@@ -290,23 +293,25 @@ namespace OpenBound_Game_Launcher.Forms
 
                 if (exception != null)
                 {
-                    InsertOnLogListBox($"Unexpected error while unpacking: {patch.Path}.");
-                    InsertOnLogListBox($"The received data is corrupted or the updater have no administrator privilleges.");
+                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching2ExceptionUnpack}");
                     HaltPatchingProcess(exception);
                 } else if (!isMD5Valid)
                 {
-                    InsertOnLogListBox($"Unexpected error while unpacking: {patch.Path}.");
-                    InsertOnLogListBox($"The integrity check of the extracted files has failed.");
+                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching3ExceptionUnpack}");
                     HaltPatchingProcess();
                 }
                 else
                 {
-                    InsertOnLogListBox($"Patch unpacked sucessfully: {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching3Unpacking} {patch.Path}");
                 }
 
                 if (patchesToBeDownload.Last() == patch)
                 {
                     timer2.Enabled = true;
+
+                    InsertOnLogListBox($"{Language.Patching2Done}");
 
                     DateTime date = DateTime.Now;
                     CloseClientAndApplyPatchTickAction(date);
@@ -349,7 +354,7 @@ namespace OpenBound_Game_Launcher.Forms
             {
                 if (secdiff != lastSecDiff)
                 {
-                    InsertOnLogListBox($"Applying all patches in: {secdiff} seconds.");
+                    InsertOnLogListBox($"{Language.Patching3Done} {secdiff} {Language.Patching4Done}");
 
                     UpdateMenuLabels(
                         MenuState.Done,
@@ -374,15 +379,15 @@ namespace OpenBound_Game_Launcher.Forms
 
             Timer1TickAction += () =>
             {
-                InsertOnLogListBox($"The patching process will halt.");
+                InsertOnLogListBox($"{Language.GameUpdaterLabel4Error}");
 
                 if (exception != null)
                 {
-                    InsertOnLogListBox($"Error: {exception.Message}.");
+                    InsertOnLogListBox($"{Language.GameUpdaterLabel5Error} {exception.Message}");
 
-                    if (exception.InnerException != null)
+                    if (exception.InnerException != null && exception.Message != exception.InnerException.Message)
                     {
-                        InsertOnLogListBox($"Error - Inner: {exception.InnerException.Message}.");
+                        InsertOnLogListBox($"{Language.GameUpdaterLabel6Error} {exception.InnerException.Message}");
                     }
                 }
 
