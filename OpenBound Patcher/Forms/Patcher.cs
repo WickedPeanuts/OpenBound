@@ -30,6 +30,9 @@ namespace OpenBound_Patcher.Forms
 
             invalidFileList = new List<string>();
 
+            Process process = Process.GetProcessById(int.Parse(args[0]));
+            process.WaitForExit();
+
             gameClientPath = args[1];
             tmpFolderPath = args[2];
             downloadedPatch = args[3];
@@ -39,9 +42,6 @@ namespace OpenBound_Patcher.Forms
             installingLabel.Text = "";
 
             copyActionQueue = new Queue<Action>();
-
-            Process process = Process.GetProcessById(int.Parse(args[0]));
-            process.WaitForExit();
         }
 
         private void Patcher_Load(object sender, EventArgs e)
@@ -89,7 +89,7 @@ namespace OpenBound_Patcher.Forms
                     "contact the support and send them the following file: \"PatchError.log\"\n");
 
                 invalidFileList.Add($"{currentPatch} -> {downloadedPatch}");
-                File.WriteAllLines(gameClientPath, invalidFileList);
+                File.WriteAllLines($@"{gameClientPath}\PatchError.log", invalidFileList);
             } else {
                 try
                 {
@@ -133,10 +133,14 @@ namespace OpenBound_Patcher.Forms
             try
             {
                 Process process = new Process();
-                process.StartInfo.FileName = $@"{gameClientPath}\{gameClientProcessName}";
+
+                if (invalidFileList.Count == 0)
+                    process.StartInfo.FileName = $@"{gameClientPath}\{gameClientProcessName}";
+
+                process.StartInfo.Arguments = $@"{currentPatch} {downloadedPatch}";
                 process.Start();
             }
-            catch (Exception) { }
+            catch (Exception) {}
 
             Close();
         }

@@ -80,8 +80,5 @@ namespace OpenBound_Game_Launcher.Common
         public const string Patching3ExceptionUnpack = "The integrity check of the extracted files has failed.";
         public const string Patching4ExceptionUnpack = "Failed to download:";
         public const string Patching5ExceptionUnpack = "You are not longer connected to the server";
-
-
-
     }
 }

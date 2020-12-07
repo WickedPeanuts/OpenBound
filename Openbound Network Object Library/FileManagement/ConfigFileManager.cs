@@ -243,15 +243,9 @@ namespace OpenBound_Network_Object_Library.FileManager
 
                 ClientVersionHistory = new PatchHistory()
                 {
-                    PatchEntryList = new List<PatchEntry>()
-                    {
-                        new PatchEntry()
-                        {
-                            ID = new Guid("00000000-0000-0000-0000-000000000000"),
-                            ReleaseDate = DateTime.MinValue,
-                            PatchVersionName = "v0.1.0",
-                        }
-                    }
+                    ID = new Guid("00000000-0000-0000-0000-000000000000"),
+                    CreationDate = DateTime.MinValue,
+                    PatchVersionName = "v0.1.0",
                 }
             };
 

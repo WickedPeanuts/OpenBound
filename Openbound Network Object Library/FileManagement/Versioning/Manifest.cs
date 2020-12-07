@@ -9,10 +9,10 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
 {
     public class Manifest
     {
-        public static bool VerifyMD5Checksum(string basePath, ApplicationManifest applicationManifest)
+        public static bool VerifyMD5Checksum(string basePath, PatchHistory patchHistory)
         {
-            Dictionary<string, byte[]> checksum = applicationManifest.CurrentVersionFileList.Checksum;
-            List<string> fileList = applicationManifest.CurrentVersionFileList.ToBeDownloaded;
+            Dictionary<string, byte[]> checksum = patchHistory.FileList.Checksum;
+            List<string> fileList = patchHistory.FileList.ToBeDownloaded;
 
             bool result = true;
 
@@ -78,7 +78,7 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
                     }
                 }
 
-                fileList.Checksum.Add(fileChecksum.Key, fileChecksum.Value);
+                fileList.ToBeDownloaded.Add(fileChecksum.Key);
             }
 
             foreach(KeyValuePair<string, byte[]> unusedFiles in currentFilesChecksumDictionary)
@@ -89,37 +89,16 @@ namespace OpenBound_Network_Object_Library.FileManagement.Versioning
                 }
             }
 
+            fileList.Checksum = currentFilesChecksumDictionary;
+
             return fileList;
         }
 
-        /// <summary>
-        /// Generates a new ApplicationManifest object after scanning the folder
-        /// </summary>
-        /// <param name="currentVersionFolderPath"></param>
-        /// <param name="newVersionFolderPath"></param>
-        public static ApplicationManifest GenerateChecksumManifest(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName)
+        public static FileList GenerateFileList(string currentVersionFolderPath, string newVersionFolderPath, string newPatchVersionName)
         {
             //Create checksum of source directory
-            FileList sourceDirectoryFileList = GetMissingInvalidAndOutdatedFiles(GenerateMD5Checksum(newVersionFolderPath), currentVersionFolderPath);
-
-            //Load old manifest
-            ApplicationManifest previousManifest = null;
-
-            if (sourceDirectoryFileList.Checksum.ContainsKey(NetworkObjectParameters.ManifestFilename))
-            {
-                string manifestFilename = $@"{currentVersionFolderPath}\{NetworkObjectParameters.ManifestFilename}{NetworkObjectParameters.ManifestExtension}";
-                string fileContent = File.ReadAllText(manifestFilename);
-
-                previousManifest = ObjectWrapper.Deserialize<ApplicationManifest>(fileContent);
-                previousManifest.PreviousManifest = null; // Erase older manifest information in order to avoid unecessary data to be written
-
-                //Rename old manifest
-                string newFileName = $@"{currentVersionFolderPath}\{NetworkObjectParameters.ManifestFilename}.{previousManifest.ID}.{NetworkObjectParameters.ManifestExtension}";
-                File.Move(manifestFilename, newFileName);
-            }
-
-            //Create the current (newest) manifest
-            return new ApplicationManifest(previousManifest, sourceDirectoryFileList, newPatchVersionName);
+            Dictionary<string, byte[]> newFolderChecksum = GenerateMD5Checksum(newVersionFolderPath);
+            return GetMissingInvalidAndOutdatedFiles(newFolderChecksum, currentVersionFolderPath);
         }
     }
 }

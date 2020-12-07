@@ -29,10 +29,12 @@ namespace OpenBound
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (args.Length == 0)
+                args = new string[] { "" };
 
-            GameLauncher gameLauncher = new GameLauncher();
+            GameLauncher gameLauncher = new GameLauncher(args);
 
 #if !DEBUGSCENE
             LauncherInformation li = gameLauncher.OpenDialog();

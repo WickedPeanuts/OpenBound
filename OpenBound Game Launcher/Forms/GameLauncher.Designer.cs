@@ -40,7 +40,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtNickname = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnCheckForUpdates = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnGameSettings = new System.Windows.Forms.Button();
@@ -133,7 +133,7 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.btnCheckForUpdates);
             this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.btnGameSettings);
@@ -150,14 +150,15 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // button5
             // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(154, 89);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(140, 27);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "Check for Updates";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnCheckForUpdates.Enabled = false;
+            this.btnCheckForUpdates.Location = new System.Drawing.Point(154, 89);
+            this.btnCheckForUpdates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnCheckForUpdates.Name = "button5";
+            this.btnCheckForUpdates.Size = new System.Drawing.Size(140, 27);
+            this.btnCheckForUpdates.TabIndex = 6;
+            this.btnCheckForUpdates.Text = "Check for Updates";
+            this.btnCheckForUpdates.UseVisualStyleBackColor = true;
+            this.btnCheckForUpdates.Click += new System.EventHandler(this.CheckForUpdates_Click);
             // 
             // button4
             // 
@@ -267,7 +268,7 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtNickname;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnCheckForUpdates;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnGameSettings;

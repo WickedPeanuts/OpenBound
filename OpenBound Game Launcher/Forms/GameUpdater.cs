@@ -42,8 +42,8 @@ namespace OpenBound_Game_Launcher.Forms
 
         private int currentDownloadedFile;
 
-        private PatchEntry currentPatchEntry;
-        private List<PatchEntry> patchesToBeDownload;
+        private PatchHistory currentPatchEntry;
+        private List<PatchHistory> patchesToBeDownloaded;
 
         public GameUpdater(PatchHistory serverPatchHistory)
         {
@@ -56,12 +56,12 @@ namespace OpenBound_Game_Launcher.Forms
 
             interfaceLabels = new Label[] { downloadLabel1, downloadLabel2, downloadLabel3 };
 
-            currentPatchEntry = Parameter.GameClientSettingsInformation.ClientVersionHistory.PatchEntryList
-                .OrderBy((x) => x.ReleaseDate).First();
+            currentPatchEntry = Parameter.GameClientSettingsInformation.ClientVersionHistory;
 
-            patchesToBeDownload = serverPatchHistory.PatchEntryList
-                .Where((x) => x.ReleaseDate > currentPatchEntry.ReleaseDate)
-                .OrderBy((x) => x.ReleaseDate).ToList();
+            patchesToBeDownloaded = 
+                serverPatchHistory.PatchHistoryList.Union(new List<PatchHistory> { serverPatchHistory })
+                .Where((x) => x.CreationDate > currentPatchEntry.CreationDate)
+                .OrderBy((x) => x.CreationDate).ToList();
 
             UpdateMenuLabels(MenuState.ReadyToDownload);
 
@@ -112,7 +112,7 @@ namespace OpenBound_Game_Launcher.Forms
                     replacingTextDictionary = new Dictionary<string, string>()
                     {
                         { "currentversion", currentPatchEntry.PatchVersionName },
-                        { "nextversion", patchesToBeDownload.Last().PatchVersionName },
+                        { "nextversion", patchesToBeDownloaded.Last().PatchVersionName },
                     };
 
                     downloadLabel1.Text = Language.GameUpdaterLabel1ReadyToDownload;
@@ -155,7 +155,7 @@ namespace OpenBound_Game_Launcher.Forms
         private void updateButton_Click(object sender, EventArgs e)
         {
             Queue<Action> actQueue = new Queue<Action>();
-            List<PatchEntry> downloadedFileList = new List<PatchEntry>();
+            List<PatchHistory> downloadedFileList = new List<PatchHistory>();
 
             InsertOnLogListBox(Language.Patching1Downloading);
 
@@ -163,19 +163,19 @@ namespace OpenBound_Game_Launcher.Forms
 
             Directory.CreateDirectory(patchDir);
 
-            foreach (PatchEntry pE in patchesToBeDownload)
+            foreach (PatchHistory pH in patchesToBeDownloaded)
             {
                 actQueue.Enqueue(() =>
                 {
                     DateTime downloadStartTime = DateTime.Now;
 
-                    InsertOnLogListBox($"{Language.Patching2Downloading} {pE.Path}");
+                    InsertOnLogListBox($"{Language.Patching2Downloading} {pH.BuildPatchPath}");
 
                     UpdateMenuLabels(MenuState.Downloading, new Dictionary<string, string>()
                     {
-                        { "filename", pE.Path },
+                        { "filename", pH.BuildPatchPath },
                         { "current", $"{currentDownloadedFile + 1}" },
-                        { "total", $"{patchesToBeDownload.Count}" },
+                        { "total", $"{patchesToBeDownloaded.Count}" },
 
                         { "remaining", "0" },
                         { "downloaded", "0" },
@@ -185,14 +185,14 @@ namespace OpenBound_Game_Launcher.Forms
                     currentProgressBar.Value = 0;
 
                     HttpWebRequest.AsyncDownloadFile(
-                        BuildPatchURLPath(pE.Path),
-                        $@"{patchDir}\{pE.Path}",
+                        BuildPatchURLPath(pH.BuildPatchPath),
+                        $@"{patchDir}\{pH.BuildPatchPath}",
                         (percentage, receivedBytes, totalBytes) =>
                         {
-                            OnReceiveData(pE.Path, currentDownloadedFile, percentage, receivedBytes, totalBytes, downloadStartTime);
+                            OnReceiveData(pH.BuildPatchPath, currentDownloadedFile, percentage, receivedBytes, totalBytes, downloadStartTime);
                         },
-                        onFinishDownload: () => { OnFinalizeDownloadingFile(actQueue, pE); },
-                        onFailToDownload: (ex) => { OnFailToDownloadPatch(ex, pE); });
+                        onFinishDownload: () => { OnFinalizeDownloadingFile(actQueue, pH); },
+                        onFailToDownload: (ex) => { OnFailToDownloadPatch(ex, pH); });
                 });
             }
 
@@ -200,22 +200,22 @@ namespace OpenBound_Game_Launcher.Forms
             actQueue.Dequeue().Invoke();
         }
 
-        private void OnFailToDownloadPatch(Exception exception, PatchEntry patchEntry)
+        private void OnFailToDownloadPatch(Exception exception, PatchHistory patchHistory)
         {
-            InsertOnLogListBox($"{Language.Patching4ExceptionUnpack} {patchEntry.Path}");
+            InsertOnLogListBox($"{Language.Patching4ExceptionUnpack} {patchHistory.BuildPatchPath}");
             InsertOnLogListBox($"{Language.Patching5ExceptionUnpack}");
             HaltPatchingProcess(exception);
         }
 
-        private void OnFinalizeDownloadingFile(Queue<Action> actionQueue, PatchEntry patchEntry)
+        private void OnFinalizeDownloadingFile(Queue<Action> actionQueue, PatchHistory patchHistory)
         {
             Timer1TickAction += new Action(() =>
             {
-                InsertOnLogListBox($"{Language.Patching3Downloading} {patchEntry.Path}");
+                InsertOnLogListBox($"{Language.Patching3Downloading} {patchHistory.BuildPatchPath}");
 
                 currentDownloadedFile++;
 
-                totalProgressBar.Value = (int)Math.Ceiling(100 * (currentDownloadedFile / (float)patchesToBeDownload.Count));
+                totalProgressBar.Value = (int)Math.Ceiling(100 * (currentDownloadedFile / (float)patchesToBeDownloaded.Count));
 
                 if (actionQueue.Count > 0)
                 {
@@ -242,7 +242,7 @@ namespace OpenBound_Game_Launcher.Forms
                 {
                     { "filename", filename },
                     { "current", $"{downloadedFiles + 1}" },
-                    { "total", $"{patchesToBeDownload.Count}" },
+                    { "total", $"{patchesToBeDownloaded.Count}" },
                     
                     { "remaining", remainingMB.ToString("0.##") },
                     { "downloaded", totalReceivedMB.ToString("0.##") },
@@ -264,50 +264,50 @@ namespace OpenBound_Game_Launcher.Forms
 
             GamePatcher.UnpackPatchList(
                 Directory.GetCurrentDirectory(),
-                patchesToBeDownload,
+                patchesToBeDownloaded,
                 OnStartUnpackingPatch,
                 OnUnpackPatch);
         }
 
-        private void OnStartUnpackingPatch(PatchEntry patch)
+        private void OnStartUnpackingPatch(PatchHistory patch)
         {
             Timer1TickAction += () =>
             {
-                InsertOnLogListBox($"{Language.Patching2Unpacking} {patch.Path}");
+                InsertOnLogListBox($"{Language.Patching2Unpacking} {patch.BuildPatchPath}");
 
                 UpdateMenuLabels(MenuState.Unpacking, new Dictionary<string, string>()
                 {
-                    { "patchname", $"{patch.PatchVersionName} - {patch.Path}"  }
+                    { "patchname", $"{patch.PatchVersionName} - {patch.BuildPatchPath}"  }
                 });
             };
         }
 
-        private void OnUnpackPatch(PatchEntry patch, bool isMD5Valid, Exception exception)
+        private void OnUnpackPatch(PatchHistory patch, bool isMD5Valid, Exception exception)
         {
             Timer1TickAction += () =>
             {
-                int current = patchesToBeDownload.IndexOf(patch);
-                int total = patchesToBeDownload.Count;
+                int current = patchesToBeDownloaded.IndexOf(patch);
+                int total = patchesToBeDownloaded.Count;
 
                 totalProgressBar.Value = currentProgressBar.Value = 100 * ((current + 1) / total);
 
                 if (exception != null)
                 {
-                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.BuildPatchPath}");
                     InsertOnLogListBox($"{Language.Patching2ExceptionUnpack}");
                     HaltPatchingProcess(exception);
                 } else if (!isMD5Valid)
                 {
-                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching1ExceptionUnpack} {patch.BuildPatchPath}");
                     InsertOnLogListBox($"{Language.Patching3ExceptionUnpack}");
                     HaltPatchingProcess();
                 }
                 else
                 {
-                    InsertOnLogListBox($"{Language.Patching3Unpacking} {patch.Path}");
+                    InsertOnLogListBox($"{Language.Patching3Unpacking} {patch.BuildPatchPath}");
                 }
 
-                if (patchesToBeDownload.Last() == patch)
+                if (patchesToBeDownloaded.Last() == patch)
                 {
                     timer2.Enabled = true;
 
@@ -401,10 +401,13 @@ namespace OpenBound_Game_Launcher.Forms
                     $"\"{Process.GetCurrentProcess().Id}\"",
                     $"\"{Directory.GetCurrentDirectory()}\"",
                     $"\"{Directory.GetCurrentDirectory()}\\{NetworkObjectParameters.PatchTemporaryPath}\\{NetworkObjectParameters.PatchUnpackPath}\"",
-                    $"\"{patchesToBeDownload.Last()}\"",
+                    $"\"{patchesToBeDownloaded.Last()}\"",
                     $"\"{currentPatchEntry}\"",
                     $"\"{NetworkObjectParameters.GameClientProcessName}\""
                 };
+
+            /*Patcher p = new Patcher(applicationParameter);
+            p.ShowDialog();*/
 
             Process process = new Process();
             process.StartInfo.FileName = $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatcherProcessName}";

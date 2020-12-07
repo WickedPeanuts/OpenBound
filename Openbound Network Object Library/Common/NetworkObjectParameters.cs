@@ -290,7 +290,9 @@ namespace OpenBound_Network_Object_Library.Common
         public const string GamePatchExtension = ".obup"; //OpenBound Update Patch
 
         // Patch
-        public const string PatchHistoryFilename = "PatchHistory.json";
+        public const string LatestPatchHistoryFilename = "PatchHistory.json";
+        public const string PatchHistoryFilename = "PatchHistory";
+        public const string PatchHistoryExtension = ".json";
         public const string PatchTemporaryPath = "tmp";
         public const string PatchUnpackPath = "tmpUnpack";
         public const string FetchServerVersioningFolder = "versioning";

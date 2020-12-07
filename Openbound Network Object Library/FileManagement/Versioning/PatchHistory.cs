@@ -1,4 +1,5 @@
-﻿using OpenBound_Network_Object_Library.Common;
+﻿using Newtonsoft.Json;
+using OpenBound_Network_Object_Library.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,62 +8,49 @@ using System.Text;
 
 namespace OpenBound_Network_Object_Library.FileManagement.Versioning
 {
-    public class PatchEntry
+    public class PatchHistory
     {
         public Guid ID;
-        public DateTime ReleaseDate;
-        public string Path;
+        
+        public FileList FileList;
+        public DateTime CreationDate;
+
         public string PatchVersionName;
+
+        public List<PatchHistory> PatchHistoryList;
+
+        [JsonIgnore] public string PatchHistoryPath =>
+            $@"{NetworkObjectParameters.PatchHistoryFilename}-{CreationDate:dd-MM-yyyy}-{ID}{NetworkObjectParameters.PatchHistoryExtension}";
+
+        [JsonIgnore] public string BuildPatchPath =>
+            $@"{NetworkObjectParameters.GamePatchFilename}-{CreationDate:dd-MM-yyyy}-{ID}{NetworkObjectParameters.GamePatchExtension}";
+
+        public PatchHistory() {
+            PatchHistoryList = new List<PatchHistory>();
+        }
+
+        public PatchHistory(PatchHistory patchHistory, FileList fileList, string patchVersionName)
+        {
+            ID = Guid.NewGuid();
+            FileList = fileList;
+            PatchVersionName = patchVersionName;
+            CreationDate = DateTime.UtcNow;
+
+            if (patchHistory != null)
+            {
+                PatchHistoryList = patchHistory.PatchHistoryList.ToList();
+                PatchHistoryList.Add(patchHistory);
+                patchHistory.FileList = null;
+                patchHistory.PatchHistoryList = null;
+            } else
+            {
+                PatchHistoryList = new List<PatchHistory>();
+            }
+        }
 
         public override string ToString()
         {
             return $"{PatchVersionName}-{ID}";
-        }
-    }
-
-    public class PatchHistory
-    {
-        public List<PatchEntry> PatchEntryList;
-        public ApplicationManifest ApplicationManifest;
-
-        public PatchHistory()
-        {
-            PatchEntryList = new List<PatchEntry>();
-        }
-
-        public void AddPatchEntry(ApplicationManifest applicationManifest)
-        {
-            PatchEntryList.Add(new PatchEntry()
-            {
-                ID = applicationManifest.ID,
-                ReleaseDate = applicationManifest.CreationDate,
-                Path = applicationManifest.BuildPatchPath,
-                PatchVersionName = applicationManifest.PatchVersionName
-            });
-
-            ApplicationManifest = applicationManifest;
-        }
-
-        public void MergePatchEntry(ApplicationManifest appManifest1, ApplicationManifest appManifest2, ApplicationManifest newAppManifest)
-        {
-            PatchEntry previousPE1 = null, previousPE2 = null;
-
-            for(int i = 0; i < PatchEntryList.Count - 1; i++)
-            {
-                if (PatchEntryList[i].ID == appManifest1.ID && PatchEntryList[i + 1].ID == appManifest2.ID)
-                {
-                    previousPE1 = PatchEntryList[i];
-                    previousPE2 = PatchEntryList[i + 1];
-                    break;
-                }
-            }
-
-            PatchEntryList.Remove(previousPE1);
-
-            previousPE2.ID = appManifest2.ID;
-            previousPE2.Path = appManifest2.BuildPatchPath;
-            previousPE2.ReleaseDate = appManifest2.CreationDate;
-            previousPE2.PatchVersionName = newAppManifest.PatchVersionName;
         }
 
         public static PatchHistory CreatePatchHistoryInstance(string patchHistoryPath = null)

@@ -42,21 +42,24 @@ namespace OpenBound_Game_Launcher.Forms
 
         private string latestPatchHistoryPath;
 
-        public GameLauncher()
+        public GameLauncher(string[] args)
         {
+            LoadingMenu lm = new LoadingMenu();
+            lm.ShowDialog();
+
+            InitializeComponent();
+            Parameter.Initialize(args);
+
             CheckFiles();
 
             TickAction = new AsynchronousAction();
             launcherRequestManager = new LauncherRequestManager();
 
-            InitializeComponent();
-            Parameter.Initialize();
-
             txtNickname.Text = Parameter.GameClientSettingsInformation.SavedNickname;
 
             //Disable Login Button
+            SetEnableInterfaceButtons(true);
             SetEnableTextBox(false);
-            SetEnableInterfaceButtons(false);
         }
 
         public LauncherInformation OpenDialog()
@@ -112,7 +115,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void CheckFiles()
         {
-            latestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.PatchHistoryFilename}";
+            latestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.LatestPatchHistoryFilename}";
 
             HttpWebRequest.AsyncDownloadFile(
                 "http://192.168.0.50/versioning/PatchHistory.json",
@@ -125,7 +128,22 @@ namespace OpenBound_Game_Launcher.Forms
         #region Element Actions
         private void GameLauncher_Load(object sender, EventArgs e)
         {
+            //var x = Manifest.GenerateFileList(@"C:\Users\Carlo\Desktop\OpenBound PATCHED2", @"C:\Users\Carlo\Desktop\OpenBound PATCHED", "123");
+            
+            /*
+            var k = GamePatcher.GenerateUpdatePatch(
+                @"C:\Users\Carlo\Desktop\OpenBound PATCHED",
+                @"C:\Users\Carlo\Desktop\OpenBound PATCHED2",
+                @"C:\Users\Carlo\Desktop",
+                @"C:\Users\Carlo\Desktop\PatchHistory.json",
+                @"v0.1.1");
 
+            var v = GamePatcher.GenerateUpdatePatch(
+                @"C:\Users\Carlo\Desktop\OpenBound PATCHED2",
+                @"C:\Users\Carlo\Desktop\OpenBound PATCHED3",
+                @"C:\Users\Carlo\Desktop",
+                @"C:\Users\Carlo\Desktop\PatchHistory.json",
+                @"v0.1.2");*/
         }
 
         private void OnFailToDownloadPatchHistory(Exception ex)
@@ -138,7 +156,7 @@ namespace OpenBound_Game_Launcher.Forms
             TickAction += () =>
             {
                 PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(latestPatchHistoryPath);
-                if (patchHistory.PatchEntryList.Last().ID != Parameter.GameClientSettingsInformation.ClientVersionHistory.PatchEntryList.Last().ID)
+                if (patchHistory.ID != Parameter.GameClientSettingsInformation.ClientVersionHistory.ID)
                 {
                     GameUpdater gU = new GameUpdater(patchHistory);
                     gU.ShowDialog();
@@ -179,7 +197,7 @@ namespace OpenBound_Game_Launcher.Forms
         {
             btnLogin.Enabled = btnGameSettings.Enabled = btnSignup.Enabled =
                 button1.Enabled = button3.Enabled = button4.Enabled =
-                button5.Enabled = isEnabled;
+                btnCheckForUpdates.Enabled = isEnabled;
         }
 
         public void SetEnableTextBox(bool isEnabled)
@@ -218,5 +236,10 @@ namespace OpenBound_Game_Launcher.Forms
             launcherRequestManager.PrepareLoginThread(this, txtNickname.Text, txtPassword.Text);
         }
         #endregion
+
+        private void CheckForUpdates_Click(object sender, EventArgs e)
+        {
+            CheckFiles();
+        }
     }
 }
