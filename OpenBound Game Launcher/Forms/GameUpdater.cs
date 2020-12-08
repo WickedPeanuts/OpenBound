@@ -35,7 +35,6 @@ namespace OpenBound_Game_Launcher.Forms
     {
         public AsynchronousAction Timer1TickAction, Timer2TickAction;
         
-        private MenuState menuState;
         private bool shouldShowLog;
 
         private Label[] interfaceLabels;
@@ -81,7 +80,7 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void UpdateMenuButtons(MenuState menuState)
         {
-            switch (this.menuState = menuState)
+            switch (menuState)
             {
                 case MenuState.ReadyToDownload:
                     abortButton.Enabled = false;
@@ -149,8 +148,6 @@ namespace OpenBound_Game_Launcher.Forms
         }
 
         #region Download Async Callback Hell
-        private string BuildPatchURLPath(string patchPath) =>
-            $@"http://{NetworkObjectParameters.FetchServerInformation.ServerPublicAddress}/{NetworkObjectParameters.FetchServerVersioningFolder}/{NetworkObjectParameters.FetchServerPatchesFolder}/{patchPath}";
 
         private void updateButton_Click(object sender, EventArgs e)
         {
@@ -185,7 +182,7 @@ namespace OpenBound_Game_Launcher.Forms
                     currentProgressBar.Value = 0;
 
                     HttpWebRequest.AsyncDownloadFile(
-                        BuildPatchURLPath(pH.BuildPatchPath),
+                        $@"{Parameter.BuildGamePatchURL()}/{pH.BuildPatchPath}",
                         $@"{patchDir}\{pH.BuildPatchPath}",
                         (percentage, receivedBytes, totalBytes) =>
                         {

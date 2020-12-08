@@ -1,20 +1,19 @@
 ﻿using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Entity;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
-namespace OpenBound_Game_Launcher.Forms
+namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 {
     public partial class LoadingMenu : Form
     {
-        public AsynchronousAction animationTickAction, timer1TickAction;
+        protected AsynchronousAction animationTickAction, 
+            timer1InvokeAndDestroyTickAction, timer1TickAction;
 
-        public Bitmap[] animationFrames = new Bitmap[]
+        protected int animationFrameIndex = 1;
+
+        protected readonly Bitmap[] ANIMATION_FRAMES = new Bitmap[]
         {
             Resources.RaonLauncherMine_0, Resources.RaonLauncherMine_1,
             Resources.RaonLauncherMine_2, Resources.RaonLauncherMine_3,
@@ -24,22 +23,29 @@ namespace OpenBound_Game_Launcher.Forms
             Resources.RaonLauncherMine_10, Resources.RaonLauncherMine_11,
         };
 
-        public int animationFrameIndex = 1;
-
         public LoadingMenu()
         {
             InitializeComponent();
+
+            timer1InvokeAndDestroyTickAction = new AsynchronousAction();
+            timer1TickAction = new AsynchronousAction();
+        }
+
+        public virtual void timer1_Tick(object sender, EventArgs e) {
+            timer1InvokeAndDestroyTickAction.AsynchronousInvokeAndDestroy();
+            timer1TickAction.AsynchronousInvoke();
         }
 
         private void animationTimer_Tick(object sender, EventArgs e)
         {
             animationFrameIndex = (animationFrameIndex + 1) % 12;
-            pictureBox1.Image = animationFrames[animationFrameIndex];
+            pictureBox1.Image = ANIMATION_FRAMES[animationFrameIndex];
         }
 
-        public void StartAsyncAction()
+        public void Close(DialogResult dialogResult)
         {
-
+            DialogResult = dialogResult;
+            Close();
         }
     }
 }

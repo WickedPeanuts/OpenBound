@@ -31,7 +31,7 @@ namespace OpenBound_Game_Launcher
                 return;
             }
 #else
-            MessageBox.Show("DEBUG MODE ON. Opening launcher...");
+            //args = new string[] { "123", "321" };
 #endif
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);

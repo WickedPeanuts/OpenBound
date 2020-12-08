@@ -12,7 +12,6 @@
 
 using OpenBound_Game_Launcher.Common;
 using OpenBound_Game_Launcher.Launcher.Connection;
-using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
 using OpenBound_Network_Object_Library.FileManagement;
@@ -21,9 +20,8 @@ using OpenBound_Network_Object_Library.WebRequest;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using System.Linq;
-using System.ComponentModel;
-using OpenBound_Patcher.Forms;
+using OpenBound_Game_Launcher.Forms.GenericLoadingScreen;
+using System.Threading;
 
 namespace OpenBound_Game_Launcher.Forms
 {
@@ -40,17 +38,10 @@ namespace OpenBound_Game_Launcher.Forms
 
         private LauncherRequestManager launcherRequestManager;
 
-        private string latestPatchHistoryPath;
-
         public GameLauncher(string[] args)
         {
-            LoadingMenu lm = new LoadingMenu();
-            lm.ShowDialog();
-
             InitializeComponent();
             Parameter.Initialize(args);
-
-            CheckFiles();
 
             TickAction = new AsynchronousAction();
             launcherRequestManager = new LauncherRequestManager();
@@ -60,6 +51,23 @@ namespace OpenBound_Game_Launcher.Forms
             //Disable Login Button
             SetEnableInterfaceButtons(true);
             SetEnableTextBox(false);
+
+            CheckFiles();
+        }
+
+        public void CheckFiles()
+        {
+            PatchHistoryFetchLoadingScreen lhfls = new PatchHistoryFetchLoadingScreen();
+            
+            //If the download was sucessful
+            if (lhfls.ShowDialog() == DialogResult.OK)
+            {
+                DialogResult = DialogResult.Cancel;
+                Hide();
+                TickAction += () => {
+                    Close(DialogResult.Cancel);
+                };
+            }
         }
 
         public LauncherInformation OpenDialog()
@@ -113,18 +121,6 @@ namespace OpenBound_Game_Launcher.Forms
                 @"v0.1.2a");
         }
 
-        public void CheckFiles()
-        {
-            latestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.LatestPatchHistoryFilename}";
-
-            HttpWebRequest.AsyncDownloadFile(
-                "http://192.168.0.50/versioning/PatchHistory.json",
-                latestPatchHistoryPath,
-                onFinishDownload: OnFinishDownloadPatchHistory,
-                onFailToDownload: OnFailToDownloadPatchHistory
-                );
-        }
-
         #region Element Actions
         private void GameLauncher_Load(object sender, EventArgs e)
         {
@@ -144,41 +140,6 @@ namespace OpenBound_Game_Launcher.Forms
                 @"C:\Users\Carlo\Desktop",
                 @"C:\Users\Carlo\Desktop\PatchHistory.json",
                 @"v0.1.2");*/
-        }
-
-        private void OnFailToDownloadPatchHistory(Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
-
-        private void OnFinishDownloadPatchHistory()
-        {
-            TickAction += () =>
-            {
-                PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(latestPatchHistoryPath);
-                if (patchHistory.ID != Parameter.GameClientSettingsInformation.ClientVersionHistory.ID)
-                {
-                    GameUpdater gU = new GameUpdater(patchHistory);
-                    gU.ShowDialog();
-
-                    if (gU.DialogResult == DialogResult.OK)
-                    {
-                        DialogResult = DialogResult.Cancel;
-                        base.Close();
-                    }
-                    else
-                    {
-                        SetEnableInterfaceButtons(true);
-                        SetEnableTextBox(false);
-                    }
-                }
-                else
-                {
-                    //Enable Login Button
-                    SetEnableTextBox(true);
-                    SetEnableInterfaceButtons(true);
-                }
-            };
         }
 
         /// <summary>
@@ -212,9 +173,9 @@ namespace OpenBound_Game_Launcher.Forms
         #endregion
 
         #region Screen Manupulation
-        public new void Close()
+        public void Close(DialogResult dialogResult = DialogResult.OK)
         {
-            DialogResult = DialogResult.OK;
+            DialogResult = dialogResult;
             base.Close();
         }
         #endregion

@@ -1,5 +1,5 @@
 ﻿
-namespace OpenBound_Game_Launcher.Forms
+namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 {
     partial class LoadingMenu
     {
@@ -74,6 +74,11 @@ namespace OpenBound_Game_Launcher.Forms
             this.animationTimer.Enabled = true;
             this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // LoadingMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -81,10 +86,10 @@ namespace OpenBound_Game_Launcher.Forms
             this.ClientSize = new System.Drawing.Size(296, 91);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoadingMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoadingMenu";
-            this.Load += new System.EventHandler(this.LoadingMenu_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

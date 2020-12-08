@@ -41,5 +41,25 @@ namespace OpenBound_Game_Launcher.Common
 
             ConfigFileManager.OverwriteGameServerSettings(GameClientSettingsInformation);
         }
+
+        public static string BuildFetchURL()
+        {
+            return $@"{NetworkObjectParameters.FetchServerInformation.ServerPublicAddress}:{NetworkObjectParameters.FetchServerInformation.ServerPort}";
+        }
+        public static string BuildFetchVersioningURL()
+        {
+            return $@"{BuildFetchURL()}/{NetworkObjectParameters.FetchServerVersioningFolder}";
+        }
+        public static string BuildGamePatchURL()
+        {
+            return $@"{BuildFetchVersioningURL()}/{NetworkObjectParameters.FetchServerPatchesFolder}";
+        }
+
+        public static string BuildFetchHistoryURL()
+        {
+            return $@"{BuildFetchVersioningURL()}/{NetworkObjectParameters.LatestPatchHistoryFilename}";
+        }
+
+        public static readonly string LatestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}\{NetworkObjectParameters.LatestPatchHistoryFilename}";
     }
 }
