@@ -35,6 +35,8 @@ namespace OpenBound_Game_Launcher.Common
         //----------------
         // Game Updater
 
+        public const string GameUpdaterAbortUpdate = "Are you sure you want to abort the updating process?\nYou will not be able to play the game with an outdated client.";
+
         public const string GameUpdaterLabel1ReadyToDownload = "Ready to begin updating proccess.";
         public const string GameUpdaterLabel2ReadyToDownload = "Current Version: %currentversion%";
         public const string GameUpdaterLabel3ReadyToDownload = "Next Version: %nextversion%";
@@ -80,5 +82,11 @@ namespace OpenBound_Game_Launcher.Common
         public const string Patching3ExceptionUnpack = "The integrity check of the extracted files has failed.";
         public const string Patching4ExceptionUnpack = "Failed to download:";
         public const string Patching5ExceptionUnpack = "You are not longer connected to the server";
+
+        //----------------
+        // Versioning Checking
+
+        public const string FailToCheckFileManifest = "Your installation of the game contains corrupted files.";
+        public const string FailToRemoveFiles       = "The game couldn't remove unused files.wd";
     }
 }

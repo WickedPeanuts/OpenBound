@@ -1,4 +1,5 @@
 ﻿using OpenBound_Game_Launcher.Common;
+using OpenBound_Game_Launcher.Helper;
 using OpenBound_Game_Launcher.Properties;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
@@ -151,6 +152,9 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            //If someone attempt to shut down the updater before it has finished.
+            FormClosing += abortButton_Click;
+
             Queue<Action> actQueue = new Queue<Action>();
             List<PatchHistory> downloadedFileList = new List<PatchHistory>();
 
@@ -335,7 +339,6 @@ namespace OpenBound_Game_Launcher.Forms
             toggleLogButton.Location = new Point(toggleLogButton.Location.X, toggleLogButton.Location.Y + offset);
             updateButton.Location = new Point(updateButton.Location.X, updateButton.Location.Y + offset);
             abortButton.Location = new Point(abortButton.Location.X, abortButton.Location.Y + offset);
-            closeButton.Location = new Point(closeButton.Location.X, closeButton.Location.Y + offset);
 
             Size = new Size(Size.Width, Size.Height + offset);
 
@@ -411,18 +414,36 @@ namespace OpenBound_Game_Launcher.Forms
             process.StartInfo.Arguments = string.Join(' ', applicationParameter);
             process.Start();
 
+            FormClosing -= abortButton_Click;
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+
+        private void abortButton_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            DialogResult dr = Feedback.CreateWarningMessageBox(Language.GameUpdaterAbortUpdate,
+                messageBoxButtons: MessageBoxButtons.YesNo);
+
+            if (dr == DialogResult.No)
+            {
+                if (e is FormClosingEventArgs)
+                    ((FormClosingEventArgs)e).Cancel = true;
+
+                timer1.Enabled = true;
+            }
+            else
+            {
+                FormClosing -= abortButton_Click;
+                DialogResult = DialogResult.Cancel;
+                Close();
+            }
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
             Timer2TickAction.AsynchronousInvokeAndDestroy();
-        }
-
-        private void GameUpdater_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            timer1.Enabled = timer2.Enabled = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

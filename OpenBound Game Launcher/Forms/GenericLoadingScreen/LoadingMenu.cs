@@ -8,8 +8,8 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 {
     public partial class LoadingMenu : Form
     {
-        protected AsynchronousAction animationTickAction, 
-            timer1InvokeAndDestroyTickAction, timer1TickAction;
+        protected AsynchronousAction animationTickAction;
+        protected AsynchronousAction timer1InvokeAndDestroyTickAction, timer1TickAction;
 
         protected int animationFrameIndex = 1;
 
@@ -44,8 +44,11 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void Close(DialogResult dialogResult)
         {
-            DialogResult = dialogResult;
-            Close();
+            timer1InvokeAndDestroyTickAction += () =>
+            {
+                DialogResult = dialogResult;
+                Close();
+            };
         }
     }
 }

@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenBound_Game_Launcher.Common;
+using OpenBound_Game_Launcher.Forms.GenericLoadingScreen;
 using OpenBound_Game_Launcher.Helper;
 using OpenBound_Game_Launcher.Launcher.Connection;
 using OpenBound_Network_Object_Library.Entity;
@@ -24,13 +15,11 @@ namespace OpenBound_Game_Launcher.Forms
     {
         public AsynchronousAction TickAction;
 
-        private LauncherRequestManager launcherRequestManager;
 
         public SignUpForm()
         {
             InitializeComponent();
 
-            launcherRequestManager = new LauncherRequestManager();
 #if DEBUG
             btnRegisterDebug.Visible = true;
             btnRegisterDebug.Enabled = true;
@@ -41,7 +30,14 @@ namespace OpenBound_Game_Launcher.Forms
 
         private void RegisterAccount(PlayerDTO newPlayer)
         {
-            launcherRequestManager.PrepareRegistrationThread(this, newPlayer);
+            SetEnableInterfaceElements(false);
+            SignUpLoadingScreen suls = new SignUpLoadingScreen(newPlayer);
+            if (suls.ShowDialog() == DialogResult.OK)
+            {
+                Close();
+                return;
+            }
+            SetEnableInterfaceElements(true);
         }
 
         #region Screen Element State Manipulaton
@@ -57,8 +53,12 @@ namespace OpenBound_Game_Launcher.Forms
         #region Element Actions
         private void Textbox_TextChanged(object sender, EventArgs e)
         {
-            ttpValidation.Show(((TextBox)sender).Tag.ToString(), gpbAccount,
-                new Point(((TextBox)sender).Location.X + ((TextBox)sender).Width, ((TextBox)sender).Location.Y));
+            TextBox tBox = (TextBox)sender;
+
+            ttpValidation.Show(
+                tBox.Tag.ToString(),
+                gpbAccount, 
+                new Point(tBox.Location.X + tBox.Width, tBox.Location.Y));
         }
 
         private void Textbox_OnDeselect(object sender, EventArgs e) =>
@@ -92,8 +92,8 @@ namespace OpenBound_Game_Launcher.Forms
         {
             RegisterAccount(new PlayerDTO()
             {
-                Nickname = "Sopa",
-                Email = "sopa@hotmail.com",
+                Nickname = "accountName",
+                Email = "account@name.com",
                 Password = "123456",
                 PasswordConfirmation = "123456",
                 Gender = Gender.Female
@@ -105,10 +105,5 @@ namespace OpenBound_Game_Launcher.Forms
             TickAction.AsynchronousInvokeAndDestroy();
         }
         #endregion
-
-        private void SignUpForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

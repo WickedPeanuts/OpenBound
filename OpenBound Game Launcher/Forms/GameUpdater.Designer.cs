@@ -39,7 +39,6 @@ namespace OpenBound_Game_Launcher.Forms
             this.downloadLabel3 = new System.Windows.Forms.Label();
             this.downloadLabel2 = new System.Windows.Forms.Label();
             this.downloadLabel1 = new System.Windows.Forms.Label();
-            this.closeButton = new System.Windows.Forms.Button();
             this.abortButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -128,27 +127,19 @@ namespace OpenBound_Game_Launcher.Forms
             this.downloadLabel1.TabIndex = 4;
             this.downloadLabel1.Text = "downloadLabel1";
             // 
-            // closeButton
-            // 
-            this.closeButton.Location = new System.Drawing.Point(592, 495);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(82, 26);
-            this.closeButton.TabIndex = 6;
-            this.closeButton.Text = "Close";
-            this.closeButton.UseVisualStyleBackColor = true;
-            // 
             // abortButton
             // 
-            this.abortButton.Location = new System.Drawing.Point(504, 495);
+            this.abortButton.Location = new System.Drawing.Point(591, 495);
             this.abortButton.Name = "abortButton";
             this.abortButton.Size = new System.Drawing.Size(82, 26);
             this.abortButton.TabIndex = 7;
             this.abortButton.Text = "Abort";
             this.abortButton.UseVisualStyleBackColor = true;
+            this.abortButton.Click += new System.EventHandler(this.abortButton_Click);
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(416, 495);
+            this.updateButton.Location = new System.Drawing.Point(503, 495);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(82, 26);
             this.updateButton.TabIndex = 8;
@@ -182,7 +173,7 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // toggleLogButton
             // 
-            this.toggleLogButton.Location = new System.Drawing.Point(328, 495);
+            this.toggleLogButton.Location = new System.Drawing.Point(415, 495);
             this.toggleLogButton.Name = "toggleLogButton";
             this.toggleLogButton.Size = new System.Drawing.Size(82, 26);
             this.toggleLogButton.TabIndex = 10;
@@ -215,7 +206,6 @@ namespace OpenBound_Game_Launcher.Forms
             this.Controls.Add(this.logGroupBox);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.abortButton);
-            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -224,7 +214,6 @@ namespace OpenBound_Game_Launcher.Forms
             this.Name = "GameUpdater";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Updater";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameUpdater_FormClosed);
             this.Load += new System.EventHandler(this.GameUpdater_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -243,7 +232,6 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label downloadLabel2;
         private System.Windows.Forms.Label downloadLabel1;
-        private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button abortButton;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Timer timer1;

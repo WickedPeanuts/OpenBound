@@ -31,12 +31,8 @@ namespace OpenBound_Game_Launcher.Forms
         /// AsynchronousAction calls any instructions that were appended during the execution of any other thread.
         /// This variable is Thread-safe. Be careful, do not invoke Value inside it's action, this will cause a deadlock.
         /// On <see cref="timer1_Tick"/> all accumulated actions are going to be disposed.
-        /// 
-        /// Most of the actions used here are generated on <see cref="LauncherRequestManager.OnFailToEstabilishConnection"/>.
         /// </summary>
         public AsynchronousAction TickAction;
-
-        private LauncherRequestManager launcherRequestManager;
 
         public GameLauncher(string[] args)
         {
@@ -44,29 +40,32 @@ namespace OpenBound_Game_Launcher.Forms
             Parameter.Initialize(args);
 
             TickAction = new AsynchronousAction();
-            launcherRequestManager = new LauncherRequestManager();
 
-            txtNickname.Text = Parameter.GameClientSettingsInformation.SavedNickname;
+            nicknameTextBox.Text = Parameter.GameClientSettingsInformation.SavedNickname;
+            versionLabel.Text = Parameter.GameClientSettingsInformation.ClientVersionHistory.PatchVersionName;
 
             //Disable Login Button
             SetEnableInterfaceButtons(true);
-            SetEnableTextBox(false);
+            //SetEnableTextBox(false);
 
             CheckFiles();
         }
 
         public void CheckFiles()
         {
+            Hide();
+
             PatchHistoryFetchLoadingScreen lhfls = new PatchHistoryFetchLoadingScreen();
-            
+
             //If the download was sucessful
             if (lhfls.ShowDialog() == DialogResult.OK)
             {
                 DialogResult = DialogResult.Cancel;
-                Hide();
-                TickAction += () => {
-                    Close(DialogResult.Cancel);
-                };
+                Close(DialogResult.Cancel);
+            }
+            else
+            {
+                Show();
             }
         }
 
@@ -83,64 +82,8 @@ namespace OpenBound_Game_Launcher.Forms
                     null, null);
         }
 
-        /*private void CheckLatestUpdateFiles()
-        {
-            //If this file exists, it means the application is being re-opened after an update
-            //and it must delete all unused files
-            if (!File.Exists(latestPatchHistoryPath))
-                return;
-
-            PatchHistory pH = ObjectWrapper.DeserializeFile<PatchHistory>(latestPatchHistoryPath);
-
-            FileList fl = Manifest.GetMissingInvalidAndOutdatedFiles(
-                pH.ApplicationManifest.CurrentVersionFileList.Checksum,
-                Directory.GetCurrentDirectory());
-
-            foreach (string toBeDeleted in fl.ToBeDeleted)
-            {
-                File.Delete($@"{Directory.GetCurrentDirectory()}\{toBeDeleted}");
-            }
-
-            Directory.Delete(@$"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchTemporaryPath}", true);
-        }*/
-
-        public void GenerateDummyPatches()
-        {
-            var x = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound 1",
-                @"C:\Users\Carlo\Desktop\OpenBound 2",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\PatchHistory.json",
-                @"v0.1.1a");
-
-            var y = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound 2",
-                @"C:\Users\Carlo\Desktop\OpenBound 3",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\PatchHistory.json",
-                @"v0.1.2a");
-        }
-
         #region Element Actions
-        private void GameLauncher_Load(object sender, EventArgs e)
-        {
-            //var x = Manifest.GenerateFileList(@"C:\Users\Carlo\Desktop\OpenBound PATCHED2", @"C:\Users\Carlo\Desktop\OpenBound PATCHED", "123");
-            
-            /*
-            var k = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound PATCHED",
-                @"C:\Users\Carlo\Desktop\OpenBound PATCHED2",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\PatchHistory.json",
-                @"v0.1.1");
-
-            var v = GamePatcher.GenerateUpdatePatch(
-                @"C:\Users\Carlo\Desktop\OpenBound PATCHED2",
-                @"C:\Users\Carlo\Desktop\OpenBound PATCHED3",
-                @"C:\Users\Carlo\Desktop",
-                @"C:\Users\Carlo\Desktop\PatchHistory.json",
-                @"v0.1.2");*/
-        }
+        private void GameLauncher_Load(object sender, EventArgs e) { }
 
         /// <summary>
         /// This method is called once every 100ms. TickAction brings all external
@@ -163,12 +106,12 @@ namespace OpenBound_Game_Launcher.Forms
 
         public void SetEnableTextBox(bool isEnabled)
         {
-            btnLogin.Enabled = txtPassword.Enabled = txtNickname.Enabled = isEnabled;
+            btnLogin.Enabled = passwordTextBox.Enabled = nicknameTextBox.Enabled = isEnabled;
         }
 
         private void LoginTextbox_TextChanged(object sender, EventArgs e)
         {
-            btnLogin.Enabled = txtNickname.Text.Length > 2 && txtPassword.Text.Length > 2;
+            btnLogin.Enabled = nicknameTextBox.Text.Length > 2 && passwordTextBox.Text.Length > 2;
         }
         #endregion
 
@@ -193,8 +136,17 @@ namespace OpenBound_Game_Launcher.Forms
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
-        {
-            launcherRequestManager.PrepareLoginThread(this, txtNickname.Text, txtPassword.Text);
+        {            
+            LoginLoadingScreen lls = new LoginLoadingScreen(nicknameTextBox.Text, passwordTextBox.Text);
+
+            SetEnableTextBox(false);
+            SetEnableInterfaceButtons(false);
+
+            if (lls.ShowDialog() == DialogResult.OK)
+                Close();
+
+            SetEnableTextBox(true);
+            SetEnableInterfaceButtons(true);
         }
         #endregion
 

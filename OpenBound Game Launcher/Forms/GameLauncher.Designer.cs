@@ -37,15 +37,15 @@ namespace OpenBound_Game_Launcher.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtNickname = new System.Windows.Forms.TextBox();
+            this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.nicknameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnCheckForUpdates = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnGameSettings = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.versionLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
@@ -80,8 +80,8 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.txtPassword);
-            this.groupBox1.Controls.Add(this.txtNickname);
+            this.groupBox1.Controls.Add(this.passwordTextBox);
+            this.groupBox1.Controls.Add(this.nicknameTextBox);
             this.groupBox1.Controls.Add(this.btnLogin);
             this.groupBox1.Location = new System.Drawing.Point(14, 375);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -112,24 +112,24 @@ namespace OpenBound_Game_Launcher.Forms
             this.label1.TabIndex = 3;
             this.label1.Text = "Nickname:";
             // 
-            // txtPassword
+            // passwordTextBox
             // 
-            this.txtPassword.Location = new System.Drawing.Point(83, 52);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '•';
-            this.txtPassword.Size = new System.Drawing.Size(187, 23);
-            this.txtPassword.TabIndex = 2;
-            this.txtPassword.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
+            this.passwordTextBox.Location = new System.Drawing.Point(83, 52);
+            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.passwordTextBox.Name = "passwordTextBox";
+            this.passwordTextBox.PasswordChar = '•';
+            this.passwordTextBox.Size = new System.Drawing.Size(187, 23);
+            this.passwordTextBox.TabIndex = 2;
+            this.passwordTextBox.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
             // 
-            // txtNickname
+            // nicknameTextBox
             // 
-            this.txtNickname.Location = new System.Drawing.Point(83, 22);
-            this.txtNickname.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtNickname.Name = "txtNickname";
-            this.txtNickname.Size = new System.Drawing.Size(187, 23);
-            this.txtNickname.TabIndex = 1;
-            this.txtNickname.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
+            this.nicknameTextBox.Location = new System.Drawing.Point(83, 22);
+            this.nicknameTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.nicknameTextBox.Name = "nicknameTextBox";
+            this.nicknameTextBox.Size = new System.Drawing.Size(187, 23);
+            this.nicknameTextBox.TabIndex = 1;
+            this.nicknameTextBox.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
             // 
             // groupBox2
             // 
@@ -148,12 +148,12 @@ namespace OpenBound_Game_Launcher.Forms
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Other Options";
             // 
-            // button5
+            // btnCheckForUpdates
             // 
             this.btnCheckForUpdates.Enabled = false;
             this.btnCheckForUpdates.Location = new System.Drawing.Point(154, 89);
             this.btnCheckForUpdates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnCheckForUpdates.Name = "button5";
+            this.btnCheckForUpdates.Name = "btnCheckForUpdates";
             this.btnCheckForUpdates.Size = new System.Drawing.Size(140, 27);
             this.btnCheckForUpdates.TabIndex = 6;
             this.btnCheckForUpdates.Text = "Check for Updates";
@@ -204,15 +204,15 @@ namespace OpenBound_Game_Launcher.Forms
             this.button1.Text = "Lost Password";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // versionLabel
             // 
-            this.label3.Location = new System.Drawing.Point(14, 498);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(586, 16);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Current version: 0.1.0 Alpha";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.versionLabel.Location = new System.Drawing.Point(14, 498);
+            this.versionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(586, 16);
+            this.versionLabel.TabIndex = 5;
+            this.versionLabel.Text = "Current Version";
+            this.versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pictureBox1
             // 
@@ -236,7 +236,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(614, 525);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
@@ -265,15 +265,15 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtNickname;
+        private System.Windows.Forms.TextBox passwordTextBox;
+        private System.Windows.Forms.TextBox nicknameTextBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnCheckForUpdates;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnGameSettings;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label versionLabel;
         private System.Windows.Forms.Timer timer1;
     }
 }
