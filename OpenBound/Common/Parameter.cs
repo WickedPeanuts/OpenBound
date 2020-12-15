@@ -113,6 +113,9 @@ namespace OpenBound.Common
         #endregion
 
         #region Misc
+        //Is Loading Textures Flag
+        public static bool IsLoadingGameAssets = true;
+
         //Random number generator
         public static readonly Random Random = new Random(/*0*/);
 

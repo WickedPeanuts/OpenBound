@@ -40,7 +40,6 @@ namespace OpenBound_Game_Launcher.Forms
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.nicknameTextBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnCheckForUpdates = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btnGameSettings = new System.Windows.Forms.Button();
@@ -60,18 +59,18 @@ namespace OpenBound_Game_Launcher.Forms
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(117, 27);
-            this.btnLogin.TabIndex = 0;
+            this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // btnSignup
             // 
-            this.btnSignup.Location = new System.Drawing.Point(7, 22);
+            this.btnSignup.Location = new System.Drawing.Point(7, 55);
             this.btnSignup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSignup.Name = "btnSignup";
             this.btnSignup.Size = new System.Drawing.Size(140, 27);
-            this.btnSignup.TabIndex = 1;
+            this.btnSignup.TabIndex = 5;
             this.btnSignup.Text = "Sign Up";
             this.btnSignup.UseVisualStyleBackColor = true;
             this.btnSignup.Click += new System.EventHandler(this.BtnSignup_Click);
@@ -119,7 +118,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '•';
             this.passwordTextBox.Size = new System.Drawing.Size(187, 23);
-            this.passwordTextBox.TabIndex = 2;
+            this.passwordTextBox.TabIndex = 1;
             this.passwordTextBox.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
             // 
             // nicknameTextBox
@@ -128,12 +127,11 @@ namespace OpenBound_Game_Launcher.Forms
             this.nicknameTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.nicknameTextBox.Name = "nicknameTextBox";
             this.nicknameTextBox.Size = new System.Drawing.Size(187, 23);
-            this.nicknameTextBox.TabIndex = 1;
+            this.nicknameTextBox.TabIndex = 0;
             this.nicknameTextBox.TextChanged += new System.EventHandler(this.LoginTextbox_TextChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnCheckForUpdates);
             this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.btnGameSettings);
@@ -148,18 +146,6 @@ namespace OpenBound_Game_Launcher.Forms
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Other Options";
             // 
-            // btnCheckForUpdates
-            // 
-            this.btnCheckForUpdates.Enabled = false;
-            this.btnCheckForUpdates.Location = new System.Drawing.Point(154, 89);
-            this.btnCheckForUpdates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnCheckForUpdates.Name = "btnCheckForUpdates";
-            this.btnCheckForUpdates.Size = new System.Drawing.Size(140, 27);
-            this.btnCheckForUpdates.TabIndex = 6;
-            this.btnCheckForUpdates.Text = "Check for Updates";
-            this.btnCheckForUpdates.UseVisualStyleBackColor = true;
-            this.btnCheckForUpdates.Click += new System.EventHandler(this.CheckForUpdates_Click);
-            // 
             // button4
             // 
             this.button4.Enabled = false;
@@ -167,7 +153,7 @@ namespace OpenBound_Game_Launcher.Forms
             this.button4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(140, 27);
-            this.button4.TabIndex = 5;
+            this.button4.TabIndex = 8;
             this.button4.Text = "Changelog";
             this.button4.UseVisualStyleBackColor = true;
             // 
@@ -178,17 +164,17 @@ namespace OpenBound_Game_Launcher.Forms
             this.button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(140, 27);
-            this.button3.TabIndex = 4;
+            this.button3.TabIndex = 7;
             this.button3.Text = "Visit Homepage";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // btnGameSettings
             // 
-            this.btnGameSettings.Location = new System.Drawing.Point(7, 89);
+            this.btnGameSettings.Location = new System.Drawing.Point(7, 22);
             this.btnGameSettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnGameSettings.Name = "btnGameSettings";
             this.btnGameSettings.Size = new System.Drawing.Size(140, 27);
-            this.btnGameSettings.TabIndex = 3;
+            this.btnGameSettings.TabIndex = 4;
             this.btnGameSettings.Text = "Game Settings";
             this.btnGameSettings.UseVisualStyleBackColor = true;
             this.btnGameSettings.Click += new System.EventHandler(this.BtnGameSettings_Click);
@@ -196,11 +182,11 @@ namespace OpenBound_Game_Launcher.Forms
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(7, 55);
+            this.button1.Location = new System.Drawing.Point(7, 88);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(140, 27);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Lost Password";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -227,7 +213,6 @@ namespace OpenBound_Game_Launcher.Forms
             // 
             // timer1
             // 
-            this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // GameLauncher
@@ -268,7 +253,6 @@ namespace OpenBound_Game_Launcher.Forms
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.TextBox nicknameTextBox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnCheckForUpdates;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnGameSettings;

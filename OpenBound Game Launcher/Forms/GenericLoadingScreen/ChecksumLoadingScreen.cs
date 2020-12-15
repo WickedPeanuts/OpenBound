@@ -25,7 +25,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
                 // If the patching process was somehow incomplete
                 if (fileList.ToBeDownloaded.Count > 0)
                 {
-                    timer1InvokeAndDestroyTickAction += OnFailToCheckFiles;
+                    Timer1InvokeAndDestroyTickAction += OnFailToCheckFiles;
                     return;
                 }
 
@@ -40,11 +40,11 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
                 }
                 catch (Exception)
                 {
-                    timer1InvokeAndDestroyTickAction += OnFailToRemoveUnusedFiles;
+                    Timer1InvokeAndDestroyTickAction += OnFailToRemoveUnusedFiles;
                     return;
                 }
 
-                timer1InvokeAndDestroyTickAction += () => { Close(DialogResult.OK); };
+                Timer1InvokeAndDestroyTickAction += () => { Close(DialogResult.OK); };
             });
         }
 

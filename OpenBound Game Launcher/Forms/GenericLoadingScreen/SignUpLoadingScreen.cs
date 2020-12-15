@@ -29,7 +29,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnFailToStablishConnection()
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateWarningMessageBox(Language.FailToEstabilishConnection);
                 Close(DialogResult.Cancel);
@@ -38,7 +38,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnFailToCreateAccount()
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateWarningMessageBox(Language.RegisterFailureMessage);
                 Close(DialogResult.Cancel);
@@ -47,7 +47,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnFailToCreateAccount(string reason)
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateWarningMessageBox($"{Language.RegisterFailureMessage}{reason}");
                 Close(DialogResult.Cancel);
@@ -56,7 +56,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnCreateAccount()
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateInformationMessageBox(Language.RegisterSuccess);
                 Close(DialogResult.OK);

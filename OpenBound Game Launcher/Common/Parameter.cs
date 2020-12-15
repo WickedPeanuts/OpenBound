@@ -27,15 +27,12 @@ namespace OpenBound_Game_Launcher.Common
 
             if (args.Length >= 2)
             {
-                MessageBox.Show(args[0]);
-                MessageBox.Show(args[1]);
-
                 //Game has been patched
                 string previousVersion = args[0];
                 string currentVersion = args[1];
 
                 GameClientSettingsInformation.ClientVersionHistory = ObjectWrapper.DeserializeFile<PatchHistory>(
-                    $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.PatchHistoryFilename}{NetworkObjectParameters.PatchHistoryExtension}");
+                    $@"{Directory.GetCurrentDirectory()}\{NetworkObjectParameters.LatestPatchHistoryFilename}");
                 GameClientSettingsInformation.ClientVersionHistory.PatchHistoryList.Clear();
             }
 

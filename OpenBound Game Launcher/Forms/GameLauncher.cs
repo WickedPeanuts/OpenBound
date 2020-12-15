@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * Copyright (C) 2020, Carlos H.M.S. <carlos_judo@hotmail.com>
  * This file is part of OpenBound.
  * OpenBound is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -45,41 +45,46 @@ namespace OpenBound_Game_Launcher.Forms
             versionLabel.Text = Parameter.GameClientSettingsInformation.ClientVersionHistory.PatchVersionName;
 
             //Disable Login Button
-            SetEnableInterfaceButtons(true);
-            //SetEnableTextBox(false);
-
-            CheckFiles();
+            SetEnableTextBox(true);
+            btnLogin.Enabled = false;
         }
 
-        public void CheckFiles()
+        public bool CheckFiles()
         {
-            Hide();
-
             PatchHistoryFetchLoadingScreen lhfls = new PatchHistoryFetchLoadingScreen();
 
-            //If the download was sucessful
-            if (lhfls.ShowDialog() == DialogResult.OK)
+            switch (lhfls.ShowDialog())
             {
-                DialogResult = DialogResult.Cancel;
-                Close(DialogResult.Cancel);
+                // Updated sucessfully. Launcher needs to close.
+                case DialogResult.OK:
+                    Close(DialogResult = DialogResult.OK);
+                    return true;
+                // No need to update.
+                case DialogResult.No:
+                    DialogResult = DialogResult.No;
+                    return false;
+                // Application failed to update. Launcher needs to close.
+                case DialogResult.Cancel:
+                    Close(DialogResult = DialogResult.Cancel);
+                    return true;
             }
-            else
-            {
-                Show();
-            }
+
+            return false;
         }
 
         public LauncherInformation OpenDialog()
         {
+            //If the launcher should close
+            if (CheckFiles())
+                return new LauncherInformation(LauncherOperationStatus.Closed, null, null);
+
             DialogResult dr = ShowDialog();
 
             if (dr == DialogResult.OK)
                 return new LauncherInformation(LauncherOperationStatus.AuthConfirmed,
-                    Parameter.GameClientSettingsInformation,
-                    Parameter.Player);
+                    Parameter.GameClientSettingsInformation, Parameter.Player);
             else
-                return new LauncherInformation(LauncherOperationStatus.Closed,
-                    null, null);
+                return new LauncherInformation(LauncherOperationStatus.Closed, null, null);
         }
 
         #region Element Actions
@@ -100,8 +105,7 @@ namespace OpenBound_Game_Launcher.Forms
         public void SetEnableInterfaceButtons(bool isEnabled)
         {
             btnLogin.Enabled = btnGameSettings.Enabled = btnSignup.Enabled =
-                button1.Enabled = button3.Enabled = button4.Enabled =
-                btnCheckForUpdates.Enabled = isEnabled;
+                button1.Enabled = button3.Enabled = button4.Enabled = isEnabled;
         }
 
         public void SetEnableTextBox(bool isEnabled)
@@ -149,10 +153,5 @@ namespace OpenBound_Game_Launcher.Forms
             SetEnableInterfaceButtons(true);
         }
         #endregion
-
-        private void CheckForUpdates_Click(object sender, EventArgs e)
-        {
-            CheckFiles();
-        }
     }
 }

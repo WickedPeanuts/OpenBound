@@ -30,7 +30,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnFailToStablishConnection()
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateWarningMessageBox(Language.FailToEstabilishConnection);
                 Close(DialogResult.Cancel);
@@ -39,7 +39,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void OnFailToFindPlayer()
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 Feedback.CreateWarningMessageBox(Language.PlayerNotFound);
                 Close(DialogResult.Cancel);

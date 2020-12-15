@@ -20,14 +20,14 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
             HttpWebRequest.AsyncDownloadFile(
                 Parameter.BuildFetchHistoryURL(),
                 latestPatchHistoryPath,
-                onFinishDownload: OnFinishDownload,
-                onFailToDownload: OnFailToDownload
+                onFailToDownload: OnFailToDownload,
+                onFinishDownload: OnFinishDownload
                 );
         }
 
         private void OnFinishDownload()
         {
-            timer1InvokeAndDestroyTickAction += () => {
+            Timer1InvokeAndDestroyTickAction += () => {
                 OpenUpdaterDialog();
             };
         }
@@ -35,26 +35,22 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
         private void OpenUpdaterDialog()
         {
             PatchHistory patchHistory = PatchHistory.CreatePatchHistoryInstance(latestPatchHistoryPath);
-            if (patchHistory.ID != Parameter.GameClientSettingsInformation.ClientVersionHistory.ID)
+            if (patchHistory.ID == Parameter.GameClientSettingsInformation.ClientVersionHistory.ID)
+            {
+                Close(DialogResult.No);
+            }
+            else
             {
                 Hide();
 
                 GameUpdater gU = new GameUpdater(patchHistory);
-                gU.ShowDialog();
-
-                if (gU.DialogResult == DialogResult.OK)
-                {
-                    Close(DialogResult.OK);
-                    return;
-                }
+                Close(gU.ShowDialog());
             }
-
-            Close(DialogResult.Cancel);
         }
 
         private void OnFailToDownload(Exception ex)
         {
-            timer1InvokeAndDestroyTickAction += () =>
+            Timer1InvokeAndDestroyTickAction += () =>
             {
                 MessageBox.Show(ex.Message);
                 Close(DialogResult.Cancel);

@@ -9,7 +9,7 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
     public partial class LoadingMenu : Form
     {
         protected AsynchronousAction animationTickAction;
-        protected AsynchronousAction timer1InvokeAndDestroyTickAction, timer1TickAction;
+        public AsynchronousAction Timer1InvokeAndDestroyTickAction, Timer1TickAction;
 
         protected int animationFrameIndex = 1;
 
@@ -27,13 +27,13 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
         {
             InitializeComponent();
 
-            timer1InvokeAndDestroyTickAction = new AsynchronousAction();
-            timer1TickAction = new AsynchronousAction();
+            Timer1InvokeAndDestroyTickAction = new AsynchronousAction();
+            Timer1TickAction = new AsynchronousAction();
         }
 
         public virtual void timer1_Tick(object sender, EventArgs e) {
-            timer1InvokeAndDestroyTickAction.AsynchronousInvokeAndDestroy();
-            timer1TickAction.AsynchronousInvoke();
+            Timer1InvokeAndDestroyTickAction.AsynchronousInvokeAndDestroy();
+            Timer1TickAction.AsynchronousInvoke();
         }
 
         private void animationTimer_Tick(object sender, EventArgs e)
@@ -44,11 +44,8 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public void Close(DialogResult dialogResult)
         {
-            timer1InvokeAndDestroyTickAction += () =>
-            {
-                DialogResult = dialogResult;
-                Close();
-            };
+            DialogResult = dialogResult;
+            Close();
         }
     }
 }

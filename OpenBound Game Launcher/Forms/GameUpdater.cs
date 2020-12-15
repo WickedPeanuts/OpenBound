@@ -188,11 +188,12 @@ namespace OpenBound_Game_Launcher.Forms
                     HttpWebRequest.AsyncDownloadFile(
                         $@"{Parameter.BuildGamePatchURL()}/{pH.BuildPatchPath}",
                         $@"{patchDir}\{pH.BuildPatchPath}",
-                        (percentage, receivedBytes, totalBytes) =>
-                        {
-                            OnReceiveData(pH.BuildPatchPath, currentDownloadedFile, percentage, receivedBytes, totalBytes, downloadStartTime);
-                        },
-                        onFinishDownload: () => { OnFinalizeDownloadingFile(actQueue, pH); },
+                        onReceiveData: 
+                            (percentage, receivedBytes, totalBytes) =>
+                            {
+                                OnReceiveData(pH.BuildPatchPath, currentDownloadedFile, percentage, receivedBytes, totalBytes, downloadStartTime);
+                            },
+                        onReceiveLastData: () => { OnFinalizeDownloadingFile(actQueue, pH); },
                         onFailToDownload: (ex) => { OnFailToDownloadPatch(ex, pH); });
                 });
             }

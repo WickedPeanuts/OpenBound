@@ -13,7 +13,9 @@ namespace OpenBound_Network_Object_Library.WebRequest
 {
     public class HttpWebRequest
     {
-        public static void AsyncDownloadFile(string url, string destinationPath, Action<float, long, long> onReceiveData = default, Action onFinishDownload = default, Action<Exception> onFailToDownload = default)
+        public static void AsyncDownloadFile(string url, string destinationPath,
+            Action<float, long, long> onReceiveData = default, Action onReceiveLastData = default,
+            Action onFinishDownload = default, Action < Exception> onFailToDownload = default)
         {
             //Create the directory the files are being downloaded at
             string directory = destinationPath.Split('\\').Last();
@@ -40,7 +42,7 @@ namespace OpenBound_Network_Object_Library.WebRequest
 
                             if (e.ProgressPercentage >= 100)
                             {
-                                onFinishDownload?.Invoke();
+                                onReceiveLastData?.Invoke();
                             }
                         };
 
@@ -51,6 +53,8 @@ namespace OpenBound_Network_Object_Library.WebRequest
                                 onFailToDownload?.Invoke(e.Error);
                                 return;
                             }
+
+                            onFinishDownload?.Invoke();
                         };
 
                         webClient.DownloadFileAsync(new Uri(url), destinationPath);
