@@ -65,8 +65,8 @@ namespace OpenBound_Game_Launcher.Forms
                     return false;
                 // Application failed to update. Launcher needs to close.
                 case DialogResult.Cancel:
-                    Close(DialogResult = DialogResult.Cancel);
-                    return true;
+                    SetEnableTextBox(false);
+                    return false;
             }
 
             return false;

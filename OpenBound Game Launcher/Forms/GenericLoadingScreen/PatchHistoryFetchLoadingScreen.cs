@@ -56,5 +56,18 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
                 Close(DialogResult.Cancel);
             };
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // PatchHistoryFetchLoadingScreen
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.ClientSize = new System.Drawing.Size(296, 91);
+            this.Name = "PatchHistoryFetchLoadingScreen";
+            this.ResumeLayout(false);
+
+        }
     }
 }

@@ -1,13 +1,9 @@
 ﻿using OpenBound_Patcher.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace OpenBound_Patcher.Forms
@@ -50,7 +46,7 @@ namespace OpenBound_Patcher.Forms
 
             progressBar1.Maximum = fileList.Count;
 
-            for(int i = 0; i < fileList.Count; i++)
+            for (int i = 0; i < fileList.Count; i++)
             {
                 string oldFilePath = fileList[i];
                 string newfilepath = fileList[i].Replace(tmpFolderPath, gameClientPath);
@@ -64,7 +60,7 @@ namespace OpenBound_Patcher.Forms
                         installingLabel.Text = $"{Language.InstallingLabelText}:{displayPath}";
                         File.Move(oldFilePath, newfilepath, true);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         invalidFileList.Add(displayPath);
                     }
@@ -78,31 +74,31 @@ namespace OpenBound_Patcher.Forms
         {
             if (invalidFileList.Count > 0)
             {
-                MessageBox.Show(
-                    "One or more files couldn't be moved from the temporary folder\n" +
-                    $"{tmpFolderPath}\n" +
-                    "into the game's folder.\n" +
-                    $"{gameClientPath}" +
-                    "this error might have happened because your user does not own the rights\n" +
-                    "to perform operations on this folder. You can try doing it manually or\n" +
-                    "update the game again with administrator privilleges. If the error persists\n" +
-                    "contact the support and send them the following file: \"PatchError.log\"\n");
+                MessageBox.Show($@"{Language.Exception1Text1}\n{Language.Exception1Text2}{tmpFolderPath}\n{Language.Exception1Text3}{gameClientPath}",
+                    Language.Exception1Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 invalidFileList.Add($"{currentPatch} -> {downloadedPatch}");
-                File.WriteAllLines($@"{gameClientPath}\PatchError.log", invalidFileList);
-            } else {
+
+                try
+                {
+                    File.WriteAllLines($@"{gameClientPath}\PatchError.log", invalidFileList);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show($@"{Language.Exception2Text1}",
+                        Language.Exception2Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
                 try
                 {
                     Directory.Delete(tmpFolderPath, true);
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("The application couldn't wipe the temporary folder\n" +
-                        $"{tmpFolderPath}\n" +
-                        "this will not generate any problems in your gaming experience but\n" +
-                        "some unused are going to remain in the game until your next\n" +
-                        "installation. Consider granting this application\n" +
-                        "(OpenBound Patcher.exe) administrator privilleges");
+                    MessageBox.Show($@"{Language.Exception3Text1}",
+                        Language.Exception3Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -140,7 +136,7 @@ namespace OpenBound_Patcher.Forms
                 process.StartInfo.Arguments = $@"{currentPatch} {downloadedPatch}";
                 process.Start();
             }
-            catch (Exception) {}
+            catch (Exception) { }
 
             Close();
         }

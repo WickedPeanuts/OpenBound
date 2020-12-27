@@ -11,14 +11,11 @@
  */
 
 using Microsoft.Xna.Framework;
-using OpenBound.GameComponents.Interface.Text;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
 using OpenBound_Network_Object_Library.Entity.Text;
-using OpenBound_Network_Object_Library.FileManagement;
 using OpenBound_Network_Object_Library.FileManager;
 using System;
-using System.Data;
 
 namespace OpenBound.Common
 {
@@ -32,7 +29,7 @@ namespace OpenBound.Common
             GameClientSettingsInformation = launcherInformation.GameClientSettingsInformation;
 
             launcherInformation.GameClientSettingsInformation.WindowedWidth = Math.Max(
-                launcherInformation.GameClientSettingsInformation.WindowedWidth, 
+                launcherInformation.GameClientSettingsInformation.WindowedWidth,
                 launcherInformation.GameClientSettingsInformation.MenuSupportedResolutionWidth);
 
             launcherInformation.GameClientSettingsInformation.WindowedHeight = Math.Max(
@@ -65,7 +62,7 @@ namespace OpenBound.Common
         public static GameClientSettingsInformation GameClientSettingsInformation { get; private set; }
 
         //Gameplay Constants
-        public const int GameplayConstantDelayTimerFirstTurn  = 2000;
+        public const int GameplayConstantDelayTimerFirstTurn = 2000;
         public const int GameplayConstantDelayTimerWindChange = 3000;
         public const float GameplayTimeFrameMaximumDeltaTime = 1 / 60f;
 
@@ -134,11 +131,11 @@ namespace OpenBound.Common
         public const int TankMovementRotationCalculationOffsetY = 25;
 
         //Projectiles
-        public const float ProjectileMovementGravity                   = 9.8f * 20f;
-        public const float ProjectileMovementForceFactor               = 100f;
+        public const float ProjectileMovementGravity = 9.8f * 20f;
+        public const float ProjectileMovementForceFactor = 100f;
         public const float ProjectileMovementTimeElapsedPerInteraction = 0.0005f;
-        public const float ProjectileMovementTotalTimeElapsed          = 0.015f; //At 60fps it should be 0.01666667. The projectiles are going to be slightly faster.
-        public const float ProjectileMovementFixedElapedTime           = 1f / 60f;
+        public const float ProjectileMovementTotalTimeElapsed = 0.015f; //At 60fps it should be 0.01666667. The projectiles are going to be slightly faster.
+        public const float ProjectileMovementFixedElapedTime = 1f / 60f;
 
         public const int ProjectilePlayableMapAreaYLimit = -300;
 
@@ -220,9 +217,9 @@ namespace OpenBound.Common
         public static readonly Color TextColorTeamBlue = new Color(98, 149, 230);
 
         //-- PopupSelectItem - Item Colors
-        public static readonly Color TextColorItemRed    = new Color(156,  56,  16);
-        public static readonly Color TextColorItemGreen  = new Color( 98, 149,  74);
-        public static readonly Color TextColorItemBlue   = new Color( 82, 121, 164);
+        public static readonly Color TextColorItemRed = new Color(156, 56, 16);
+        public static readonly Color TextColorItemGreen = new Color(98, 149, 74);
+        public static readonly Color TextColorItemBlue = new Color(82, 121, 164);
         public static readonly Color TextColorItemPurple = new Color(131, 105, 131);
         #endregion
 
@@ -251,17 +248,17 @@ namespace OpenBound.Common
         public const float ProjectileTeleportationBeaconWindInfluence = 0f;
 
         //Armor
-        public const int ProjectileArmorS1ExplosionRadius  = 25;
-        public const int ProjectileArmorS2ExplosionRadius  = 25;
+        public const int ProjectileArmorS1ExplosionRadius = 25;
+        public const int ProjectileArmorS2ExplosionRadius = 25;
         public const int ProjectileArmorS2EExplosionRadius = 20;
-        public const int ProjectileArmorSSExplosionRadius  = 25;
+        public const int ProjectileArmorSSExplosionRadius = 25;
         public const int ProjectileArmorSSEExplosionRadius = 25;
 
-        public const int ProjectileArmorS1BaseDamage  = 150;
-        public const int ProjectileArmorS2BaseDamage  = 200;
-        public const int ProjectileArmorS2EBaseDamage =  80;
-        public const int ProjectileArmorSSBaseDamage  = 150;
-        public const int ProjectileArmorSSEBaseDamage =  50;
+        public const int ProjectileArmorS1BaseDamage = 150;
+        public const int ProjectileArmorS2BaseDamage = 200;
+        public const int ProjectileArmorS2EBaseDamage = 80;
+        public const int ProjectileArmorSSBaseDamage = 150;
+        public const int ProjectileArmorSSEBaseDamage = 50;
 
         public const float ProjectileArmorS1Mass = 14f;
         public const float ProjectileArmorS2Mass = 14f;
@@ -278,9 +275,9 @@ namespace OpenBound.Common
         public const int ProjectileBigfootS2ExplosionRadius = 25;
         public const int ProjectileBigfootSSExplosionRadius = 25;
 
-        public const int ProjectileBigfootS1BaseDamage =  90;
-        public const int ProjectileBigfootS2BaseDamage =  70;
-        public const int ProjectileBigfootSSBaseDamage =  90;
+        public const int ProjectileBigfootS1BaseDamage = 90;
+        public const int ProjectileBigfootS2BaseDamage = 70;
+        public const int ProjectileBigfootSSBaseDamage = 90;
 
         public const float ProjectileBigfootS1Mass = 14f;
         public const float ProjectileBigfootS2Mass = 14f;
@@ -310,7 +307,7 @@ namespace OpenBound.Common
         public const float ProjectileDragonSSWindInfluence = 1.4f;
 
         public const float ProjectileDragonSSEAccelerationStartingFactor = 200f;
-        public const float ProjectileDragonSSESpeedStartingFactor        = 100f;
+        public const float ProjectileDragonSSESpeedStartingFactor = 100f;
 
         //Mage
         public const int ProjectileMageS1ExplosionRadius = 25;
@@ -354,15 +351,15 @@ namespace OpenBound.Common
 
         //Knight
         //-- Satellite
-        public const float ProjectileKnightDistanceBetweenShots  =   15f;
-        public const float ProjectileKnightSpeed                 =  800f;
-        public const float ProjectileKnightInitialAlpha          =  0.9f;
-        public const float ProjectileKnightTraceDistanceOffset   =   45f;
-        public const float ProjectileKnightTraceAlphaDecay       =  .04f;
-        public const float ProjectileKnightTraceAlphaDecayFactor =  .04f;
-        public const float ProjectileKnightS1OwnerOffset         = -150f;
-        public const float ProjectileKnightS2OwnerOffset         = -300f;
-        public const float ProjectileKnightSSOwnerOffset         = -300f;
+        public const float ProjectileKnightDistanceBetweenShots = 15f;
+        public const float ProjectileKnightSpeed = 800f;
+        public const float ProjectileKnightInitialAlpha = 0.9f;
+        public const float ProjectileKnightTraceDistanceOffset = 45f;
+        public const float ProjectileKnightTraceAlphaDecay = .04f;
+        public const float ProjectileKnightTraceAlphaDecayFactor = .04f;
+        public const float ProjectileKnightS1OwnerOffset = -150f;
+        public const float ProjectileKnightS2OwnerOffset = -300f;
+        public const float ProjectileKnightSSOwnerOffset = -300f;
 
         public const int ProjectileKnightExplosionRadius = 25;
         public const int ProjectileKnightSwordBaseDamage = 80;
@@ -400,15 +397,15 @@ namespace OpenBound.Common
         public const int ProjectileRaonLauncherSSMineMaximumStepsPerTurn = ProjectileRaonLauncherS2MineMaximumStepsPerTurn * 4;
 
         //Trico
-        public const int ProjectileTricoS1ExplosionRadius  = 25;
-        public const int ProjectileTricoS2ExplosionRadius  = 25;
+        public const int ProjectileTricoS1ExplosionRadius = 25;
+        public const int ProjectileTricoS2ExplosionRadius = 25;
         public const int ProjectileTricoS2EExplosionRadius = 20;
-        public const int ProjectileTricoSSExplosionRadius  = 25;
+        public const int ProjectileTricoSSExplosionRadius = 25;
         public const int ProjectileTricoSSEExplosionRadius = 25;
 
-        public const int ProjectileTricoS1BaseDamage  = 200;
-        public const int ProjectileTricoS2BaseDamage  = 180;
-        public const int ProjectileTricoSSBaseDamage  = 120;
+        public const int ProjectileTricoS1BaseDamage = 200;
+        public const int ProjectileTricoS2BaseDamage = 180;
+        public const int ProjectileTricoSSBaseDamage = 120;
 
         public const float ProjectileTricoS1Mass = 10f;
         public const float ProjectileTricoS2Mass = 10f;
@@ -425,17 +422,17 @@ namespace OpenBound.Common
         public static Vector2 ProjectileTricoSSExplosionOffset = new Vector2(20, 0);
 
         //Turtle
-        public const int ProjectileTurtleS1ExplosionRadius  = 25;
-        public const int ProjectileTurtleS2ExplosionRadius  = 25;
+        public const int ProjectileTurtleS1ExplosionRadius = 25;
+        public const int ProjectileTurtleS2ExplosionRadius = 25;
         public const int ProjectileTurtleS2EExplosionRadius = 20;
-        public const int ProjectileTurtleSSExplosionRadius  = 25;
+        public const int ProjectileTurtleSSExplosionRadius = 25;
         public const int ProjectileTurtleSSEExplosionRadius = 15;
 
-        public const int ProjectileTurtleS1BaseDamage  = 150;
-        public const int ProjectileTurtleS2BaseDamage  = 200;
-        public const int ProjectileTurtleS2EBaseDamage =  80;
-        public const int ProjectileTurtleSSBaseDamage  =  50;
-        public const int ProjectileTurtleSSEBaseDamage =  60;
+        public const int ProjectileTurtleS1BaseDamage = 150;
+        public const int ProjectileTurtleS2BaseDamage = 200;
+        public const int ProjectileTurtleS2EBaseDamage = 80;
+        public const int ProjectileTurtleSSBaseDamage = 50;
+        public const int ProjectileTurtleSSEBaseDamage = 60;
 
         public const float ProjectileTurtleS1Mass = 14f;
         public const float ProjectileTurtleS2Mass = 14f;
@@ -445,21 +442,21 @@ namespace OpenBound.Common
         public const float ProjectileTurtleS2WindInfluence = 1.2f;
         public const float ProjectileTurtleSSWindInfluence = 1.2f;
 
-        public const float ProjectileTurtleS2AngleOffsetTimer  = 2f;
+        public const float ProjectileTurtleS2AngleOffsetTimer = 2f;
         public const float ProjectileTurtleS2AngleOffsetFactor = 0.8f;
-        public const float ProjectileTurtleS2RotationFactor    = 1.5f;
+        public const float ProjectileTurtleS2RotationFactor = 1.5f;
 
-        public const float ProjectileTurtleSSTransformTime      = 1.5f;
+        public const float ProjectileTurtleSSTransformTime = 1.5f;
         public const float ProjectileTurtleSSAngleOffsetDegrees = 3;
-        public const float ProjectileTurtleSSBubbleNumber       = 6;
-        public const float ProjectileTurtleSSDampeningFactor    = 3f;
+        public const float ProjectileTurtleSSBubbleNumber = 6;
+        public const float ProjectileTurtleSSDampeningFactor = 3f;
 
         //Lightning
 
         //Projectile
-        public const int ProjectileLightningS1ExplosionRadius  =  25;
-        public const int ProjectileLightningS2ExplosionRadius  =  25;
-        public const int ProjectileLightningSSExplosionRadius  =  25;
+        public const int ProjectileLightningS1ExplosionRadius = 25;
+        public const int ProjectileLightningS2ExplosionRadius = 25;
+        public const int ProjectileLightningSSExplosionRadius = 25;
         public const int ProjectileLightningSSEExplosionRadius = 100;
 
         //Lightning Bolt
@@ -471,16 +468,16 @@ namespace OpenBound.Common
 
 
         public const int ProjectileLightningS1BaseDamage = 95;
-        public const int ProjectileLightningS1ElectricityBaseDamage  = 95;
+        public const int ProjectileLightningS1ElectricityBaseDamage = 95;
         public const int ProjectileLightningS1ElectricityEBaseDamage = 55;
 
         public const int ProjectileLightningS2BaseDamage = 75;
 
-        public const int ProjectileLightningS2ElectricityExplosionRadius  = 25;
+        public const int ProjectileLightningS2ElectricityExplosionRadius = 25;
         public const int ProjectileLightningS2ElectricityEExplosionRadius = 25;
 
-        public const int ProjectileLightningS2ElectricityBaseDamage  = 100;
-        public const int ProjectileLightningS2ElectricityEBaseDamage =  35;
+        public const int ProjectileLightningS2ElectricityBaseDamage = 100;
+        public const int ProjectileLightningS2ElectricityEBaseDamage = 35;
 
 
         public const int ProjectileLightningSSBaseDamage = 200;
@@ -530,7 +527,7 @@ namespace OpenBound.Common
         //Mirror
         public const float WeatherEffectMirrorDamageIncreaseFactor = 1.1f;
         public const float WeatherEffectMirrorDamageIncreaseValue = 5f;
-        public const float WeatherEffectMirrorDistanceFromTopReduction = 2/3f;
+        public const float WeatherEffectMirrorDistanceFromTopReduction = 2 / 3f;
 
         //Electricity
         public const int WeatherEffectElectricityBaseDamage = 0;
@@ -539,11 +536,11 @@ namespace OpenBound.Common
         public const int WeatherEffectElectricityEBaseDamage = 30;
 
         //Thor
-        public static Color NeonGreen  = new Color(057, 255, 020, 255 / 4);
-        public static Color NeonBlue   = new Color(027, 003, 163, 255 / 4);
+        public static Color NeonGreen = new Color(057, 255, 020, 255 / 4);
+        public static Color NeonBlue = new Color(027, 003, 163, 255 / 4);
         public static Color NeonYellow = new Color(204, 255, 000, 255 / 4);
-        public static Color NeonRed    = new Color(255, 007, 058, 255 / 4);
-        public static Color NeonWhite  = new Color(255, 255, 255, 255 / 4);
+        public static Color NeonRed = new Color(255, 007, 058, 255 / 4);
+        public static Color NeonWhite = new Color(255, 255, 255, 255 / 4);
         public static Color[] ColorGradient = new Color[] { NeonGreen, NeonBlue, NeonYellow, NeonRed, NeonWhite };
 
         public const int ProjectileThorExplosionRadius = 25;
