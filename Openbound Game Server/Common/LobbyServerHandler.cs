@@ -19,7 +19,7 @@ namespace OpenBound_Game_Server.Service
     {
         public static void GameServerRegister(string param)
         {
-            bool obj = ObjectWrapper.DeserializeRequest<bool>(param);
+            bool obj = ObjectWrapper.Deserialize<bool>(param);
             Console.WriteLine("- Server registration " + (obj ? "was successfull" : "failed"));
         }
     }

@@ -139,7 +139,7 @@ namespace OpenBound.GameComponents.Level.Scene
             ServerInformationBroker.Instance.ActionCallbackDictionary.AddOrReplace(NetworkObjectParameters.GameServerInGameRequestDeath, RequestDeathAsyncCallback);
             ServerInformationBroker.Instance.ActionCallbackDictionary.AddOrReplace(NetworkObjectParameters.GameServerInGameRequestGameEnd, RequestGameEndAsyncCallback);
             ServerInformationBroker.Instance.ActionCallbackDictionary.AddOrReplace(NetworkObjectParameters.GameServerInGameRequestDisconnect, RequestDisconnectAsyncCallback);
-
+            
             //Gold Handler
             ServerInformationBroker.Instance.ActionCallbackDictionary.AddOrReplace(NetworkObjectParameters.GameServerInGameRequestDamage, ReceiveGoldUpdateRequest);
 
@@ -195,7 +195,7 @@ namespace OpenBound.GameComponents.Level.Scene
             }
         }
 
-        #region Level-Related Methods
+#region Level-Related Methods
         public void SpawnMapElements()
         {
             GameMap map = GameInformation.Instance.RoomMetadata.Map.GameMap;
@@ -214,7 +214,7 @@ namespace OpenBound.GameComponents.Level.Scene
 
             switch (map)
             {
-                #region Metamine/Facky
+#region Metamine/Facky
                 case GameMap.Metamine:
                     BackgroundFlipbookList = new List<Renderable>
                     {
@@ -226,8 +226,8 @@ namespace OpenBound.GameComponents.Level.Scene
 
                     BackgroundFlipbookOffsetList = new List<Vector2>() { new Vector2(-38, -403), new Vector2(-192, -158), new Vector2(163, -270), new Vector2(124, -116) };
                     break;
-                #endregion
-                #region SeaOfHero/Candy
+#endregion
+#region SeaOfHero/Candy
                 case GameMap.SeaOfHero:
                     BackgroundFlipbookList = new List<Renderable>
                     {
@@ -238,7 +238,7 @@ namespace OpenBound.GameComponents.Level.Scene
 
                     BackgroundFlipbookOffsetList = new List<Vector2>() { new Vector2(-415, -235), new Vector2(208, -34), new Vector2(110, 033) };
                     break;
-                #endregion
+#endregion
                 default:
                     return;
             }
@@ -266,9 +266,9 @@ namespace OpenBound.GameComponents.Level.Scene
                     (Background.Position + BackgroundFlipbookOffsetList[i]).ToIntegerDomain();
             }
         }
-        #endregion
+#endregion
 
-        #region Netcode
+#region Netcode
         public void ReceiveGoldUpdateRequest(object newAmount)
         {
             HUD.GoldNumericField.AddValue((int)newAmount - HUD.GoldNumericField.FinalValue);
@@ -477,9 +477,9 @@ namespace OpenBound.GameComponents.Level.Scene
                 Console.WriteLine("Ex: " + ex.StackTrace);
             }
         }
-        #endregion
+#endregion
 
-        #region GameThreads
+#region GameThreads
         public void StartTurnRequesterThread()
         {
             RequestNextTurn = false;
@@ -506,7 +506,7 @@ namespace OpenBound.GameComponents.Level.Scene
             turnRequesterThread.IsBackground = true;
             turnRequesterThread.Start();
         }
-        #endregion
+#endregion
 
         public override void Initialize(GraphicsDevice GraphicsDevice, SpriteBatch SpriteBatch)
         {

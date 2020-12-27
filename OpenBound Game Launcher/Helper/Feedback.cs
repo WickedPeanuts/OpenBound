@@ -8,15 +8,15 @@ namespace OpenBound_Game_Launcher.Helper
 {
     public class Feedback
     {
-        public static void CreateWarningMessageBox(string message, string title = Language.PopupTitleWarning)
+        public static DialogResult CreateWarningMessageBox(string message, 
+            string title = Language.PopupTitleWarning, MessageBoxButtons messageBoxButtons = MessageBoxButtons.OK)
         {
-            MessageBox.Show(message, title,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return MessageBox.Show(message, title, messageBoxButtons, MessageBoxIcon.Warning);
         }
 
-        public static void CreateInformationMessageBox(string message, string title = Language.PopupTitleInformation)
+        public static DialogResult CreateInformationMessageBox(string message, string title = Language.PopupTitleInformation)
         {
-            MessageBox.Show(message, title,
+            return MessageBox.Show(message, title,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

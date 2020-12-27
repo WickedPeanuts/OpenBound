@@ -8,15 +8,16 @@
     <Configurations>Debug;Release;DebugScene</Configurations>
     <AssemblyName>OpenBound Game Launcher</AssemblyName>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugScene|AnyCPU'">
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OpenBound Network Object Library\OpenBound Network Object Library.csproj" />
+    <ProjectReference Include="..\OpenBound Patcher\OpenBound Patcher.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>

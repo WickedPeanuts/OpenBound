@@ -17,6 +17,7 @@ using OpenBound_Network_Object_Library.Models;
 using System.Data;
 using Microsoft.Xna.Framework;
 using System.Security.Policy;
+using OpenBound_Network_Object_Library.FileManagement.Versioning;
 
 namespace OpenBound_Network_Object_Library.Common
 {
@@ -96,6 +97,7 @@ namespace OpenBound_Network_Object_Library.Common
         //Server Information
         public static ServerInformation LoginServerInformation;
         public static ServerInformation LobbyServerInformation;
+        public static ServerInformation FetchServerInformation;
         public static GameServerInformation GameServerInformation;
 
         //Database Information
@@ -112,6 +114,7 @@ namespace OpenBound_Network_Object_Library.Common
         public const int PlayerSession = 0x01;
 
         //Server Default Behaviour
+        public const int FetchServerDefaultPort = 80;
         public const int LoginServerDefaultPort = 8022;
         public const int LobbyServerDefaultPort = 8023;
         public const int GameServerDefaultStartingPort = 8024;
@@ -279,5 +282,22 @@ namespace OpenBound_Network_Object_Library.Common
 
         // SS Lock
         public const int SSCooldownTimer = 3;
+
+        // Manifest
+        public const string ManifestFilename = "FileManifest";
+        public const string ManifestExtension = ".json";
+        public const string GamePatchFilename = "Patch";
+        public const string GamePatchExtension = ".obup"; //OpenBound Update Patch
+
+        // Patch
+        public const string LatestPatchHistoryFilename = "PatchHistory.json";
+        public const string PatchHistoryFilename = "PatchHistory";
+        public const string PatchHistoryExtension = ".json";
+        public const string PatchTemporaryPath = "tmp";
+        public const string PatchUnpackPath = "tmpUnpack";
+        public const string FetchServerVersioningFolder = "versioning";
+        public const string FetchServerPatchesFolder = "game_patches";
+        public const string PatcherProcessName = "OpenBound Patcher.exe";
+        public const string GameClientProcessName = "OpenBound.exe";
     }
 }
