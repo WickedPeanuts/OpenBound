@@ -94,10 +94,16 @@ For further information read the README.md inside each project directory.
 <h3>Bug Reports/Testers</h3>
 
  - [sdyalor](https://github.com/sdyalor)
+ - Judeu
+ - Allerda
+ - MrNeto
+ - Garett
 
 <h3>Game client assets/Datamined values</h3>
 
  - ursoGb
+ - Owaran
+ - [Alexwathever (Wilmer Delgado)](https://github.com/alexwathever)
 
 <h2>Licence and copyright</h2>
 
