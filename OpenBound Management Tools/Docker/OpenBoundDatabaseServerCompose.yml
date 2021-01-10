@@ -1,0 +1,28 @@
+﻿version: '3.8'
+
+volumes:
+  openbound_database_server: {}
+
+services:
+
+    openbound_database_server:
+        image: mcr.microsoft.com/mssql/rhel/server:2019-CU4-rhel-8
+        container_name: openbound-fetch-server
+        restart: always
+        ports:
+            - 1433:1433
+        volumes:
+            - openbound_fetch_server_data:/var/opt/mssql:Z
+        env_file:
+            - ./XXXXXXXXXX.base.env
+        healthcheck:
+            test: bash -c "</dev/tcp/XXXXXXXXXX/1433 && exit 0 || exit 1"
+            start_period: 30s
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1m"
+                max-file: "5"

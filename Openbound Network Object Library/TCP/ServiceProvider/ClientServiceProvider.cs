@@ -32,6 +32,19 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
         protected Action<ClientServiceProvider, string[]> consumerAction;
         
         public Action OnFailToEstabilishConnection;
+        public Action<Exception> OnDisconnect;
+
+        /// <summary>
+        /// Triggers whenever it fails to process/send a message. If it this function returns true, the
+        /// connection is severed.
+        /// </summary>
+        public Func<Exception, bool> OnFailToSendMessage;
+
+        /// <summary>
+        /// Triggers whenever it fails to processs/receive a message. If it this function returns true, the
+        /// connection is severed.
+        /// </summary>
+        public Func<Exception, bool> OnFailToReceiveMessage;
 
         protected Thread operationThread;
         protected Thread consumerThread;
@@ -116,13 +129,29 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
                 {
                     byte[] request = RequestQueue.Dequeue();
                     Array.Resize(ref request, bufferSize);
-                    #warning Things may go wrong??
                     stream.WriteAsync(request, 0, bufferSize);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"AsyncSendMessage: {ex.Message}");
+                
+                if (OnFailToSendMessage != null && OnFailToSendMessage.Invoke(ex))
+                {
+                    Exception disconnectionException = null;
+
+                    try
+                    {
+                        stream.Dispose();
+                    }
+                    catch (Exception streamException)
+                    {
+                        Console.WriteLine($"AsyncSendMessage: {streamException.Message}");
+                        disconnectionException = streamException;
+                    }
+
+                    OnDisconnect?.Invoke(disconnectionException);
+                }
             }
         }
 
@@ -144,18 +173,26 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
                     consumerAction(this, message);
                 }
             }
-            catch (IOException) { /* socket was already disposed */ }
-            catch (Exception ex)
+            catch (Exception genericException)
             {
-                Console.WriteLine($"ConsumerThread: {ex.Message}");
-            }
-            finally
-            {
-                try
+                Console.WriteLine($"ConsumerThread: {genericException.Message}");
+
+                if (OnFailToReceiveMessage != null && OnFailToSendMessage.Invoke(genericException))
                 {
-                    stream.Dispose();
+                    Exception disconnectionException = null;
+
+                    try
+                    {
+                        stream.Dispose();
+                    }
+                    catch (Exception streamException)
+                    {
+                        Console.WriteLine($"ConsumerThread: {streamException.Message}");
+                        disconnectionException = streamException;
+                    }
+
+                    OnDisconnect?.Invoke(disconnectionException);
                 }
-                catch (Exception) { }
             }
         }
     }

@@ -1,0 +1,29 @@
+﻿version: '3.8'
+
+volumes:
+  openbound_fetch_server_data: {}
+
+services:
+    openbound-fetch-server:
+        build:
+            context: ../
+            dockerfile: Docker/Dockerfile.OpenboundFetchServer
+            target: openbound-fetch-server
+            cache_from:
+                - openbound-fetch-server:latest
+        image: openbound-fetch-server
+        container_name: openbound-fetch-server
+        restart: always
+        ports:
+            - 80:8000
+        healthcheck:
+            test: bash -c "</dev/tcp/openbound-fetch-server/8000 && exit 0 || exit 1"
+            start_period: 30s
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '1m'
+                max-file: '5'

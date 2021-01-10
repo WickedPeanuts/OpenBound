@@ -1,0 +1,7 @@
+﻿FROM nginx:1.19.6-alpine as openbound-fetch-server
+COPY ./Docker/ConfigFiles/OpenBoundFetchServer.nginx.conf /etc/nginx/nginx.conf
+
+RUN mkdir -p /files
+
+## Remove default nginx index page
+## RUN rm -fR /usr/share/nginx/html/*

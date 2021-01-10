@@ -381,7 +381,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
 
         private void ExitDoorAction(object sender)
         {
-            ServerInformationBroker.Instance.DisconnectFromGameServer();
+            ServerInformationBroker.Instance.ForceGameServerDisconnection();
             SceneHandler.Instance.RequestSceneChange(SceneType.ServerSelection, TransitionEffectType.RotatingRectangles);
             ((AnimatedButton)sender).Disable();
         }
