@@ -18,6 +18,7 @@ using System.Data;
 using Microsoft.Xna.Framework;
 using System.Security.Policy;
 using OpenBound_Network_Object_Library.FileManagement.Versioning;
+using System.IO;
 
 namespace OpenBound_Network_Object_Library.Common
 {
@@ -299,5 +300,32 @@ namespace OpenBound_Network_Object_Library.Common
         public const string FetchServerPatchesFolder = "game_patches";
         public const string PatcherProcessName = "OpenBound Patcher.exe";
         public const string GameClientProcessName = "OpenBound.exe";
+
+        // Fetching
+
+        public static readonly string LatestPatchHistoryPath = @$"{Directory.GetCurrentDirectory()}\{PatchTemporaryPath}\{LatestPatchHistoryFilename}";
+
+        // In case you decide to change this path, remember to update the description and a few fields in the following files
+        // OpenBound_Management_Tools/Docker/ConfigFiles/DockerFIle.OpenBoundFetchServerCompose
+        // OpenBound_Management_Tools/Docker/ConfigFiles/OpenBoundFetchServer.nginx.conf
+        public static string BuildFetchURL()
+        {
+            return $@"{FetchServerInformation.ServerPublicAddress}:{FetchServerInformation.ServerPort}";
+        }
+
+        public static string BuildFetchVersioningURL()
+        {
+            return $@"{BuildFetchURL()}/{FetchServerVersioningFolder}";
+        }
+
+        public static string BuildGamePatchURL()
+        {
+            return $@"{BuildFetchVersioningURL()}/{FetchServerPatchesFolder}";
+        }
+
+        public static string BuildFetchHistoryURL()
+        {
+            return $@"{BuildFetchVersioningURL()}/{LatestPatchHistoryFilename}";
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OpenBound_Game_Launcher.Common;
+using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.FileManagement.Versioning;
 using OpenBound_Network_Object_Library.WebRequest;
 using System;
@@ -15,10 +16,10 @@ namespace OpenBound_Game_Launcher.Forms.GenericLoadingScreen
 
         public PatchHistoryFetchLoadingScreen()
         {
-            latestPatchHistoryPath = Parameter.LatestPatchHistoryPath;
+            latestPatchHistoryPath = NetworkObjectParameters.LatestPatchHistoryPath;
 
             HttpWebRequest.AsyncDownloadFile(
-                Parameter.BuildFetchHistoryURL(),
+                NetworkObjectParameters.BuildFetchHistoryURL(),
                 latestPatchHistoryPath,
                 onFailToDownload: OnFailToDownload,
                 onFinishDownload: OnFinishDownload
