@@ -35,8 +35,10 @@ namespace OpenBound_Management_Tools.Forms
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // dockerInstallFetchServerContainerButton
@@ -51,9 +53,9 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // createGameUpdatePatch
             // 
-            this.createGameUpdatePatch.Location = new System.Drawing.Point(215, 362);
+            this.createGameUpdatePatch.Location = new System.Drawing.Point(6, 22);
             this.createGameUpdatePatch.Name = "createGameUpdatePatch";
-            this.createGameUpdatePatch.Size = new System.Drawing.Size(161, 26);
+            this.createGameUpdatePatch.Size = new System.Drawing.Size(238, 40);
             this.createGameUpdatePatch.TabIndex = 1;
             this.createGameUpdatePatch.Text = "Create Game Update Patch";
             this.createGameUpdatePatch.UseVisualStyleBackColor = true;
@@ -97,18 +99,29 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Docker Server Installation";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.createGameUpdatePatch);
+            this.groupBox3.Location = new System.Drawing.Point(12, 268);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(250, 250);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Game Update Patch";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(697, 493);
+            this.ClientSize = new System.Drawing.Size(693, 550);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.createGameUpdatePatch);
             this.Name = "MainMenu";
             this.Text = "MainMenu";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -121,5 +134,6 @@ namespace OpenBound_Management_Tools.Forms
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

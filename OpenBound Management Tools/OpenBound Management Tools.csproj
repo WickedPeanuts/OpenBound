@@ -21,16 +21,16 @@
     <None Update="Docker\Compose_up.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\ConfigFiles\OpenBoundFetchServer.nginx.conf">
+    <None Update="DockerTemplates\FetchServer\ConfigFiles\OpenBoundFetchServer.nginx.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\Dockerfile.OpenBoundFetchServer">
+    <None Update="DockerTemplates\FetchServer\Dockerfile.OpenBoundFetchServer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\OpenBoundDatabaseServerCompose.yml">
+    <None Update="DockerTemplates\OpenBoundDatabaseServerCompose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Docker\OpenBoundFetchServerCompose.yml">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
