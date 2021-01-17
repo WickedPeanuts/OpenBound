@@ -99,8 +99,10 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
 
                 RequestQueue.OnEnqueueAction = (item) =>
                 {
-                    while (!client.Connected)
-                        Thread.Sleep(100);
+                    if (!client.Connected) {
+                        OnFailToSendMessage?.Invoke(null);
+                        return;
+                    }
 
                     AsyncSendMessage(stream);
                 };
@@ -179,7 +181,7 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
 
                 if (OnFailToReceiveMessage != null && OnFailToSendMessage.Invoke(genericException))
                 {
-                    Exception disconnectionException = null;
+                    Exception disconnectionException = genericException;
 
                     try
                     {

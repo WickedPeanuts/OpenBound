@@ -107,12 +107,12 @@ namespace OpenBound.Common
 
         //Popup - AlertMessage - Warning
         public const string PopupAlertMessageTitleWarning             = "Warning";
-        public const string PopupAlertMessageTitleError               = "Unexpected Error ";
+        public const string PopupAlertMessageTitleError               = " Unexpected Error ";
         public const string PopupAlertMessageServerDisconnection      = "You have been disconnected from the ";
-        public const string PopupAlertMessageGameServerDisconnection  = "You are going to be redirected to server selection screen.";
+        public const string PopupAlertMessageGameServerDisconnection  = "You are going to be redirected to server selection\nscreen.";
         public const string PopupAlertMessageLobbyServerDisconnection = "You can not use features like buddy list or\nacess the server list screen";
-        public const string PopupAlertMessageGameServer               = "Game Server.";
-        public const string PopupAlertMessageLobbyServer              = "Lobby Server.";
+        public const string PopupAlertMessageGameServer               = "Game Server";
+        public const string PopupAlertMessageLobbyServer              = "Lobby Server";
 
         #region Button Texts
         //Animated Buttons

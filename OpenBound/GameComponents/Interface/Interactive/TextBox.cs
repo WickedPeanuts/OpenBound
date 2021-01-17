@@ -159,7 +159,7 @@ namespace OpenBound.GameComponents.Interface.Interactive
         {
             while (isThreadEnabled)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 lock (playerMessageQueue)
                 {
                     if (playerMessageQueue.Count == 0) continue;

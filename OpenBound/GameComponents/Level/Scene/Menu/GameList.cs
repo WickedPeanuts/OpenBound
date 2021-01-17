@@ -553,6 +553,11 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
             #endregion
         }
 
+        public override void OnDropGameServerConnection(Exception ex)
+        {
+            base.OnDropGameServerConnection(ex);
+        }
+
         public void CreateBottomBarAnimatedButtons()
         {
             //Animated Buttons

@@ -112,7 +112,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             title = CompositeSpriteText.CreateCompositeSpriteText(titleSTList, Orientation.Horizontal, Alignment.Left, default);
             message = CompositeSpriteText.CreateCompositeSpriteText(stMatrix, Alignment.Left, Vector2.Zero + new Vector2(0, 20), new Vector2(0, 0));
 
-            PopupAlertMessage popup = new PopupAlertMessage(title, message, AlertMessageType.Accept);
+            PopupAlertMessage popup = new PopupAlertMessage(title, message, AlertMessageType.Cancel);
             popup.OnConfirm = (x) => PopupHandler.Remove(popup);
 
             return popup;
@@ -137,7 +137,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             title = CompositeSpriteText.CreateCompositeSpriteText(titleSTList, Orientation.Horizontal, Alignment.Left, default);
             message = CompositeSpriteText.CreateCompositeSpriteText(stMatrix, Alignment.Left, Vector2.Zero + new Vector2(0, 20), new Vector2(0, 0));
 
-            PopupAlertMessage popup = new PopupAlertMessage(title, message, AlertMessageType.Accept);
+            PopupAlertMessage popup = new PopupAlertMessage(title, message, AlertMessageType.Cancel);
             popup.OnConfirm = (x) => PopupHandler.Remove(popup);
 
             return popup;
@@ -146,28 +146,32 @@ namespace OpenBound.GameComponents.Interface.Popup
         public static PopupAlertMessage GameServerDisconnection()
         {
             List<List<SpriteText>> stMatrix;
-            List<SpriteText> titleSTList, messageSTList1;
+            List<SpriteText> titleSTList, messageSTList1, messageSTList2;
 
             titleSTList = new List<SpriteText>();
-            titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Exclamation_Triangle, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Exclamation_Triangle, Color.Red,   Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
             titleSTList.Add(new SpriteText(FontTextType.Consolas11,    Language.PopupAlertMessageTitleError,                 Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Exclamation_Triangle, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Exclamation_Triangle, Color.Red,   Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             messageSTList1 = new List<SpriteText>();
             messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageServerDisconnection,       Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
             messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageGameServer,                Color.CadetBlue, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageGameServerDisconnection,   Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, ".",                                                 Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+
+            messageSTList2 = new List<SpriteText>();
+            messageSTList2.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageGameServerDisconnection, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             stMatrix = new List<List<SpriteText>>();
             stMatrix.Add(messageSTList1);
+            stMatrix.Add(messageSTList2);
 
             CompositeSpriteText title, message;
 
             title = CompositeSpriteText.CreateCompositeSpriteText(titleSTList, Orientation.Horizontal, Alignment.Left, default);
             message = CompositeSpriteText.CreateCompositeSpriteText(stMatrix, Alignment.Left, Vector2.Zero + new Vector2(0, 20), new Vector2(0, 0));
 
-            PopupAlertMessage popup = new PopupAlertMessage(title, message);
-            popup.OnConfirm = (x) => { SceneHandler.Instance.RequestSceneChange(SceneType.ServerSelection, TransitionEffectType.RotatingRectangles); };
+            PopupAlertMessage popup = new PopupAlertMessage(title, message, AlertMessageType.Cancel);
+            popup.OnClose = (x) => { SceneHandler.Instance.RequestSceneChange(SceneType.ServerSelection, TransitionEffectType.RotatingRectangles); };
 
             return popup;
         }
