@@ -1,23 +1,23 @@
 ﻿version: '3.8'
 
 volumes:
-  openbound_fetch_server_data: {}
+    __volume_name__: {}
 
 services:
-    %container_name%:
+    __container_name__:
         build:
             context: ../
             dockerfile: Docker/Dockerfile.OpenBoundFetchServer
-            target: %container_name%
+            target: __container_name__
             cache_from:
-                - %container_name%:latest
-        image: %container_name%
-        container_name: %container_name%
+                - __container_name__:latest
+        image: __container_name__
+        container_name: __container_name__
         restart: always
         ports:
-            - %local_port%:%container_port%
+            - __local_port__:__container_port__
         healthcheck:
-            test: bash -c "</dev/tcp/openbound-fetch-server/%container_port% && exit 0 || exit 1"
+            test: bash -c "</dev/tcp/__container_name__/__container_port && exit 0 || exit 1"
             start_period: 30s
             interval: 30s
             timeout: 10s

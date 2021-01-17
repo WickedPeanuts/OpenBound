@@ -59,6 +59,7 @@ namespace OpenBound_Management_Tools.Forms
             this.createGameUpdatePatch.TabIndex = 1;
             this.createGameUpdatePatch.Text = "Create Game Update Patch";
             this.createGameUpdatePatch.UseVisualStyleBackColor = true;
+            this.createGameUpdatePatch.Click += new System.EventHandler(this.CreateGameUpdatePatch_Click);
             // 
             // uploadGameUpdatePatchesToAllContainers
             // 
@@ -68,6 +69,7 @@ namespace OpenBound_Management_Tools.Forms
             this.uploadGameUpdatePatchesToAllContainers.TabIndex = 2;
             this.uploadGameUpdatePatchesToAllContainers.Text = "Upload All Existing Game Update Patches To All Containers";
             this.uploadGameUpdatePatchesToAllContainers.UseVisualStyleBackColor = true;
+            this.uploadGameUpdatePatchesToAllContainers.Click += new System.EventHandler(this.UploadGameUpdatePatchesToAllContainers_Click);
             // 
             // button1
             // 

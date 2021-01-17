@@ -39,9 +39,10 @@ namespace OpenBound_Management_Tools.Helper
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        public static void ExecuteShellCommand(string command)
+        public static string ExecuteShellCommand(string command)
         {
             Console.WriteLine($"Executing command: {command}");
+            string output = "";
 
             using (Process process = new Process())
             {
@@ -52,11 +53,13 @@ namespace OpenBound_Management_Tools.Helper
                 process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
                 process.Start();
 
-                Console.WriteLine(process.StandardOutput.ReadToEnd());
+                Console.WriteLine(output = process.StandardOutput.ReadToEnd());
                 Console.ResetColor();
 
                 process.WaitForExit();
             }
+
+            return output;
         }
     }
 }
