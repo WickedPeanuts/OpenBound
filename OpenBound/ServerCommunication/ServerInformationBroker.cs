@@ -22,12 +22,14 @@ using System.Collections.Generic;
 using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.Entity.Text;
 using OpenBound_Network_Object_Library.Extension;
+using OpenBound.GameComponents.Level.Scene;
 
 namespace OpenBound.ServerCommunication
 {
     public class ServerInformationBroker
     {
         public Dictionary<int, Action<object>> ActionCallbackDictionary;
+
         private static ServerInformationBroker instance;
         public static ServerInformationBroker Instance
         {
@@ -76,9 +78,20 @@ namespace OpenBound.ServerCommunication
                 GameServerConsumerAction);
 
             GameServerServiceProvider.StartOperation();
+
+            GameServerServiceProvider.OnDisconnect += OnDisconnect;
+
+            //If the application fails to send or to receive, force the disconnection
+            GameServerServiceProvider.OnFailToSendMessage =
+                GameServerServiceProvider.OnFailToReceiveMessage = (ex) => { return true; };
         }
 
-        public void DisconnectFromGameServer()
+        public void OnDisconnect(Exception ex)
+        {
+            SceneHandler.Instance.CurrentScene.OnDropGameServerConnection(ex);
+        }
+
+        public void ForceGameServerDisconnection()
         {
             Instance.GameServerServiceProvider.StopOperation();
         }

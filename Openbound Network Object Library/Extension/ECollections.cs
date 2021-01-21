@@ -118,11 +118,27 @@ namespace OpenBound_Network_Object_Library.Extension
             source.Add(key, value);
         }
 
-        public static void ForEach<K, V>(this Dictionary<K, V> source, Action<V> action)
+        public static void ForEachValues<K, V>(this Dictionary<K, V> source, Action<V> action)
         {
             foreach (KeyValuePair<K, V> kvp in source)
             {
                 action(kvp.Value);
+            }
+        }
+
+        public static void ForEachKeys<K, V>(this Dictionary<K, V> source, Action<K> action)
+        {
+            foreach (KeyValuePair<K, V> kvp in source)
+            {
+                action(kvp.Key);
+            }
+        }
+
+        public static void ForEach<K, V>(this Dictionary<K, V> source, Action<KeyValuePair<K, V>> action)
+        {
+            foreach (KeyValuePair<K, V> kvp in source)
+            {
+                action(kvp);
             }
         }
     }

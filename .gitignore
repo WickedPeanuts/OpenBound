@@ -266,3 +266,5 @@ Avatar API/appsettings.Development.json
 #OpenBound Engine
 !OpenBound/Content/Content.mgcb
 OpenBound/Content
+
+OpenBound Asset Tools/Output

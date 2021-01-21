@@ -19,6 +19,7 @@ using OpenBound_Game_Launcher.Forms.GenericLoadingScreen;
 using OpenBound_Network_Object_Library.Entity;
 using System;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace OpenBound
 {
@@ -52,6 +53,10 @@ namespace OpenBound
 
         static bool CreateLauncherScreen(string[] args)
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             if (args.Length == 0)
                 args = new string[] { "" };
 

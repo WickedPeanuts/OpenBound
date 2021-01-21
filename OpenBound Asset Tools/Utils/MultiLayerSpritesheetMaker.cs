@@ -69,10 +69,10 @@ namespace Openbound_Asset_Tools.Utils
             Console.WriteLine("Squish Y factor:");
             int squishYFactor = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Inicial X Shift factor:");
+            Console.WriteLine("Initial X Shift factor:");
             int initialXFactor = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Inicial Y Shift factor:");
+            Console.WriteLine("Initial Y Shift factor:");
             int initialYFactor = int.Parse(Console.ReadLine());
 
             (int, int) newBigImageSize = ((newSize.Item1 - squishXFactor + initialXFactor) * imgPerLine, (newSize.Item2 - squishYFactor) * (int)Math.Ceiling((double)imagePerLayer[0] / imgPerLine));

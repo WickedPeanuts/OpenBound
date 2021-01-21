@@ -186,7 +186,7 @@ namespace OpenBound_Game_Launcher.Forms
                     currentProgressBar.Value = 0;
 
                     HttpWebRequest.AsyncDownloadFile(
-                        $@"{Parameter.BuildGamePatchURL()}/{pH.BuildPatchPath}",
+                        $@"{NetworkObjectParameters.BuildGamePatchURL()}/{pH.BuildPatchPath}",
                         $@"{patchDir}\{pH.BuildPatchPath}",
                         onReceiveData: 
                             (percentage, receivedBytes, totalBytes) =>

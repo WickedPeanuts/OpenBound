@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenBound Asset Tools", "Op
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avatar API", "Avatar API\Avatar API.csproj", "{73A4FFA0-A3BA-4279-A0AE-E1D45ED69116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenBound Patcher", "OpenBound Patcher\OpenBound Patcher.csproj", "{B68F0FD2-0189-4168-9A21-F180A58E4CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenBound Patcher", "OpenBound Patcher\OpenBound Patcher.csproj", "{B68F0FD2-0189-4168-9A21-F180A58E4CBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenBound Management Tools", "OpenBound Management Tools\OpenBound Management Tools.csproj", "{9288D81C-F7C1-4E3B-9573-855DD7A67656}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,18 @@ Global
 		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{B68F0FD2-0189-4168-9A21-F180A58E4CBD}.Release|x86.Build.0 = Release|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Debug|x86.Build.0 = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.DebugScene|Any CPU.ActiveCfg = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.DebugScene|Any CPU.Build.0 = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.DebugScene|x86.ActiveCfg = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.DebugScene|x86.Build.0 = Debug|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Release|x86.ActiveCfg = Release|Any CPU
+		{9288D81C-F7C1-4E3B-9573-855DD7A67656}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

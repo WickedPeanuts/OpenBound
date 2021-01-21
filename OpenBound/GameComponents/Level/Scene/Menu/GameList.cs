@@ -381,7 +381,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
 
         private void ExitDoorAction(object sender)
         {
-            ServerInformationBroker.Instance.DisconnectFromGameServer();
+            ServerInformationBroker.Instance.ForceGameServerDisconnection();
             SceneHandler.Instance.RequestSceneChange(SceneType.ServerSelection, TransitionEffectType.RotatingRectangles);
             ((AnimatedButton)sender).Disable();
         }
@@ -551,6 +551,11 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
                     Parameter.ScreenCenter + initialOffset + shiftingFactor * buttonIndex++,
                     (sender) => { }));
             #endregion
+        }
+
+        public override void OnDropGameServerConnection(Exception ex)
+        {
+            base.OnDropGameServerConnection(ex);
         }
 
         public void CreateBottomBarAnimatedButtons()

@@ -25,7 +25,6 @@ namespace OpenBound.GameComponents.Interface.Popup
         private static List<PopupMenu> toBeAddedPopupList;
 
         public static PopupGameOptions PopupGameOptions { get; protected set; }
-        public static PopupCreateGame PopupCreateGame { get; protected set; }
 
         public static void Initialize()
         {

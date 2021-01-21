@@ -97,14 +97,22 @@ namespace OpenBound.Common
 
         //Popup - AlertMessage - Avatar Purchase Feedback
         public const string PopupAlertMessageAvatarPurchaseSuccessTitle     = "  Congratulations!  ";
-        public const int    PopupAlertMessageAvatarPurchaseSuccessTitleIcon = 0xf005;
 
         public const string PopupAlertMessageAvatarPurchaseSuccessMessage11 = "Your new aquisition [";
         public const string PopupAlertMessageAvatarPurchaseSuccessMessage12 = "]";
         public const string PopupAlertMessageAvatarPurchaseSuccessMessage21 = "Is already available at your inventory.\nIf you are unnable to see it then you should\nrefresh your search filters.";
 
-        public const string PopupAlertMessageAvatarPurchaseFailureTitle = "Something unexpected ocurred.";
+        public const string PopupAlertMessageAvatarPurchaseFailureTitle     = "Something unexpected ocurred.";
         public const string PopupAlertMessageAvatarPurchaseFailureMessage11 = "For some odd reason the server\ncould not process your transaction\ntry again later and if the problem\npersists, contact the support.";
+
+        //Popup - AlertMessage - Warning
+        public const string PopupAlertMessageTitleWarning             = "Warning";
+        public const string PopupAlertMessageTitleError               = " Unexpected Error ";
+        public const string PopupAlertMessageServerDisconnection      = "You have been disconnected from the ";
+        public const string PopupAlertMessageGameServerDisconnection  = "You are going to be redirected to server selection\nscreen.";
+        public const string PopupAlertMessageLobbyServerDisconnection = "You can not use features like buddy list or\nacess the server list screen";
+        public const string PopupAlertMessageGameServer               = "Game Server";
+        public const string PopupAlertMessageLobbyServer              = "Lobby Server";
 
         #region Button Texts
         //Animated Buttons
@@ -159,27 +167,27 @@ namespace OpenBound.Common
 
         //--Avatar Shop - Popup - Buy
         public const string PopupTextConfirmPuchase = "Confirm puchase with";
-        public const string PopupTextBalance = "Balance";
-        public const string PopupTextCurrencyGold = "Gold";
-        public const string PopupTextCurrencyCash = "Cash";
+        public const string PopupTextBalance        = "Balance";
+        public const string PopupTextCurrencyGold   = "Gold";
+        public const string PopupTextCurrencyCash   = "Cash";
 
         //--Avatar Shop
-        public const string AvatarShopTabShop = "Shop";
+        public const string AvatarShopTabShop      = "Shop";
         public const string AvatarShopTabInventory = "Inventory";
 
 
-        public const string IconSubtitleOffline = "Offline";
-        public const string IconSubtitleLowPopulation = "Low";
+        public const string IconSubtitleOffline          = "Offline";
+        public const string IconSubtitleLowPopulation    = "Low";
         public const string IconSubtitleMediumPopulation = "Medium";
-        public const string IconSubtitleHighPopulation = "High";
-        public const string IconSubtitleFull = "Full";
+        public const string IconSubtitleHighPopulation   = "High";
+        public const string IconSubtitleFull             = "Full";
 
         public const string LoadingScreenMinimapCommand = "Press Up/Down to control the tactical map";
 
-        public const string PreviewTextAvatarShop = "Room Preview";
+        public const string PreviewTextAvatarShop         = "Room Preview";
         public const string PreviewTextAvatarShopEquipped = "Room Preview - Equipped";
 
-        public const string InGamePreviewTextAvatarShop = "In-Game Preview";
+        public const string InGamePreviewTextAvatarShop         = "In-Game Preview";
         public const string InGamePreviewTextAvatarShopEquipped = "In-Game Preview - Equipped";
 
 

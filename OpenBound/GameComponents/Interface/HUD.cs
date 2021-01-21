@@ -682,7 +682,7 @@ namespace OpenBound.GameComponents.Interface
             UpdateTimer(gameTime);
 
             //StatusBar
-            StatusBarDictionary.ForEach((x) => x.Update());
+            StatusBarDictionary.ForEachValues((x) => x.Update());
         }
 
         public void UpdatePreviousShotMarker()
@@ -738,7 +738,7 @@ namespace OpenBound.GameComponents.Interface
             turnCounterBallooon.Draw(gameTime, spriteBatch);
 
             //Draw
-            StatusBarDictionary.ForEach((x) => x.Draw(spriteBatch));
+            StatusBarDictionary.ForEachValues((x) => x.Draw(spriteBatch));
         }
 
         public void Dispose()
