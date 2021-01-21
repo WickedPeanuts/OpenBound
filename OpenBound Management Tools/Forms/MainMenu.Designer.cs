@@ -36,6 +36,7 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dockerInstallGameServerContainerButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -75,7 +76,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             this.button1.Location = new System.Drawing.Point(6, 66);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(238, 40);
+            this.button1.Size = new System.Drawing.Size(238, 38);
             this.button1.TabIndex = 3;
             this.button1.Text = "Edit And Update All PatchHistory.json On Fetch Server Containers";
             this.button1.UseVisualStyleBackColor = true;
@@ -93,6 +94,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.dockerInstallGameServerContainerButton);
             this.groupBox2.Controls.Add(this.dockerInstallFetchServerContainerButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
@@ -110,6 +112,16 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Game Update Patch";
+            // 
+            // dockerInstallGameServerContainerButton
+            // 
+            this.dockerInstallGameServerContainerButton.Location = new System.Drawing.Point(6, 66);
+            this.dockerInstallGameServerContainerButton.Name = "dockerInstallGameServerContainerButton";
+            this.dockerInstallGameServerContainerButton.Size = new System.Drawing.Size(238, 38);
+            this.dockerInstallGameServerContainerButton.TabIndex = 1;
+            this.dockerInstallGameServerContainerButton.Text = "Install Game Server Containers";
+            this.dockerInstallGameServerContainerButton.UseVisualStyleBackColor = true;
+            this.dockerInstallGameServerContainerButton.Click += new System.EventHandler(this.dockerInstallGameServerContainerButton_Click);
             // 
             // MainMenu
             // 
@@ -137,5 +149,6 @@ namespace OpenBound_Management_Tools.Forms
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button dockerInstallGameServerContainerButton;
     }
 }

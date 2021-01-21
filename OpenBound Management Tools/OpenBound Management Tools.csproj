@@ -15,6 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DockerTemplates\GameServer\.dockerignore">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerTemplates\GameServer\GameServer.Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerTemplates\GameServer\OpenBoundGameServerCompose.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Docker\Compose_build.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

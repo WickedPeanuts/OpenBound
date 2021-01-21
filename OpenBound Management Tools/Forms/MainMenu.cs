@@ -1,6 +1,7 @@
 ﻿using OpenBound_Management_Tools.Common;
 using OpenBound_Management_Tools.Helper;
 using OpenBound_Network_Object_Library.Common;
+using OpenBound_Network_Object_Library.FileManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,17 +18,6 @@ namespace OpenBound_Management_Tools.Forms
 {
     public partial class MainMenu : Form
     {
-        public class UpdatePatchEntry {
-            public string PatchHistoryFile;
-            public List<string> PatchFiles;
-
-            public UpdatePatchEntry()
-            {
-                PatchHistoryFile = "";
-                PatchFiles = new List<string>();
-            }
-        }
-
         public MainMenu()
         {
             InitializeComponent();
@@ -53,7 +43,7 @@ namespace OpenBound_Management_Tools.Forms
             Console.WriteLine("Enter the number of containers you intend to create: ");
             int.TryParse(Console.ReadLine(), out numberOfContainers);
 
-            Console.WriteLine("Enter the starting number of local ports you wish to use (default is 8100): ");
+            Console.WriteLine($"Enter the starting number of local ports you wish to use (default is {Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT}): ");
             int.TryParse(Console.ReadLine(), out startingLocalPort);
 
             Dictionary<string, string> replacingTemplateFields
@@ -65,6 +55,8 @@ namespace OpenBound_Management_Tools.Forms
                     { "__volume_name__",         volumeName },
                     { "__local_port__",          startingLocalPort.ToString() },
                     { "__container_port__",      containerPort.ToString() },
+                    { "__context__",             Parameter.DEFAULT_FETCH_SERVER_CONTEXT },
+                    { "__dockerfile_path__",     Parameter.DEFAULT_FETCH_SERVER_DOCKERFILE_PATH }
                 };
 
             PipelineHelper.GenerateTemplateFiles(Directory.GetCurrentDirectory() + @"\DockerTemplates\FetchServer",
@@ -78,6 +70,61 @@ namespace OpenBound_Management_Tools.Forms
                 //PipelineHelper.ExecuteShellCommand(@$"docker-compose -p openbound-fetch-server -f .\Docker\OpenBoundFetchServerCompose.yml up -d {newContainerName}");
             }
             
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
+            Program.HideConsole();
+        }
+
+        private void dockerInstallGameServerContainerButton_Click(object sender, EventArgs e)
+        {
+            Program.ShowConsole();
+            Console.Clear();
+
+            Console.WriteLine("---------------------");
+            Console.WriteLine("Creating game server containers");
+            Console.WriteLine("---------------------\n\n");
+
+            int containerPort = Parameter.DEFAULT_GAME_SERVER_CONTAINER_PORT;
+            int startingLocalPort = Parameter.DEFAULT_GAME_SERVER_STARTING_PORT;
+            string containerName = Parameter.DEFAILT_GAME_SERVER_CONTAINER_NAME;
+            string volumeName = Parameter.DEFAULT_GAME_SERVER_VOLUME_NAME;
+            int numberOfContainers;
+
+            Console.WriteLine("Enter the starting number of local ports you wish to use (default is 8100): ");
+            int.TryParse(Console.ReadLine(), out startingLocalPort);
+
+            Dictionary<string, string> replacingTemplateFields
+                = new Dictionary<string, string>()
+                {
+                    { "__container_name__",      containerName },
+                    { "__volume_name__",         volumeName },
+                    { "__local_port__",          startingLocalPort.ToString() },
+                    { "__container_port__",      containerPort.ToString() },
+                    { "__context__",             Parameter.DEFAULT_GAME_SERVER_CONTEXT },
+                    { "__dockerfile_path__",     Parameter.DEFAULT_GAME_SERVER_DOCKERFILE_PATH }
+                };
+
+            Console.WriteLine("Select the base project folder. This folder contains the \".sln\" file.");
+            
+            string folder = PipelineHelper.SelectFolder();
+            string newDirectory = $"{Directory.GetCurrentDirectory()}/tmp/GameServer/OpenBound";
+            Directory.CreateDirectory(newDirectory);
+            PipelineHelper.CopyFolder(folder, newDirectory);
+
+            PipelineHelper.GenerateTemplateFiles(Directory.GetCurrentDirectory() + @"/DockerTemplates/GameServer",
+                newDirectory, replacingTemplateFields);
+
+            File.Move($"{newDirectory}/GameServer.Dockerfile", $"{newDirectory}/OpenBound Game Server/GameServer.Dockerfile", true);
+            File.Move($"{newDirectory}/OpenBoundGameServerCompose.yml", $"{Directory.GetParent(newDirectory).FullName}/OpenBoundGameServerCompose.yml", true);
+
+            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer);
+
+            
+
+            PipelineHelper.ExecuteShellCommand(@$"cd ");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServerCompose.yml build");
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 

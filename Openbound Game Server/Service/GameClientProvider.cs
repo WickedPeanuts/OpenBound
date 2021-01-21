@@ -10,24 +10,21 @@
  * You should have received a copy of the GNU General Public License along with OpenBound. If not, see http://www.gnu.org/licenses/.
  */
 
+using Microsoft.EntityFrameworkCore;
 using OpenBound_Game_Server.Common;
 using OpenBound_Game_Server.Server;
 using OpenBound_Network_Object_Library.Common;
-using OpenBound_Network_Object_Library.Entity;
-using OpenBound_Network_Object_Library.Entity.Sync;
-using OpenBound_Network_Object_Library.Extension;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using OpenBound_Network_Object_Library.Models;
-using OpenBound_Network_Object_Library.Entity.Text;
 using OpenBound_Network_Object_Library.Database.Context;
 using OpenBound_Network_Object_Library.Database.Controller;
-using System.Runtime.Serialization.Formatters;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore;
+using OpenBound_Network_Object_Library.Entity;
+using OpenBound_Network_Object_Library.Entity.Sync;
+using OpenBound_Network_Object_Library.Entity.Text;
+using OpenBound_Network_Object_Library.Extension;
+using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.TCP.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenBound_Game_Server.Service
 {
@@ -306,13 +303,13 @@ namespace OpenBound_Game_Server.Service
                     {
                         int readyPlayers = roomUnion.Where((x) => x.PlayerRoomStatus == PlayerRoomStatus.Ready).Count();
 
-                        #if DEBUG
+#if DEBUG
                         if (/*readyPlayers + 1 == room.NumberOfPlayers &&
                             room.TeamA.Count() == room.TeamB.Count()*/true)
-                        #else
+#else
                         if (readyPlayers + 1 == room.NumberOfPlayers &&
                             room.TeamA.Count() == room.TeamB.Count())
-                        #endif
+#endif
                         {
                             Console.WriteLine($" - Room ({room.ID} - {room.Name}) has started!");
 
@@ -462,7 +459,7 @@ namespace OpenBound_Game_Server.Service
                 BroadcastToPlayer(NetworkObjectParameters.GameServerRoomStartInGameScene, null, roomUnion);
             }
         }
-#endregion
+        #endregion
 
         #region InGame / Requests
         public static void GameServerInGameStartMatch(PlayerSession playerSession)
@@ -588,7 +585,7 @@ namespace OpenBound_Game_Server.Service
 
                 lock (mm)
                 {
-                    mm.ComputePlayerItem(filter);    
+                    mm.ComputePlayerItem(filter);
                 }
 
                 BroadcastToPlayer(NetworkObjectParameters.GameServerInGameRequestItemUsage, filter, mm.MatchUnion);
@@ -599,7 +596,7 @@ namespace OpenBound_Game_Server.Service
             }
         }
 
-        #warning TODO: Simplify
+#warning TODO: Simplify
         public static void GameServerInGameRequestDamage(string param, PlayerSession playerSession)
         {
             try
@@ -637,7 +634,8 @@ namespace OpenBound_Game_Server.Service
 
                 List<List<CustomMessage>> llCM = new List<List<CustomMessage>>();
 
-                lock (mm) {
+                lock (mm)
+                {
                     pList = mm.MatchUnion;
                     syncMobileList = mm.SyncMobileList;
                     alivePlayerList = mm.SyncMobileList.Where((x) => x.IsAlive).ToList();
@@ -846,25 +844,32 @@ namespace OpenBound_Game_Server.Service
                     {
                         foreach (Player p in pList)
                         {
-                            if (pList.Count <= (int)RoomSize.OneVsOne) {
+                            if (pList.Count <= (int)RoomSize.OneVsOne)
+                            {
                                 victoryGold = NetworkObjectParameters.ExperienceWin1v1Match;
                                 defeatGold = NetworkObjectParameters.ExperienceLose1v1Match;
                                 victoryExp = NetworkObjectParameters.ExperienceWin1v1Match;
                                 defeatExp = NetworkObjectParameters.ExperienceLose1v1Match;
                                 BroadcastToPlayer(NetworkObjectParameters.GameServerChatSendSystemMessage, (p.PlayerTeam == victoriousTeam) ? Message.CreateIGGBWin1v1MatchMessage(p) : Message.CreateIGGBLose1v1MatchMessage(p), p);
-                            } else if (pList.Count <= (int)RoomSize.TwoVsTwo) {
+                            }
+                            else if (pList.Count <= (int)RoomSize.TwoVsTwo)
+                            {
                                 victoryGold = NetworkObjectParameters.ExperienceWin2v2Match;
                                 defeatGold = NetworkObjectParameters.ExperienceLose2v2Match;
                                 victoryExp = NetworkObjectParameters.ExperienceWin2v2Match;
                                 defeatExp = NetworkObjectParameters.ExperienceLose2v2Match;
                                 BroadcastToPlayer(NetworkObjectParameters.GameServerChatSendSystemMessage, (p.PlayerTeam == victoriousTeam) ? Message.CreateIGGBWin2v2MatchMessage(p) : Message.CreateIGGBLose2v2MatchMessage(p), p);
-                            } else if (pList.Count <= (int)RoomSize.ThreeVsThree) {
+                            }
+                            else if (pList.Count <= (int)RoomSize.ThreeVsThree)
+                            {
                                 victoryGold = NetworkObjectParameters.ExperienceWin3v3Match;
                                 defeatGold = NetworkObjectParameters.ExperienceLose3v3Match;
                                 victoryExp = NetworkObjectParameters.ExperienceWin3v3Match;
                                 defeatExp = NetworkObjectParameters.ExperienceLose3v3Match;
                                 BroadcastToPlayer(NetworkObjectParameters.GameServerChatSendSystemMessage, (p.PlayerTeam == victoriousTeam) ? Message.CreateIGGBWin3v3MatchMessage(p) : Message.CreateIGGBLose3v3MatchMessage(p), p);
-                            } else if (pList.Count <= (int)RoomSize.FourVsFour) {
+                            }
+                            else if (pList.Count <= (int)RoomSize.FourVsFour)
+                            {
                                 victoryGold = NetworkObjectParameters.ExperienceWin4v4Match;
                                 defeatGold = NetworkObjectParameters.ExperienceLose4v4Match;
                                 victoryExp = NetworkObjectParameters.ExperienceWin4v4Match;
@@ -924,7 +929,7 @@ namespace OpenBound_Game_Server.Service
                             BroadcastToPlayer(NetworkObjectParameters.GameServerInGameRequestDamage, ppMetadata.GoldAmount, p);
                         }
                     }
-                }  
+                }
             }
             catch (Exception ex)
             {
@@ -1027,12 +1032,12 @@ namespace OpenBound_Game_Server.Service
                 param = ObjectWrapper.Deserialize<string>(param);
                 GameServerChatEnter(param, playerSession);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Ex: When GameServerChatEnterRequest {ex.Message}");
             }
 
-             return false;
+            return false;
         }
 
         public static void GameServerChatEnter(string param, PlayerSession playerSession)
@@ -1045,7 +1050,8 @@ namespace OpenBound_Game_Server.Service
                 (char, int) tuple = playerSession.GetCurrentConnectChatAsTuple(param);
 
                 //If is a random connection, find which is the best suitable channel
-                if (tuple.Item2 == 0) {
+                if (tuple.Item2 == 0)
+                {
                     lock (GameServerObjects.Instance.ChatDictionary[tuple.Item1])
                     {
                         //Is attempting to connect on any game list channel, give the player the first possible channel
@@ -1062,7 +1068,7 @@ namespace OpenBound_Game_Server.Service
                             playerSession.ProviderQueue.Enqueue(NetworkObjectParameters.GameServerChatEnter, playerSession.Player);
 
                             //The user receives every connected player
-                            foreach(Player p in GameServerObjects.Instance.ChatDictionary[tuple.Item1][tuple.Item2])
+                            foreach (Player p in GameServerObjects.Instance.ChatDictionary[tuple.Item1][tuple.Item2])
                                 playerSession.ProviderQueue.Enqueue(NetworkObjectParameters.GameServerChatEnter, p);
 
                             //Everyone else receives this user metadata
@@ -1182,7 +1188,7 @@ namespace OpenBound_Game_Server.Service
                         pList = playerSession.RoomMetadata.TeamA;
 
                     BroadcastToPlayer(NetworkObjectParameters.GameServerChatSendPlayerMessage, pm, pList);
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -1244,10 +1250,10 @@ namespace OpenBound_Game_Server.Service
 
         private static void BroadcastMessage<T>(List<List<T>> messageList, PlayerSession playerSession)
         {
-            foreach(List<T> message in messageList)
+            foreach (List<T> message in messageList)
                 playerSession.ProviderQueue.Enqueue(NetworkObjectParameters.GameServerChatSendSystemMessage, message);
         }
-#endregion
+        #endregion
 
         #region Avatar Shop / Transactions
         public static AvatarMetadata GameServerAvatarShopBuyAvatar(string param, PlayerSession playerSession, PaymentMethod paymentMethod)
@@ -1267,7 +1273,7 @@ namespace OpenBound_Game_Server.Service
             PlayerController pc = new PlayerController();
 
             //Validate attributes
-            
+
             // If player has placed more points than he should OR
             if (player.GetCurrentAttributePoints() < player.Attribute.Sum() ||
                 // If player has placed more points in a specific category than the maximum amount OR
