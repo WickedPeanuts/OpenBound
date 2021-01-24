@@ -25,14 +25,20 @@ namespace OpenBound_Management_Tools.Forms
 
         //PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServerCompose.yml down");
 
+        private static void PrintHeader(string title)
+        {
+            Console.WriteLine("\n\n---------------------");
+            Console.WriteLine(title);
+            Console.WriteLine("---------------------\n\n");
+        }
+
+
         private void DockerInstallFetchServerContainersButton_Click(object sender, EventArgs e)
         {
             Program.ShowConsole();
             Console.Clear();
 
-            Console.WriteLine("---------------------");
-            Console.WriteLine("Creating fetch server containers");
-            Console.WriteLine("---------------------\n\n");
+            PrintHeader("Creating fetch server containers");
             
             int containerPort     = Parameter.DEFAULT_FETCH_SERVER_CONTAINER_PORT;
             int startingLocalPort = Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT;
@@ -81,12 +87,8 @@ namespace OpenBound_Management_Tools.Forms
             Program.ShowConsole();
             Console.Clear();
 
-            Console.WriteLine("---------------------");
-            Console.WriteLine("Creating game server containers");
-            Console.WriteLine("---------------------\n\n");
-
-            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer, true);
-            ConfigFileManager.LoadConfigFile(RequesterApplication.GameServer);
+            //Creating containers
+            PrintHeader("Creating game server containers");
 
             int containerPort = Parameter.DEFAULT_GAME_SERVER_CONTAINER_PORT;
             int startingLocalPort = Parameter.DEFAULT_GAME_SERVER_STARTING_PORT;
@@ -95,6 +97,12 @@ namespace OpenBound_Management_Tools.Forms
 
             Console.WriteLine("Enter the starting number of local ports you wish to use (default is 8100): ");
             int.TryParse(Console.ReadLine(), out startingLocalPort);
+
+            Console.WriteLine("Enter the server ID (copy this id on ServerID txt): ");
+            int containerID = 0;
+            int.TryParse(Console.ReadLine(), out containerID);
+
+            containerName += $"-{containerID}";
 
             Dictionary<string, string> replacingTemplateFields
                 = new Dictionary<string, string>()
@@ -116,12 +124,21 @@ namespace OpenBound_Management_Tools.Forms
             List<string> files = PipelineHelper.GenerateTemplateFiles(slnDir, slnDir, replacingTemplateFields, "*.Template.yml").ToList();
             files.AddRange(PipelineHelper.GenerateTemplateFiles(gspDir, gspDir, replacingTemplateFields, "*.Template.Dockerfile").ToList());
 
-            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer, true);
-                       
+            //Building & Starting Container
+            PrintHeader("Building Containers");
+
             PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml build");
             PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml up -d");
 
-            Thread.Sleep(3000);
+            //Configuring Container
+            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer);
+            PrintHeader("Building Containers");
+            
+            Console.WriteLine("Close the notepad in order to continue the server configuration.");
+            Thread.Sleep(5000);
+
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\DatabaseConfig.json");
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\GameServerServerConfig.json");
 
             PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\DatabaseConfig.json\" \"{containerName}:\\OpenBound Game Server\\Config\\DatabaseConfig.json\"");
             PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\GameServerServerConfig.json\" \"{containerName}:\\OpenBound Game Server\\Config\\GameServerServerConfig.json\"");
