@@ -451,7 +451,7 @@ namespace OpenBound_Network_Object_Library.FileManager
         private static string DatabaseConfigPath => $@"{Directory.GetCurrentDirectory()}/Config/DatabaseConfig.json";
         private static string LobbyServerWhitelistPath => $@"{Directory.GetCurrentDirectory()}/Config/LobbyServerWhitelist.json";
 
-        public static void CreateConfigFile(RequesterApplication serverType)
+        public static void CreateConfigFile(RequesterApplication serverType, bool ovewrite = false)
         {
             string path = ServerConfigPath(serverType);
 
@@ -460,37 +460,37 @@ namespace OpenBound_Network_Object_Library.FileManager
             switch (serverType)
             {
                 case RequesterApplication.Launcher:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LauncherServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(GameClientSettingsPath))
+                    if (!File.Exists(GameClientSettingsPath) || ovewrite)
                         File.WriteAllText(GameClientSettingsPath, $"{string.Join("\n", GameClientConfigHeader)}\n{GameClientSettingsInformation}");
                     break;
 
                 case RequesterApplication.LoginServer:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
 
                 case RequesterApplication.LobbyServer:
-                    if (!File.Exists(ServerlistPlaceholderPath))
+                    if (!File.Exists(ServerlistPlaceholderPath) || ovewrite)
                         File.WriteAllText(ServerlistPlaceholderPath, $"{string.Join("\n", LoginLobbyServerHeader)}\n{string.Join("", LobbyServerlistPlaceholder)}");
 
-                    if (!File.Exists(LobbyServerWhitelistPath))
+                    if (!File.Exists(LobbyServerWhitelistPath) || ovewrite)
                         File.WriteAllText(LobbyServerWhitelistPath, $"{string.Join("\n", WhitelistHeader)}\n{LobbyServerWhitelistInformation}");
 
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
                     break;
 
                 case RequesterApplication.GameServer:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", GameServerHeader)}\n{GameServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
             }

@@ -17,7 +17,7 @@ namespace OpenBound_Management_Tools.Common
         public const int DEFAULT_GAME_SERVER_STARTING_PORT  = 8024;
         public const string DEFAILT_GAME_SERVER_CONTAINER_NAME  = "openbound-game-server";
         public const string DEFAULT_GAME_SERVER_VOLUME_NAME     = "openbound_game_server_data";
-        public const string DEFAULT_GAME_SERVER_CONTEXT         = "./OpenBound/";
+        public const string DEFAULT_GAME_SERVER_CONTEXT         = "./";
         public const string DEFAULT_GAME_SERVER_DOCKERFILE_PATH = "OpenBound Game Server/GameServer.Dockerfile";
     }
 }

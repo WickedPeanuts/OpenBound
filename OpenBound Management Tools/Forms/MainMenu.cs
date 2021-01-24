@@ -85,11 +85,13 @@ namespace OpenBound_Management_Tools.Forms
             Console.WriteLine("Creating game server containers");
             Console.WriteLine("---------------------\n\n");
 
+            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer, true);
+            ConfigFileManager.LoadConfigFile(RequesterApplication.GameServer);
+
             int containerPort = Parameter.DEFAULT_GAME_SERVER_CONTAINER_PORT;
             int startingLocalPort = Parameter.DEFAULT_GAME_SERVER_STARTING_PORT;
             string containerName = Parameter.DEFAILT_GAME_SERVER_CONTAINER_NAME;
             string volumeName = Parameter.DEFAULT_GAME_SERVER_VOLUME_NAME;
-            int numberOfContainers;
 
             Console.WriteLine("Enter the starting number of local ports you wish to use (default is 8100): ");
             int.TryParse(Console.ReadLine(), out startingLocalPort);
@@ -107,23 +109,27 @@ namespace OpenBound_Management_Tools.Forms
 
             Console.WriteLine("Select the base project folder. This folder contains the \".sln\" file.");
             
-            string folder = PipelineHelper.SelectFolder();
-            string newDirectory = $"{Directory.GetCurrentDirectory()}/tmp/GameServer/OpenBound";
-            Directory.CreateDirectory(newDirectory);
-            PipelineHelper.CopyFolder(folder, newDirectory);
+            string slnDir = PipelineHelper.SelectSLNFile();
+            slnDir = slnDir.Replace("\\" + slnDir.Split("\\").Last(), "");
+            string gspDir = $@"{slnDir}\OpenBound Game Server";
 
-            PipelineHelper.GenerateTemplateFiles(Directory.GetCurrentDirectory() + @"/DockerTemplates/GameServer",
-                newDirectory, replacingTemplateFields);
+            List<string> files = PipelineHelper.GenerateTemplateFiles(slnDir, slnDir, replacingTemplateFields, "*.Template.yml").ToList();
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(gspDir, gspDir, replacingTemplateFields, "*.Template.Dockerfile").ToList());
 
-            File.Move($"{newDirectory}/GameServer.Dockerfile", $"{newDirectory}/OpenBound Game Server/GameServer.Dockerfile", true);
-            File.Move($"{newDirectory}/OpenBoundGameServerCompose.yml", $"{Directory.GetParent(newDirectory).FullName}/OpenBoundGameServerCompose.yml", true);
+            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer, true);
+                       
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml up -d");
 
-            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer);
+            Thread.Sleep(3000);
 
-            
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\DatabaseConfig.json\" \"{containerName}:\\OpenBound Game Server\\Config\\DatabaseConfig.json\"");
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\GameServerServerConfig.json\" \"{containerName}:\\OpenBound Game Server\\Config\\GameServerServerConfig.json\"");
 
-            PipelineHelper.ExecuteShellCommand(@$"cd ");
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServerCompose.yml build");
+            foreach (string file in files)
+                try { File.Delete(file); } catch { }
+
+            PipelineHelper.ExecuteShellCommand(@$"docker restart {containerName}");
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();

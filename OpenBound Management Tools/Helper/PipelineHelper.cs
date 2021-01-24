@@ -25,17 +25,17 @@ namespace OpenBound_Management_Tools.Helper
 
     class PipelineHelper
     {
-        public static void GenerateTemplateFiles(string templateFolder, string baseOutputPath, Dictionary<string, string> fileFields)
+        public static IEnumerable<string> GenerateTemplateFiles(string templateFolder, string baseOutputPath, Dictionary<string, string> fileFields, string searchPattern = "*")
         {
-            string[] files = Directory.GetFiles(templateFolder, "*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(templateFolder, searchPattern);
 
             foreach (string file in files)
             {
-                GenerateTemplateFile(file, baseOutputPath, fileFields);
+                yield return GenerateTemplateFile(file, baseOutputPath, fileFields);
             }
         }
 
-        private static void GenerateTemplateFile(string templateFilePath, string fileOutputPath, Dictionary<string, string> fileFields)
+        private static string GenerateTemplateFile(string templateFilePath, string fileOutputPath, Dictionary<string, string> fileFields)
         {
             string text = File.ReadAllText(templateFilePath);
             string filename = templateFilePath.Split('\\').Last();
@@ -46,7 +46,11 @@ namespace OpenBound_Management_Tools.Helper
             directories.Remove(directories.Last());
 
             Directory.CreateDirectory(fileOutputPath);
-            File.WriteAllText($@"{fileOutputPath}\{filename}", text);
+
+            string newFilePath = $@"{fileOutputPath}\{filename}".Replace(".Template", "");
+            File.WriteAllText(newFilePath, text);
+
+            return newFilePath;
         }
 
         /// <summary>
@@ -107,6 +111,31 @@ namespace OpenBound_Management_Tools.Helper
                 dialog.ShowDialog();
 
                 folderPath = dialog.SelectedPath;
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(50);
+            }
+
+            return folderPath;
+        }
+
+        public static string SelectSLNFile()
+        {
+            string folderPath = "";
+
+            Thread t = new Thread(() =>
+            {
+                Console.WriteLine("Selecting SLN file...");
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = $"Visual Studio Solution File (.sln)|*.sln;";
+                dialog.ShowDialog();
+
+                folderPath = dialog.FileName;
             });
 
             t.SetApartmentState(ApartmentState.STA);
