@@ -324,7 +324,8 @@ namespace OpenBound_Network_Object_Library.FileManager
                 }, Formatting.Indented);
 
         private static readonly string LobbyServerWhitelistInformation =
-            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1" } }, Formatting.Indented);
+            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1", "host.docker.internal"
+    } }, Formatting.Indented);
 #endregion
 
         #region Serverlist Placeholders

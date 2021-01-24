@@ -1,5 +1,5 @@
 ﻿FROM nginx:1.19.6-alpine as __container_name__
-COPY ./Docker/OpenBoundFetchServer.nginx.conf /etc/nginx/nginx.conf
+COPY ./FetchServer/OpenBoundFetchServer.nginx.conf /etc/nginx/nginx.conf
 
 ## Create versioning & game_patches folder
 ## In case you decide to change this path, remember to update the description and a few fields in the following files

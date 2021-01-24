@@ -41,16 +41,12 @@ namespace OpenBound_Management_Tools.Forms
             PrintHeader("Creating fetch server containers");
             
             int containerPort     = Parameter.DEFAULT_FETCH_SERVER_CONTAINER_PORT;
-            int startingLocalPort = Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT;
+            int localPort         = Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT;
             string containerName  = Parameter.DEFAULT_FETCH_SERVER_CONTAINER_NAME;
             string volumeName     = Parameter.DEFAULT_FETCH_SERVER_VOLUME_NAME;
-            int numberOfContainers;
 
-            Console.WriteLine("Enter the number of containers you intend to create: ");
-            int.TryParse(Console.ReadLine(), out numberOfContainers);
-
-            Console.WriteLine($"Enter the starting number of local ports you wish to use (default is {Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT}): ");
-            int.TryParse(Console.ReadLine(), out startingLocalPort);
+            Console.WriteLine($"Enter the starting number of local ports you wish to use (default is {localPort}): ");
+            int.TryParse(Console.ReadLine(), out localPort);
 
             Dictionary<string, string> replacingTemplateFields
                 = new Dictionary<string, string>()
@@ -59,22 +55,20 @@ namespace OpenBound_Management_Tools.Forms
                     { "__game_patches_folder__", $"/{NetworkObjectParameters.FetchServerPatchesFolder}" },
                     { "__container_name__",      containerName },
                     { "__volume_name__",         volumeName },
-                    { "__local_port__",          startingLocalPort.ToString() },
+                    { "__local_port__",          localPort.ToString() },
                     { "__container_port__",      containerPort.ToString() },
                     { "__context__",             Parameter.DEFAULT_FETCH_SERVER_CONTEXT },
                     { "__dockerfile_path__",     Parameter.DEFAULT_FETCH_SERVER_DOCKERFILE_PATH }
                 };
 
-            PipelineHelper.GenerateTemplateFiles(Directory.GetCurrentDirectory() + @"\DockerTemplates\FetchServer",
-                Directory.GetCurrentDirectory() + @"\Docker", replacingTemplateFields);
+            string templatePath = Directory.GetCurrentDirectory() + @"\DockerTemplates\FetchServer";
 
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServerCompose.yml build");
+            List<string> files = PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.Dockerfile").ToList();
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.yml").ToList());
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.conf").ToList());
 
-            for (int i = 0; i < numberOfContainers; i++)
-            {
-                PipelineHelper.ExecuteShellCommand(@$"docker run -d --name {containerName}-{i + 1} -p {startingLocalPort + i}:{containerPort} {containerName}");
-                //PipelineHelper.ExecuteShellCommand(@$"docker-compose -p openbound-fetch-server -f .\Docker\OpenBoundFetchServerCompose.yml up -d {newContainerName}");
-            }
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p=openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml up -d {containerName}");
             
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -82,20 +76,154 @@ namespace OpenBound_Management_Tools.Forms
             Program.HideConsole();
         }
 
-        private void dockerInstallGameServerContainerButton_Click(object sender, EventArgs e)
+        private void DockerInstallLoginServerContainerButton_Click(object sender, EventArgs e)
         {
             Program.ShowConsole();
             Console.Clear();
 
             //Creating containers
-            PrintHeader("Creating game server containers");
+            PrintHeader("Creating Login Server container");
+
+            int containerPort = Parameter.DEFAULT_LOGIN_SERVER_CONTAINER_PORT;
+            int startingLocalPort = Parameter.DEFAULT_LOGIN_SERVER_STARTING_PORT;
+            string containerName = Parameter.DEFAILT_LOGIN_SERVER_CONTAINER_NAME;
+            string volumeName = Parameter.DEFAULT_LOGIN_SERVER_VOLUME_NAME;
+
+            Console.WriteLine($"Enter the starting local ports you wish to use (default is {containerPort}): ");
+            int.TryParse(Console.ReadLine(), out startingLocalPort);
+
+            Dictionary<string, string> replacingTemplateFields
+                = new Dictionary<string, string>()
+                {
+                    { "__container_name__",      containerName },
+                    { "__volume_name__",         volumeName },
+                    { "__local_port__",          startingLocalPort.ToString() },
+                    { "__container_port__",      containerPort.ToString() },
+                    { "__context__",             Parameter.DEFAULT_LOGIN_SERVER_CONTEXT },
+                    { "__dockerfile_path__",     Parameter.DEFAULT_LOGIN_SERVER_DOCKERFILE_PATH }
+                };
+
+            Console.WriteLine("Select the base project folder. This folder contains the \".sln\" file.");
+
+            string slnDir = PipelineHelper.SelectSLNFile();
+            slnDir = slnDir.Replace("\\" + slnDir.Split("\\").Last(), "");
+            string lspDir = $@"{slnDir}\OpenBound Login Server";
+
+            List<string> files = PipelineHelper.GenerateTemplateFiles(slnDir, slnDir, replacingTemplateFields, "*.Template.yml").ToList();
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(lspDir, lspDir, replacingTemplateFields, "*.Template.Dockerfile").ToList());
+
+            //Building & Starting Container
+            PrintHeader("Building Containers");
+
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml up -d");
+
+            //Configuring Container
+            ConfigFileManager.CreateConfigFile(RequesterApplication.LoginServer, true);
+            PrintHeader("Building Containers");
+
+            Console.WriteLine("Close the notepad in order to continue the server configuration. Reminder: host.docker.internal is your ip from container's perspective.");
+            Thread.Sleep(5000);
+
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\LoginServerServerConfig.json");
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\DatabaseConfig.json");
+
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\LoginServerServerConfig.json\" \"{containerName}:\\OpenBound Login Server\\Config\\LoginServerServerConfig.json\"");
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\DatabaseConfig.json\" \"{containerName}:\\OpenBound Login Server\\Config\\DatabaseConfig.json\"");
+
+            foreach (string file in files)
+                try { File.Delete(file); } catch { }
+
+            PipelineHelper.ExecuteShellCommand(@$"docker restart {containerName}");
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
+            Program.HideConsole();
+        }
+
+        private void DockerInstallLobbyServerContainerButton_Click(object sender, EventArgs e)
+        {
+            Program.ShowConsole();
+            Console.Clear();
+
+            //Creating containers
+            PrintHeader("Creating Lobby Server container");
+
+            int containerPort = Parameter.DEFAULT_LOBBY_SERVER_CONTAINER_PORT;
+            int startingLocalPort = Parameter.DEFAULT_LOBBY_SERVER_STARTING_PORT;
+            string containerName = Parameter.DEFAILT_LOBBY_SERVER_CONTAINER_NAME;
+            string volumeName = Parameter.DEFAULT_LOBBY_SERVER_VOLUME_NAME;
+
+            Console.WriteLine($"Enter the starting local ports you wish to use (default is {containerPort}): ");
+            int.TryParse(Console.ReadLine(), out startingLocalPort);
+
+            Dictionary<string, string> replacingTemplateFields
+                = new Dictionary<string, string>()
+                {
+                    { "__container_name__",      containerName },
+                    { "__volume_name__",         volumeName },
+                    { "__local_port__",          startingLocalPort.ToString() },
+                    { "__container_port__",      containerPort.ToString() },
+                    { "__context__",             Parameter.DEFAULT_LOBBY_SERVER_CONTEXT },
+                    { "__dockerfile_path__",     Parameter.DEFAULT_LOBBY_SERVER_DOCKERFILE_PATH }
+                };
+
+            Console.WriteLine("Select the base project folder. This folder contains the \".sln\" file.");
+
+            string slnDir = PipelineHelper.SelectSLNFile();
+            slnDir = slnDir.Replace("\\" + slnDir.Split("\\").Last(), "");
+            string lspDir = $@"{slnDir}\OpenBound Lobby Server";
+
+            List<string> files = PipelineHelper.GenerateTemplateFiles(slnDir, slnDir, replacingTemplateFields, "*.Template.yml").ToList();
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(lspDir, lspDir, replacingTemplateFields, "*.Template.Dockerfile").ToList());
+
+            //Building & Starting Container
+            PrintHeader("Building Containers");
+
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml up -d");
+
+            //Configuring Container
+            ConfigFileManager.CreateConfigFile(RequesterApplication.LobbyServer, true);
+            PrintHeader("Building Containers");
+
+            Console.WriteLine("Close the notepad in order to continue the server configuration. Reminder: host.docker.internal is your ip from container's perspective.");
+            Thread.Sleep(5000);
+
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\LobbyServerListPlaceholders.json");
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\LobbyServerServerConfig.json");
+            PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\LobbyServerWhitelist.json");
+
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\LobbyServerListPlaceholders.json\" \"{containerName}:\\OpenBound Lobby Server\\Config\\LobbyServerListPlaceholders.json\"");
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\LobbyServerServerConfig.json\" \"{containerName}:\\OpenBound Lobby Server\\Config\\LobbyServerServerConfig.json\"");
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{Directory.GetCurrentDirectory()}\\Config\\LobbyServerWhitelist.json\" \"{containerName}:\\OpenBound Lobby Server\\Config\\LobbyServerWhitelist.json\"");
+
+            foreach (string file in files)
+                try { File.Delete(file); } catch { }
+
+            PipelineHelper.ExecuteShellCommand(@$"docker restart {containerName}");
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
+            Program.HideConsole();
+        }
+
+        private void DockerInstallGameServerContainerButton_Click(object sender, EventArgs e)
+        {
+            Program.ShowConsole();
+            Console.Clear();
+
+            //Creating containers
+            PrintHeader("Creating Game Server container");
 
             int containerPort = Parameter.DEFAULT_GAME_SERVER_CONTAINER_PORT;
             int startingLocalPort = Parameter.DEFAULT_GAME_SERVER_STARTING_PORT;
             string containerName = Parameter.DEFAILT_GAME_SERVER_CONTAINER_NAME;
             string volumeName = Parameter.DEFAULT_GAME_SERVER_VOLUME_NAME;
 
-            Console.WriteLine("Enter the starting number of local ports you wish to use (default is 8100): ");
+            Console.WriteLine($"Enter the local ports you wish to use (default is {startingLocalPort}): ");
             int.TryParse(Console.ReadLine(), out startingLocalPort);
 
             Console.WriteLine("Enter the server ID (copy this id on ServerID txt): ");
@@ -127,14 +255,14 @@ namespace OpenBound_Management_Tools.Forms
             //Building & Starting Container
             PrintHeader("Building Containers");
 
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml build");
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundGameServerCompose.yml up -d");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -f {slnDir}\OpenBoundServerCompose.yml up -d");
 
             //Configuring Container
-            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer);
+            ConfigFileManager.CreateConfigFile(RequesterApplication.GameServer, true);
             PrintHeader("Building Containers");
             
-            Console.WriteLine("Close the notepad in order to continue the server configuration.");
+            Console.WriteLine("Close the notepad in order to continue the server configuration. Reminder: host.docker.internal is your ip from container's perspective.");
             Thread.Sleep(5000);
 
             PipelineHelper.ExecuteShellCommand($@"notepad.exe {Directory.GetCurrentDirectory()}\Config\DatabaseConfig.json");

@@ -19,31 +19,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DockerTemplates\GameServer\.dockerignore">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="DockerTemplates\GameServer\GameServer.Dockerfile">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="DockerTemplates\GameServer\OpenBoundGameServerCompose.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Docker\Compose_build.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Docker\Compose_up.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\ConfigFiles\OpenBoundFetchServer.nginx.conf">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.nginx.Template.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\Dockerfile.OpenBoundFetchServer">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.Template.Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="DockerTemplates\OpenBoundDatabaseServerCompose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServerCompose.Template.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
