@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Docker\Compose_build.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -34,7 +40,7 @@
     <None Update="DockerTemplates\OpenBoundDatabaseServerCompose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServerCompose.Template.yml">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.Template.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

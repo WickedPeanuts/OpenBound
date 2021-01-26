@@ -35,10 +35,11 @@ namespace OpenBound_Management_Tools.Forms
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dockerInstallLoginServerContainerButton = new System.Windows.Forms.Button();
+            this.dockerInstallLobbyServerContainerButton = new System.Windows.Forms.Button();
             this.dockerInstallGameServerContainerButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dockerInstallLobbyServerContainerButton = new System.Windows.Forms.Button();
-            this.dockerInstallLoginServerContainerButton = new System.Windows.Forms.Button();
+            this.dockerInstallDatabaseContainerButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -46,7 +47,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // dockerInstallFetchServerContainerButton
             // 
-            this.dockerInstallFetchServerContainerButton.Location = new System.Drawing.Point(6, 22);
+            this.dockerInstallFetchServerContainerButton.Location = new System.Drawing.Point(6, 66);
             this.dockerInstallFetchServerContainerButton.Name = "dockerInstallFetchServerContainerButton";
             this.dockerInstallFetchServerContainerButton.Size = new System.Drawing.Size(238, 38);
             this.dockerInstallFetchServerContainerButton.TabIndex = 0;
@@ -96,6 +97,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.dockerInstallDatabaseContainerButton);
             this.groupBox2.Controls.Add(this.dockerInstallLoginServerContainerButton);
             this.groupBox2.Controls.Add(this.dockerInstallLobbyServerContainerButton);
             this.groupBox2.Controls.Add(this.dockerInstallGameServerContainerButton);
@@ -107,9 +109,29 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Docker Server Installation";
             // 
+            // dockerInstallLoginServerContainerButton
+            // 
+            this.dockerInstallLoginServerContainerButton.Location = new System.Drawing.Point(6, 110);
+            this.dockerInstallLoginServerContainerButton.Name = "dockerInstallLoginServerContainerButton";
+            this.dockerInstallLoginServerContainerButton.Size = new System.Drawing.Size(238, 38);
+            this.dockerInstallLoginServerContainerButton.TabIndex = 3;
+            this.dockerInstallLoginServerContainerButton.Text = "Install Login Server Containers";
+            this.dockerInstallLoginServerContainerButton.UseVisualStyleBackColor = true;
+            this.dockerInstallLoginServerContainerButton.Click += new System.EventHandler(this.DockerInstallLoginServerContainerButton_Click);
+            // 
+            // dockerInstallLobbyServerContainerButton
+            // 
+            this.dockerInstallLobbyServerContainerButton.Location = new System.Drawing.Point(6, 154);
+            this.dockerInstallLobbyServerContainerButton.Name = "dockerInstallLobbyServerContainerButton";
+            this.dockerInstallLobbyServerContainerButton.Size = new System.Drawing.Size(238, 38);
+            this.dockerInstallLobbyServerContainerButton.TabIndex = 2;
+            this.dockerInstallLobbyServerContainerButton.Text = "Install Lobby Server Containers";
+            this.dockerInstallLobbyServerContainerButton.UseVisualStyleBackColor = true;
+            this.dockerInstallLobbyServerContainerButton.Click += new System.EventHandler(this.DockerInstallLobbyServerContainerButton_Click);
+            // 
             // dockerInstallGameServerContainerButton
             // 
-            this.dockerInstallGameServerContainerButton.Location = new System.Drawing.Point(6, 154);
+            this.dockerInstallGameServerContainerButton.Location = new System.Drawing.Point(6, 198);
             this.dockerInstallGameServerContainerButton.Name = "dockerInstallGameServerContainerButton";
             this.dockerInstallGameServerContainerButton.Size = new System.Drawing.Size(238, 38);
             this.dockerInstallGameServerContainerButton.TabIndex = 1;
@@ -127,25 +149,15 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Game Update Patch";
             // 
-            // dockerInstallLobbyServerContainerButton
+            // dockerInstallDatabaseContainerButton
             // 
-            this.dockerInstallLobbyServerContainerButton.Location = new System.Drawing.Point(6, 110);
-            this.dockerInstallLobbyServerContainerButton.Name = "dockerInstallLobbyServerContainerButton";
-            this.dockerInstallLobbyServerContainerButton.Size = new System.Drawing.Size(238, 38);
-            this.dockerInstallLobbyServerContainerButton.TabIndex = 2;
-            this.dockerInstallLobbyServerContainerButton.Text = "Install Lobby Server Containers";
-            this.dockerInstallLobbyServerContainerButton.UseVisualStyleBackColor = true;
-            this.dockerInstallLobbyServerContainerButton.Click += new System.EventHandler(this.DockerInstallLobbyServerContainerButton_Click);
-            // 
-            // dockerInstallLoginServerContainerButton
-            // 
-            this.dockerInstallLoginServerContainerButton.Location = new System.Drawing.Point(6, 66);
-            this.dockerInstallLoginServerContainerButton.Name = "dockerInstallLoginServerContainerButton";
-            this.dockerInstallLoginServerContainerButton.Size = new System.Drawing.Size(238, 38);
-            this.dockerInstallLoginServerContainerButton.TabIndex = 3;
-            this.dockerInstallLoginServerContainerButton.Text = "Install Login Server Containers";
-            this.dockerInstallLoginServerContainerButton.UseVisualStyleBackColor = true;
-            this.dockerInstallLoginServerContainerButton.Click += new System.EventHandler(this.DockerInstallLoginServerContainerButton_Click);
+            this.dockerInstallDatabaseContainerButton.Location = new System.Drawing.Point(6, 22);
+            this.dockerInstallDatabaseContainerButton.Name = "dockerInstallDatabaseContainerButton";
+            this.dockerInstallDatabaseContainerButton.Size = new System.Drawing.Size(238, 38);
+            this.dockerInstallDatabaseContainerButton.TabIndex = 4;
+            this.dockerInstallDatabaseContainerButton.Text = "Install Database Containers";
+            this.dockerInstallDatabaseContainerButton.UseVisualStyleBackColor = true;
+            this.dockerInstallDatabaseContainerButton.Click += new System.EventHandler(this.dockerInstallDatabaseContainerButton_Click);
             // 
             // MainMenu
             // 
@@ -176,5 +188,6 @@ namespace OpenBound_Management_Tools.Forms
         private System.Windows.Forms.Button dockerInstallGameServerContainerButton;
         private System.Windows.Forms.Button dockerInstallLoginServerContainerButton;
         private System.Windows.Forms.Button dockerInstallLobbyServerContainerButton;
+        private System.Windows.Forms.Button dockerInstallDatabaseContainerButton;
     }
 }

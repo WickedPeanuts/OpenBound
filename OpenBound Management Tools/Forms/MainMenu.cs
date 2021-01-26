@@ -23,7 +23,7 @@ namespace OpenBound_Management_Tools.Forms
             InitializeComponent();
         }
 
-        //PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServerCompose.yml down");
+        //PipelineHelper.ExecuteShellCommand(@$"docker-compose -f .\Docker\OpenBoundFetchServer.yml down");
 
         private static void PrintHeader(string title)
         {
@@ -32,13 +32,51 @@ namespace OpenBound_Management_Tools.Forms
             Console.WriteLine("---------------------\n\n");
         }
 
+        private void dockerInstallDatabaseContainerButton_Click(object sender, EventArgs e)
+        {
+            Program.ShowConsole();
+            Console.Clear();
+
+            PrintHeader("Creating database container");
+
+            int localPort = Parameter.DEFAULT_DATABASE_SERVER_STARTING_PORT;
+            Console.WriteLine($"Enter the starting number of local ports you wish to use (default is {Parameter.DEFAULT_DATABASE_SERVER_STARTING_PORT}): ");
+            int.TryParse(Console.ReadLine(), out localPort);
+
+            Dictionary<string, string> replacingTemplateFields
+                = new Dictionary<string, string>()
+                {
+                    { "__versioning_folder__",   $"/{NetworkObjectParameters.FetchServerVersioningFolder}/" },
+                    { "__game_patches_folder__", $"/{NetworkObjectParameters.FetchServerPatchesFolder}" },
+                    { "__container_name__",      Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME },
+                    { "__volume_name__",         Parameter.DEFAULT_DATABASE_SERVER_VOLUME_NAME },
+                    { "__local_port__",          localPort.ToString() },
+                    { "__container_port__",      Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_PORT.ToString() },
+                    { "__context__",             Parameter.DEFAULT_DATABASE_SERVER_CONTEXT },
+                    { "__dockerfile_path__",     Parameter.DEFAULT_DATABASE_SERVER_DOCKERFILE_PATH }
+                };
+
+            string templatePath = Directory.GetCurrentDirectory() + @"\DockerTemplates\OpenBound Database";
+
+            List<string> files = PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.Dockerfile").ToList();
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.yml").ToList());
+
+            PipelineHelper.ExecuteShellCommand($"docker-compose -p=openbound -f \".\\DockerTemplates\\OpenBound Database\\OpenBoundDatabase.yml\" up -d {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME}");
+
+            PipelineHelper.ExecuteShellCommand($"docker exec -it {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME} /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P \"password\" ");
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+
+            Program.HideConsole();
+        }
 
         private void DockerInstallFetchServerContainersButton_Click(object sender, EventArgs e)
         {
             Program.ShowConsole();
             Console.Clear();
 
-            PrintHeader("Creating fetch server containers");
+            PrintHeader("Creating fetch server container");
             
             int containerPort     = Parameter.DEFAULT_FETCH_SERVER_CONTAINER_PORT;
             int localPort         = Parameter.DEFAULT_FETCH_SERVER_STARTING_PORT;
@@ -67,8 +105,8 @@ namespace OpenBound_Management_Tools.Forms
             files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.yml").ToList());
             files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.conf").ToList());
 
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p=openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml build");
-            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml up -d {containerName}");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p=openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServer.yml build");
+            PipelineHelper.ExecuteShellCommand(@$"docker-compose -p openbound -f .\DockerTemplates\FetchServer\OpenBoundFetchServer.yml up -d {containerName}");
             
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
