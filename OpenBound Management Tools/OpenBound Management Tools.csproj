@@ -22,6 +22,9 @@
     <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

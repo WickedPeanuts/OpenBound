@@ -11,8 +11,8 @@ services:
             - __volume_name__:/var/opt/mssql/data
         environment:
             - ACCEPT_EULA=Y
-            - SA_PASSWORD=P@55w0rD
-            - MSSQL_PID=Express
+            - SA_PASSWORD=__db_password__
+            - MSSQL_PID=__db_sql_pid__
         user: root
         ports:
             - __local_port__:__container_port__

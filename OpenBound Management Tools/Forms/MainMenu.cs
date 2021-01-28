@@ -43,27 +43,43 @@ namespace OpenBound_Management_Tools.Forms
             Console.WriteLine($"Enter the starting number of local ports you wish to use (default is {Parameter.DEFAULT_DATABASE_SERVER_STARTING_PORT}): ");
             int.TryParse(Console.ReadLine(), out localPort);
 
+            Console.WriteLine("Select your database login name: ");
+            string dbALogin = Console.ReadLine();
+            Console.WriteLine("Select your database password (preferably a hard password with 8 or more characters including special ones): ");
+            string dbAPassword = Console.ReadLine();
+
             Dictionary<string, string> replacingTemplateFields
                 = new Dictionary<string, string>()
                 {
-                    { "__versioning_folder__",   $"/{NetworkObjectParameters.FetchServerVersioningFolder}/" },
-                    { "__game_patches_folder__", $"/{NetworkObjectParameters.FetchServerPatchesFolder}" },
-                    { "__container_name__",      Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME },
-                    { "__volume_name__",         Parameter.DEFAULT_DATABASE_SERVER_VOLUME_NAME },
-                    { "__local_port__",          localPort.ToString() },
-                    { "__container_port__",      Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_PORT.ToString() },
-                    { "__context__",             Parameter.DEFAULT_DATABASE_SERVER_CONTEXT },
-                    { "__dockerfile_path__",     Parameter.DEFAULT_DATABASE_SERVER_DOCKERFILE_PATH }
+                    { "__versioning_folder__",     $"/{NetworkObjectParameters.FetchServerVersioningFolder}/" },
+                    { "__game_patches_folder__",   $"/{NetworkObjectParameters.FetchServerPatchesFolder}" },
+                    { "__container_name__",        Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME },
+                    { "__volume_name__",           Parameter.DEFAULT_DATABASE_SERVER_VOLUME_NAME },
+                    { "__local_port__",            localPort.ToString() },
+                    { "__container_port__",        Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_PORT.ToString() },
+                    { "__context__",               Parameter.DEFAULT_DATABASE_SERVER_CONTEXT },
+                    { "__dockerfile_path__",       Parameter.DEFAULT_DATABASE_SERVER_DOCKERFILE_PATH },
+                    { "__db_password__",           Parameter.DEFAULT_DATABASE_SERVER_PASSWORD },
+                    { "__db_sql_pid__",            Parameter.DEFAULT_DATABASE_SERVER_PID },
+                    { "__db_sql_admin_login__",    dbALogin },
+                    { "__db_sql_admin_password__", dbAPassword },
                 };
 
             string templatePath = Directory.GetCurrentDirectory() + @"\DockerTemplates\OpenBound Database";
-
+            
             List<string> files = PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.Dockerfile").ToList();
             files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.yml").ToList());
-
+            files.AddRange(PipelineHelper.GenerateTemplateFiles(templatePath, templatePath, replacingTemplateFields, "*.Template.sql").ToList());
+            
             PipelineHelper.ExecuteShellCommand($"docker-compose -p=openbound -f \".\\DockerTemplates\\OpenBound Database\\OpenBoundDatabase.yml\" up -d {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME}");
 
-            PipelineHelper.ExecuteShellCommand($"docker exec -it {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME} /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P \"password\" ");
+            Console.WriteLine("Waiting 10s for the container to boot up. If your PC is too slow the following scripts might fail.");
+            Thread.Sleep(10000);
+
+            
+            PipelineHelper.ExecuteShellCommand($"docker cp \"{files.Find((x) => x.Contains(".sql"))}\" \"{Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME}:/OpenBoundDatabase.sql\"");
+            PipelineHelper.ExecuteShellCommand($"docker exec -it {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME} /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P \"{Parameter.DEFAULT_DATABASE_SERVER_PASSWORD}\" -i \"/OpenBoundDatabase.sql\"");
+            PipelineHelper.ExecuteShellCommand($"docker exec -it {Parameter.DEFAULT_DATABASE_SERVER_CONTAINER_NAME} rm /OpenBoundDatabase.sql");
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -386,10 +402,10 @@ namespace OpenBound_Management_Tools.Forms
 
         private List<string> GetCreatedContainerNames()
         {
-            List<string> containerNames = new List<string>();
+            HashSet<string> containerNames = new HashSet<string>();
             string containerList = PipelineHelper.ExecuteShellCommand(@$"docker container ls");
 
-            Regex rx = new Regex(@$"\b{Parameter.DEFAULT_FETCH_SERVER_CONTAINER_NAME}-[0-9]+\b",
+            Regex rx = new Regex(@$"\b{Parameter.DEFAULT_FETCH_SERVER_CONTAINER_NAME}\b",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
             MatchCollection matches = rx.Matches(containerList);
@@ -397,7 +413,7 @@ namespace OpenBound_Management_Tools.Forms
             foreach (Match m in matches)
                 containerNames.Add(m.Value);
 
-            return containerNames;
+            return containerNames.ToList();
         }
     }
 }

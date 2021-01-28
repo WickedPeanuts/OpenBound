@@ -19,6 +19,8 @@ namespace OpenBound_Management_Tools.Common
         public const string DEFAULT_DATABASE_SERVER_VOLUME_NAME     = "openbound_database_data";
         public const string DEFAULT_DATABASE_SERVER_CONTEXT         = "./";
         public const string DEFAULT_DATABASE_SERVER_DOCKERFILE_PATH = "OpenBoundDatabase.Dockerfile";
+        public const string DEFAULT_DATABASE_SERVER_PASSWORD        = "P@55w0rD";
+        public const string DEFAULT_DATABASE_SERVER_PID             = "Express";
 
         public const int DEFAULT_GAME_SERVER_CONTAINER_PORT = 8024;
         public const int DEFAULT_GAME_SERVER_STARTING_PORT  = 8024;
@@ -41,6 +43,8 @@ namespace OpenBound_Management_Tools.Common
         public const string DEFAULT_LOGIN_SERVER_CONTEXT         = "./";
         public const string DEFAULT_LOGIN_SERVER_DOCKERFILE_PATH = "OpenBound Login Server/LoginServer.Dockerfile";
 
+
+        
 
 
     }
