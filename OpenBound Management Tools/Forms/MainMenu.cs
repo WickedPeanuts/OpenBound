@@ -415,5 +415,10 @@ namespace OpenBound_Management_Tools.Forms
 
             return containerNames.ToList();
         }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

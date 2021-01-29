@@ -35,11 +35,11 @@ namespace OpenBound_Management_Tools.Forms
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dockerInstallDatabaseContainerButton = new System.Windows.Forms.Button();
             this.dockerInstallLoginServerContainerButton = new System.Windows.Forms.Button();
             this.dockerInstallLobbyServerContainerButton = new System.Windows.Forms.Button();
             this.dockerInstallGameServerContainerButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dockerInstallDatabaseContainerButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -57,6 +57,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // createGameUpdatePatch
             // 
+            this.createGameUpdatePatch.Enabled = false;
             this.createGameUpdatePatch.Location = new System.Drawing.Point(6, 22);
             this.createGameUpdatePatch.Name = "createGameUpdatePatch";
             this.createGameUpdatePatch.Size = new System.Drawing.Size(238, 40);
@@ -77,6 +78,7 @@ namespace OpenBound_Management_Tools.Forms
             // 
             // button1
             // 
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(6, 66);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(238, 38);
@@ -90,7 +92,7 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox1.Controls.Add(this.uploadGameUpdatePatchesToAllContainers);
             this.groupBox1.Location = new System.Drawing.Point(268, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(250, 250);
+            this.groupBox1.Size = new System.Drawing.Size(250, 242);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Fetch Server Container Management";
@@ -104,10 +106,20 @@ namespace OpenBound_Management_Tools.Forms
             this.groupBox2.Controls.Add(this.dockerInstallFetchServerContainerButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(250, 250);
+            this.groupBox2.Size = new System.Drawing.Size(250, 242);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Docker Server Installation";
+            // 
+            // dockerInstallDatabaseContainerButton
+            // 
+            this.dockerInstallDatabaseContainerButton.Location = new System.Drawing.Point(6, 22);
+            this.dockerInstallDatabaseContainerButton.Name = "dockerInstallDatabaseContainerButton";
+            this.dockerInstallDatabaseContainerButton.Size = new System.Drawing.Size(238, 38);
+            this.dockerInstallDatabaseContainerButton.TabIndex = 4;
+            this.dockerInstallDatabaseContainerButton.Text = "Install Database Containers";
+            this.dockerInstallDatabaseContainerButton.UseVisualStyleBackColor = true;
+            this.dockerInstallDatabaseContainerButton.Click += new System.EventHandler(this.dockerInstallDatabaseContainerButton_Click);
             // 
             // dockerInstallLoginServerContainerButton
             // 
@@ -142,33 +154,24 @@ namespace OpenBound_Management_Tools.Forms
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.createGameUpdatePatch);
-            this.groupBox3.Location = new System.Drawing.Point(12, 268);
+            this.groupBox3.Location = new System.Drawing.Point(524, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(250, 250);
+            this.groupBox3.Size = new System.Drawing.Size(254, 242);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Game Update Patch";
-            // 
-            // dockerInstallDatabaseContainerButton
-            // 
-            this.dockerInstallDatabaseContainerButton.Location = new System.Drawing.Point(6, 22);
-            this.dockerInstallDatabaseContainerButton.Name = "dockerInstallDatabaseContainerButton";
-            this.dockerInstallDatabaseContainerButton.Size = new System.Drawing.Size(238, 38);
-            this.dockerInstallDatabaseContainerButton.TabIndex = 4;
-            this.dockerInstallDatabaseContainerButton.Text = "Install Database Containers";
-            this.dockerInstallDatabaseContainerButton.UseVisualStyleBackColor = true;
-            this.dockerInstallDatabaseContainerButton.Click += new System.EventHandler(this.dockerInstallDatabaseContainerButton_Click);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(693, 550);
+            this.ClientSize = new System.Drawing.Size(790, 266);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MainMenu";
             this.Text = "MainMenu";
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
