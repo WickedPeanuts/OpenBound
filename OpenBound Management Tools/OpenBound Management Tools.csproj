@@ -11,26 +11,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OpenBound Network Object Library\OpenBound Network Object Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerTemplates\OpenBound Database\OpenBoundDatabase.Template.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Docker\Compose_build.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Docker\Compose_up.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\ConfigFiles\OpenBoundFetchServer.nginx.conf">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.nginx.Template.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\Dockerfile.OpenBoundFetchServer">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.Template.Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="DockerTemplates\OpenBoundDatabaseServerCompose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServerCompose.yml">
+    <None Update="DockerTemplates\FetchServer\OpenBoundFetchServer.Template.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -12,13 +12,10 @@
 
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
-using OpenBound_Network_Object_Library.Entity.Text;
 using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.TCP.ServiceProvider;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace OpenBound_Game_Server.Common
 {
@@ -59,7 +56,7 @@ namespace OpenBound_Game_Server.Common
                 { NetworkObjectParameters.GameServerChatGameRoomIdentifier, new Dictionary<int, HashSet<Player>>() }
             };
 
-            for(int i = 1; i <= NetworkObjectParameters.GameServerChatChannelsMaximumNumber; i++)
+            for (int i = 1; i <= NetworkObjectParameters.GameServerChatChannelsMaximumNumber; i++)
                 ChatDictionary[NetworkObjectParameters.GameServerChatGameListIdentifier][i] = new HashSet<Player>();
         }
 

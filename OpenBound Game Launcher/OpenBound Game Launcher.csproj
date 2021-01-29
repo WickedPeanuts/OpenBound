@@ -12,6 +12,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugScene|AnyCPU'">
     <Optimize>true</Optimize>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" >
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\OpenBound Network Object Library\OpenBound Network Object Library.csproj" />

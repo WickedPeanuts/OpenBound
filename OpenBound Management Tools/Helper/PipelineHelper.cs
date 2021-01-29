@@ -1,26 +1,41 @@
-﻿using OpenBound_Network_Object_Library.Extension;
+﻿using OpenBound_Network_Object_Library.Common;
+using OpenBound_Network_Object_Library.Extension;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace OpenBound_Management_Tools.Helper
 {
+    public class UpdatePatchEntry
+    {
+        public string PatchHistoryFile;
+        public List<string> PatchFiles;
+
+        public UpdatePatchEntry()
+        {
+            PatchHistoryFile = "";
+            PatchFiles = new List<string>();
+        }
+    }
+
     class PipelineHelper
     {
-        public static void GenerateTemplateFiles(string templateFolder, string baseOutputPath, Dictionary<string, string> fileFields)
+        public static IEnumerable<string> GenerateTemplateFiles(string templateFolder, string baseOutputPath, Dictionary<string, string> fileFields, string searchPattern = "*")
         {
-            string[] files = Directory.GetFiles(templateFolder, "*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(templateFolder, searchPattern);
 
             foreach (string file in files)
             {
-                GenerateTemplateFile(file, baseOutputPath, fileFields);
+                yield return GenerateTemplateFile(file, baseOutputPath, fileFields);
             }
         }
 
-        private static void GenerateTemplateFile(string templateFilePath, string fileOutputPath, Dictionary<string, string> fileFields)
+        private static string GenerateTemplateFile(string templateFilePath, string fileOutputPath, Dictionary<string, string> fileFields)
         {
             string text = File.ReadAllText(templateFilePath);
             string filename = templateFilePath.Split('\\').Last();
@@ -31,7 +46,11 @@ namespace OpenBound_Management_Tools.Helper
             directories.Remove(directories.Last());
 
             Directory.CreateDirectory(fileOutputPath);
-            File.WriteAllText($@"{fileOutputPath}\{filename}", text);
+
+            string newFilePath = $@"{fileOutputPath}\{filename}".Replace(".Template", "");
+            File.WriteAllText(newFilePath, text);
+
+            return newFilePath;
         }
 
         /// <summary>
@@ -60,6 +79,108 @@ namespace OpenBound_Management_Tools.Helper
             }
 
             return output;
+        }
+
+        public static void CopyFolder(string sourcePath, string destinationPath)
+        {
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*",
+                SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, destinationPath));
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*",
+                SearchOption.AllDirectories))
+            {
+                if (!(newPath.Contains("/bin/") || newPath.Contains("/obj/") || newPath.Contains("/.vs/") || newPath.Contains("/.git/") ||
+                    newPath.Contains("\\bin\\") || newPath.Contains("\\obj\\") || newPath.Contains("\\.vs\\") || newPath.Contains("\\.git\\")))
+                {
+                    File.Copy(newPath, newPath.Replace(sourcePath, destinationPath), true);
+                }
+            }
+        }
+
+        public static string SelectFolder()
+        {
+            string folderPath = "";
+
+            Thread t = new Thread(() =>
+            {
+                Console.WriteLine("Selecting folder...");
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                dialog.ShowDialog();
+
+                folderPath = dialog.SelectedPath;
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(50);
+            }
+
+            return folderPath;
+        }
+
+        public static string SelectSLNFile()
+        {
+            string folderPath = "";
+
+            Thread t = new Thread(() =>
+            {
+                Console.WriteLine("Selecting SLN file...");
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = $"Visual Studio Solution File (.sln)|*.sln;";
+                dialog.ShowDialog();
+
+                folderPath = dialog.FileName;
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(50);
+            }
+
+            return folderPath;
+        }
+
+        public static UpdatePatchEntry ReadMultipleFiles()
+        {
+            UpdatePatchEntry pE = new UpdatePatchEntry();
+
+            Thread t = new Thread(() =>
+            {
+                Console.WriteLine("Importing Files to be Uploaded...");
+                string pExt = NetworkObjectParameters.GamePatchExtension;
+                string phExt = NetworkObjectParameters.PatchHistoryExtension;
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Multiselect = true;
+                dialog.Filter = $"Openbound Patching Files ({pExt}, {phExt})|*{pExt};*{phExt};";
+                dialog.ShowDialog();
+
+                foreach (string str in dialog.FileNames)
+                {
+                    if (str.Contains(pExt))
+                        pE.PatchFiles.Add(str);
+                    else
+                        pE.PatchHistoryFile = str;
+                }
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+
+            while (t.IsAlive)
+            {
+                Thread.Sleep(50);
+            }
+
+            return pE;
         }
     }
 }

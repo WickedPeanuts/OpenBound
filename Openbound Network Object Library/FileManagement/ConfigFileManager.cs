@@ -180,7 +180,7 @@ namespace OpenBound_Network_Object_Library.FileManager
             Separator,
             ConfigurationGuide,
             "// This file helps builds the database connection string used in entity's context.",
-            "// DatabaseAddress - Database IP. For instance: 127.0.0.1, 127.0.0.1\\\\SQLEXPRESS (yes, two backslashes), OpenBound.east.rds.amazonaws.com and so on",
+            "// DatabaseAddress - Database IP. For instance: 127.0.0.1, 127.0.0.1////SQLEXPRESS (yes, two backslashes), OpenBound.east.rds.amazonaws.com and so on",
             "// DatabaseName - Database's name. Default is OpenBound and I hope you keep it that way.",
             "// DatabaseLogin - Database's admin login.",
             "// DatabasePassword - Database's password.",
@@ -324,7 +324,8 @@ namespace OpenBound_Network_Object_Library.FileManager
                 }, Formatting.Indented);
 
         private static readonly string LobbyServerWhitelistInformation =
-            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1" } }, Formatting.Indented);
+            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1", "host.docker.internal"
+    } }, Formatting.Indented);
 #endregion
 
         #region Serverlist Placeholders
@@ -445,52 +446,52 @@ namespace OpenBound_Network_Object_Library.FileManager
 
 #endregion
 
-        private static string ServerConfigPath(RequesterApplication serverType) => $@"{Directory.GetCurrentDirectory()}\Config\{serverType}ServerConfig.json";
-        private static string GameClientSettingsPath => $@"{Directory.GetCurrentDirectory()}\Config\GameClientSettings.json";
-        private static string ServerlistPlaceholderPath => $@"{Directory.GetCurrentDirectory()}\Config\LobbyServerListPlaceholders.json";
-        private static string DatabaseConfigPath => $@"{Directory.GetCurrentDirectory()}\Config\DatabaseConfig.json";
-        private static string LobbyServerWhitelistPath => $@"{Directory.GetCurrentDirectory()}\Config\LobbyServerWhitelist.json";
+        private static string ServerConfigPath(RequesterApplication serverType) => $@"{Directory.GetCurrentDirectory()}/Config/{serverType}ServerConfig.json";
+        private static string GameClientSettingsPath => $@"{Directory.GetCurrentDirectory()}/Config/GameClientSettings.json";
+        private static string ServerlistPlaceholderPath => $@"{Directory.GetCurrentDirectory()}/Config/LobbyServerListPlaceholders.json";
+        private static string DatabaseConfigPath => $@"{Directory.GetCurrentDirectory()}/Config/DatabaseConfig.json";
+        private static string LobbyServerWhitelistPath => $@"{Directory.GetCurrentDirectory()}/Config/LobbyServerWhitelist.json";
 
-        public static void CreateConfigFile(RequesterApplication serverType)
+        public static void CreateConfigFile(RequesterApplication serverType, bool ovewrite = false)
         {
             string path = ServerConfigPath(serverType);
 
-            Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}/Config");
+            Directory.CreateDirectory($@"{Directory.GetCurrentDirectory()}/Config");
 
             switch (serverType)
             {
                 case RequesterApplication.Launcher:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LauncherServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(GameClientSettingsPath))
+                    if (!File.Exists(GameClientSettingsPath) || ovewrite)
                         File.WriteAllText(GameClientSettingsPath, $"{string.Join("\n", GameClientConfigHeader)}\n{GameClientSettingsInformation}");
                     break;
 
                 case RequesterApplication.LoginServer:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
 
                 case RequesterApplication.LobbyServer:
-                    if (!File.Exists(ServerlistPlaceholderPath))
+                    if (!File.Exists(ServerlistPlaceholderPath) || ovewrite)
                         File.WriteAllText(ServerlistPlaceholderPath, $"{string.Join("\n", LoginLobbyServerHeader)}\n{string.Join("", LobbyServerlistPlaceholder)}");
 
-                    if (!File.Exists(LobbyServerWhitelistPath))
+                    if (!File.Exists(LobbyServerWhitelistPath) || ovewrite)
                         File.WriteAllText(LobbyServerWhitelistPath, $"{string.Join("\n", WhitelistHeader)}\n{LobbyServerWhitelistInformation}");
 
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
                     break;
 
                 case RequesterApplication.GameServer:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", GameServerHeader)}\n{GameServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
             }
@@ -500,7 +501,7 @@ namespace OpenBound_Network_Object_Library.FileManager
         {
             string appStartupPath = AppDomain.CurrentDomain.BaseDirectory;
             appStartupPath = appStartupPath.Replace("OpenBound Network Object Library", "OpenBound Login Server");
-            string filePath = appStartupPath + @"\Config\DatabaseConfig.json";
+            string filePath = appStartupPath + @"/Config/DatabaseConfig.json";
             return filePath;
         }
 

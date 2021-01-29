@@ -140,8 +140,8 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                         newPlayer = ObjectWrapper.Deserialize<Player>(message[1]);
                         waiting = true;
                     });
+                csp.OnFailToEstabilishConnection += signUpLoadingScreen.OnFailToStablishConnection;
 
-                signUpLoadingScreen.OnFailToStablishConnection();
                 csp.StartOperation();
                 csp.RequestQueue.Enqueue(NetworkObjectParameters.LoginServerAccountCreationRequest, account);
 
@@ -168,7 +168,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                     errorMessage += Language.RegisterFailureEmail;
                 
                 //Fail
-                if (errorMessage.Length >= 0)
+                if (errorMessage.Length > 0)
                 {
                     signUpLoadingScreen.OnFailToCreateAccount();
                     return;

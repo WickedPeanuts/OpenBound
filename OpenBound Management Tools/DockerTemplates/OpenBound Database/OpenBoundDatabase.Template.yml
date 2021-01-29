@@ -1,0 +1,32 @@
+version: '3.8'
+
+volumes:
+    __volume_name__: {}
+
+services:
+    __container_name__:
+        image: mcr.microsoft.com/mssql/server:2019-CU8-ubuntu-16.04
+        container_name: __container_name__
+        volumes:
+            - __volume_name__:/var/opt/mssql/data
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=__db_password__
+            - MSSQL_PID=__db_sql_pid__
+        user: root
+        ports:
+            - __local_port__:__container_port__
+
+        restart: always
+        healthcheck:
+            test: bash -c "</dev/tcp/__container_name__/1433 && exit 0 || exit 1"
+            start_period: 30s
+            interval: 60s
+            timeout: 10s
+            retries: 3
+
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '1m'
+                max-file: '5'
