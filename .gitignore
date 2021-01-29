@@ -260,11 +260,15 @@ paket-files/
 __pycache__/
 *.pyc
 
-#Avatar Api
+# Misc
+.sonarqube/
+
+# Avatar Api
 Avatar API/appsettings.Development.json
 
-#OpenBound Engine
+# OpenBound Engine
 !OpenBound/Content/Content.mgcb
 OpenBound/Content
 
+# OpenBound Asset Tools
 OpenBound Asset Tools/Output
