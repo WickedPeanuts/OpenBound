@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>OpenBound_Image_Fix</RootNamespace>
     <Configurations>Debug;Release;DebugScene</Configurations>
+    <StartupObject>Openbound_Asset_Tools.Program</StartupObject>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugScene|AnyCPU'">

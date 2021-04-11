@@ -51,6 +51,8 @@ namespace OpenBound_Game_Launcher.Forms
 
         public bool CheckFiles()
         {
+            return false;
+
             PatchHistoryFetchLoadingScreen lhfls = new PatchHistoryFetchLoadingScreen();
 
             switch (lhfls.ShowDialog())

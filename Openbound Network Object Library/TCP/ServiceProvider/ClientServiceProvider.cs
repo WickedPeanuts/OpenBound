@@ -51,6 +51,8 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
 
         protected NetworkStream stream;
 
+        private bool IsOperationStopped;
+
         public ClientServiceProvider(string serverAddress, int serverPort, int bufferSize, Action<ClientServiceProvider, string[]> consumerAction)
         {
             this.serverAddress = serverAddress;
@@ -59,6 +61,8 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
             this.consumerAction = consumerAction;
 
             RequestQueue = new ExtendedConcurrentQueue<byte[]>();
+
+            IsOperationStopped = true;
         }
 
         ~ClientServiceProvider()
@@ -81,9 +85,11 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
             if (consumerThread != null)
                 consumerThread.Interrupt();
 
+            IsOperationStopped = true;
+
             try
             {
-                stream.Dispose();
+                stream.Close();
             }
             catch (Exception) { Console.WriteLine($"Connection to {serverAddress}:{serverPort} severed."); }
         }
@@ -177,6 +183,8 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
             }
             catch (Exception genericException)
             {
+                if (IsOperationStopped) return;
+
                 Console.WriteLine($"ConsumerThread: {genericException.Message}");
 
                 if (OnFailToReceiveMessage != null && OnFailToSendMessage.Invoke(genericException))
