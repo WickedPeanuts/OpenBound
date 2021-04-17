@@ -65,12 +65,12 @@ namespace OpenBound_Network_Object_Library.Entity.Text
         #endregion
 
         #region Font Awesome Texts (Tokens)
-        private static CustomMessage FAComputerToken = CreateFontAwesomeText(0xf108);
-        private static CustomMessage FAServerToken = CreateFontAwesomeText(0xf233);
-        private static CustomMessage FAGamepadToken = CreateFontAwesomeText(0xf11b);
-        private static CustomMessage FASadCry = CreateFontAwesomeText(0xf5b3);
-        private static CustomMessage FAHeartBroken = CreateFontAwesomeText(0xf7a9);
-        private static CustomMessage FACoins = CreateFontAwesomeText(0xf51e);
+        private static CustomMessage FAComputerToken = CreateFontAwesomeText(FontAwesomeIconIndex.Desktop);
+        private static CustomMessage FAServerToken = CreateFontAwesomeText(FontAwesomeIconIndex.Server);
+        private static CustomMessage FAGamepadToken = CreateFontAwesomeText(FontAwesomeIconIndex.Gamepad);
+        private static CustomMessage FASadCry = CreateFontAwesomeText(FontAwesomeIconIndex.SadCry);
+        private static CustomMessage FAHeartBroken = CreateFontAwesomeText(FontAwesomeIconIndex.Heart_Broken);
+        private static CustomMessage FACoins = CreateFontAwesomeText(FontAwesomeIconIndex.Coins);
         #endregion
 
         #region Consolas Texts

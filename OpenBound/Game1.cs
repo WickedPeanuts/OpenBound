@@ -115,8 +115,11 @@ namespace OpenBound
             // TODO: use this.Content to load your game content here
             AssetHandler.Instance.Initialize(Content, GraphicsDevice);
             AssetHandler.Instance.LoadAllAssets();
+
             MetadataManager.Instance.Initialize();
             MetadataManager.Instance.LoadAssetMetadata();
+
+            Parameter.IsLoadingGameAssets = false;
         }
 
         /// <summary>

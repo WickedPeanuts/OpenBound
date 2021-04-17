@@ -115,7 +115,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
             else
             {
                 serverButtonList.ForEach((x) => x.Enable());
-                ServerInformationBroker.Instance.DisconnectFromGameServer();
+                ServerInformationBroker.Instance.ForceGameServerDisconnection();
             }
         }
     }

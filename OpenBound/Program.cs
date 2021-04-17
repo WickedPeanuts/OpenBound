@@ -12,11 +12,14 @@
 
 using OpenBound.Common;
 using OpenBound.GameComponents.Level.Scene;
+using OpenBound.GameComponents.Level.Scene.Menu;
 using OpenBound.ServerCommunication;
 using OpenBound_Game_Launcher.Forms;
-using OpenBound_Game_Launcher.Launcher;
+using OpenBound_Game_Launcher.Forms.GenericLoadingScreen;
 using OpenBound_Network_Object_Library.Entity;
 using System;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace OpenBound
 {
@@ -29,21 +32,14 @@ namespace OpenBound
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-
-            GameLauncher gameLauncher = new GameLauncher();
-
 #if !DEBUGSCENE
-            LauncherInformation li = gameLauncher.OpenDialog();
-
-            if (li.LauncherOperationStatus == LauncherOperationStatus.AuthConfirmed)
-                Parameter.Initialize(li);
-            else
+            if (!CreateLauncherScreen(args))
                 return;
-#endif
 
-#if DEBUGSCENE
+            CreateLoadingScreen();
+#elif DEBUGSCENE
             DebugScene.InitializeObjects();
 #endif
 
@@ -53,6 +49,44 @@ namespace OpenBound
             }
 
             ServerInformationBroker.Instance.StopServices();
+        }
+
+        static bool CreateLauncherScreen(string[] args)
+        {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            if (args.Length == 0)
+                args = new string[] { "" };
+
+            GameLauncher gameLauncher = new GameLauncher(args);
+            LauncherInformation li = gameLauncher.OpenDialog();
+
+            if (li.LauncherOperationStatus == LauncherOperationStatus.AuthConfirmed)
+            {
+                Parameter.Initialize(li);
+                return true;
+            }
+
+            return false;
+        }
+
+        static void CreateLoadingScreen()
+        {
+            Thread t = new Thread(() =>
+            {
+                LoadingMenu lS = new LoadingMenu();
+                lS.Timer1TickAction += () =>
+                {
+                    if (!Parameter.IsLoadingGameAssets)
+                        lS.Close();
+                };
+                lS.ShowDialog();
+            });
+
+            t.IsBackground = false;
+            t.Start();
         }
     }
 }

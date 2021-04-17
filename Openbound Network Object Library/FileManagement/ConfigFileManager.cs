@@ -13,6 +13,7 @@
 using Newtonsoft.Json;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
+using OpenBound_Network_Object_Library.FileManagement.Versioning;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,6 +88,9 @@ namespace OpenBound_Network_Object_Library.FileManager
         public int BackgroundColorRedChannel;
         public int BackgroundColorGreenChannel;
         public int BackgroundColorBlueChannel;
+
+        //Patching
+        public PatchHistory ClientVersionHistory;
     }
 
     public class ConfigFileManager
@@ -131,7 +135,7 @@ namespace OpenBound_Network_Object_Library.FileManager
             Separator,
             ConfigurationGuide,
             "//The First element of the array is the login server.",
-            "// The Second element is Lobby's server address from Login's perspective. Keep in mind that after changing this element you must also apply such change in LobbyServer/LobbyServerConfig.txt",
+            "// The Second element is Lobby's server address from Login's perspective. Keep in mind that after changing this element you must also apply such change in LobbyServer/LobbyServerConfig.json",
             ServerNameGuide,
             ServerLocalAddressGuide,
             ServerPublicAddressGuide,
@@ -176,7 +180,7 @@ namespace OpenBound_Network_Object_Library.FileManager
             Separator,
             ConfigurationGuide,
             "// This file helps builds the database connection string used in entity's context.",
-            "// DatabaseAddress - Database IP. For instance: 127.0.0.1, 127.0.0.1\\\\SQLEXPRESS (yes, two backslashes), OpenBound.east.rds.amazonaws.com and so on",
+            "// DatabaseAddress - Database IP. For instance: 127.0.0.1, 127.0.0.1////SQLEXPRESS (yes, two backslashes), OpenBound.east.rds.amazonaws.com and so on",
             "// DatabaseName - Database's name. Default is OpenBound and I hope you keep it that way.",
             "// DatabaseLogin - Database's admin login.",
             "// DatabasePassword - Database's password.",
@@ -236,6 +240,13 @@ namespace OpenBound_Network_Object_Library.FileManager
                 BackgroundColorRedChannel = 0,
                 BackgroundColorGreenChannel = 0,
                 BackgroundColorBlueChannel = 0,
+
+                ClientVersionHistory = new PatchHistory()
+                {
+                    ID = new Guid("00000000-0000-0000-0000-000000000000"),
+                    CreationDate = DateTime.MinValue,
+                    PatchVersionName = "v0.1.0",
+                }
             };
 
         private static ServerInformation LoginServerPlaceholder
@@ -254,6 +265,15 @@ namespace OpenBound_Network_Object_Library.FileManager
                 ServerLocalAddress = "127.0.0.1",
                 ServerPublicAddress = "127.0.0.1",
                 ServerPort = NetworkObjectParameters.LobbyServerDefaultPort,
+            };
+
+        private static ServerInformation FetchServerPlaceholder
+            = new ServerInformation()
+            {
+                ServerName = "Fetch Server",
+                ServerLocalAddress = "127.0.0.1",
+                ServerPublicAddress = "127.0.0.1",
+                ServerPort = NetworkObjectParameters.FetchServerDefaultPort,
             };
 
         private static GameServerInformation GameServerPlaceholder
@@ -278,11 +298,11 @@ namespace OpenBound_Network_Object_Library.FileManager
             ObjectWrapper.Serialize(configClientPlaceholder,
                 Formatting.Indented);
 
-        private static readonly string LoginLobbyServerInformation =
+        private static readonly string LoginLobbyFetchServerInformation =
             ObjectWrapper.Serialize(
                 new ConfigServerInformation()
                 {
-                    ServerInformationList = new List<ServerInformation>() { LoginServerPlaceholder, LobbyServerPlaceholder },
+                    ServerInformationList = new List<ServerInformation>() { LoginServerPlaceholder, LobbyServerPlaceholder, FetchServerPlaceholder },
                 }, Formatting.Indented);
 
         private static readonly string GameServerInformation =
@@ -304,7 +324,8 @@ namespace OpenBound_Network_Object_Library.FileManager
                 }, Formatting.Indented);
 
         private static readonly string LobbyServerWhitelistInformation =
-            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1" } }, Formatting.Indented);
+            ObjectWrapper.Serialize(new ConfigLobbyServerWhitelist() { Whitelist = new List<string>() { "localhost", "127.0.0.1", "host.docker.internal"
+    } }, Formatting.Indented);
 #endregion
 
         #region Serverlist Placeholders
@@ -425,52 +446,52 @@ namespace OpenBound_Network_Object_Library.FileManager
 
 #endregion
 
-        private static string ServerConfigPath(RequesterApplication serverType) => $@"{Directory.GetCurrentDirectory()}\Config\{serverType}ServerConfig.txt";
-        private static string GameClientSettingsPath => $@"{Directory.GetCurrentDirectory()}\Config\GameClientSettings.txt";
-        private static string ServerlistPlaceholderPath => $@"{Directory.GetCurrentDirectory()}\Config\LobbyServerListPlaceholders.txt";
-        private static string DatabaseConfigPath => $@"{Directory.GetCurrentDirectory()}\Config\DatabaseConfig.txt";
-        private static string LobbyServerWhitelistPath => $@"{Directory.GetCurrentDirectory()}\Config\LobbyServerWhitelist.txt";
+        private static string ServerConfigPath(RequesterApplication serverType) => $@"{Directory.GetCurrentDirectory()}/Config/{serverType}ServerConfig.json";
+        private static string GameClientSettingsPath => $@"{Directory.GetCurrentDirectory()}/Config/GameClientSettings.json";
+        private static string ServerlistPlaceholderPath => $@"{Directory.GetCurrentDirectory()}/Config/LobbyServerListPlaceholders.json";
+        private static string DatabaseConfigPath => $@"{Directory.GetCurrentDirectory()}/Config/DatabaseConfig.json";
+        private static string LobbyServerWhitelistPath => $@"{Directory.GetCurrentDirectory()}/Config/LobbyServerWhitelist.json";
 
-        public static void CreateConfigFile(RequesterApplication serverType)
+        public static void CreateConfigFile(RequesterApplication serverType, bool ovewrite = false)
         {
             string path = ServerConfigPath(serverType);
 
-            Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}/Config");
+            Directory.CreateDirectory($@"{Directory.GetCurrentDirectory()}/Config");
 
             switch (serverType)
             {
                 case RequesterApplication.Launcher:
-                    if (!File.Exists(path))
-                        File.WriteAllText(path, $"{string.Join("\n", LauncherServerHeader)}\n{LoginLobbyServerInformation}");
+                    if (!File.Exists(path) || ovewrite)
+                        File.WriteAllText(path, $"{string.Join("\n", LauncherServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(GameClientSettingsPath))
+                    if (!File.Exists(GameClientSettingsPath) || ovewrite)
                         File.WriteAllText(GameClientSettingsPath, $"{string.Join("\n", GameClientConfigHeader)}\n{GameClientSettingsInformation}");
                     break;
 
                 case RequesterApplication.LoginServer:
-                    if (!File.Exists(path))
-                        File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyServerInformation}");
+                    if (!File.Exists(path) || ovewrite)
+                        File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
 
                 case RequesterApplication.LobbyServer:
-                    if (!File.Exists(ServerlistPlaceholderPath))
+                    if (!File.Exists(ServerlistPlaceholderPath) || ovewrite)
                         File.WriteAllText(ServerlistPlaceholderPath, $"{string.Join("\n", LoginLobbyServerHeader)}\n{string.Join("", LobbyServerlistPlaceholder)}");
 
-                    if (!File.Exists(LobbyServerWhitelistPath))
+                    if (!File.Exists(LobbyServerWhitelistPath) || ovewrite)
                         File.WriteAllText(LobbyServerWhitelistPath, $"{string.Join("\n", WhitelistHeader)}\n{LobbyServerWhitelistInformation}");
 
-                    if (!File.Exists(path))
-                        File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyServerInformation}");
+                    if (!File.Exists(path) || ovewrite)
+                        File.WriteAllText(path, $"{string.Join("\n", LoginLobbyServerHeader)}\n{LoginLobbyFetchServerInformation}");
                     break;
 
                 case RequesterApplication.GameServer:
-                    if (!File.Exists(path))
+                    if (!File.Exists(path) || ovewrite)
                         File.WriteAllText(path, $"{string.Join("\n", GameServerHeader)}\n{GameServerInformation}");
 
-                    if (!File.Exists(DatabaseConfigPath))
+                    if (!File.Exists(DatabaseConfigPath) || ovewrite)
                         File.WriteAllText(DatabaseConfigPath, $"{string.Join("\n", DatabaseConfigFileHeader)}\n{DatabaseInformation}");
                     break;
             }
@@ -480,7 +501,7 @@ namespace OpenBound_Network_Object_Library.FileManager
         {
             string appStartupPath = AppDomain.CurrentDomain.BaseDirectory;
             appStartupPath = appStartupPath.Replace("OpenBound Network Object Library", "OpenBound Login Server");
-            string filePath = appStartupPath + @"\Config\DatabaseConfig.txt";
+            string filePath = appStartupPath + @"/Config/DatabaseConfig.json";
             return filePath;
         }
 
@@ -507,6 +528,7 @@ namespace OpenBound_Network_Object_Library.FileManager
                 case RequesterApplication.Launcher:
                     NetworkObjectParameters.LoginServerInformation = csfc.ServerInformationList[0];
                     NetworkObjectParameters.LobbyServerInformation = csfc.ServerInformationList[1];
+                    NetworkObjectParameters.FetchServerInformation = csfc.ServerInformationList[2];
                     break;
 
                 case RequesterApplication.EFMigration:
@@ -537,11 +559,13 @@ namespace OpenBound_Network_Object_Library.FileManager
                     NetworkObjectParameters.DatabasePassword = cdi.DatabasePassword;
                     NetworkObjectParameters.LoginServerInformation = csfc.ServerInformationList[0];
                     NetworkObjectParameters.LobbyServerInformation = csfc.ServerInformationList[1];
+                    NetworkObjectParameters.FetchServerInformation = csfc.ServerInformationList[2];
                     break;
 
                 case RequesterApplication.LobbyServer:
                     NetworkObjectParameters.LoginServerInformation = csfc.ServerInformationList[0];
                     NetworkObjectParameters.LobbyServerInformation = csfc.ServerInformationList[1];
+                    NetworkObjectParameters.FetchServerInformation = csfc.ServerInformationList[2];
 
                     if (!File.Exists(LobbyServerWhitelistPath))
                     {

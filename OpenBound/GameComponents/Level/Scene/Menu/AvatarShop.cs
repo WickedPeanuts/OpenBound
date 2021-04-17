@@ -606,6 +606,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
             searchTextField.DeactivateElement();
 
             tabButtonList.Disable();
+            attributeMenu.Disable();
         }
 
         /// <summary>
@@ -698,6 +699,12 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
             else if (filterRightButton.IsDisabled) filterRightButton.Enable();
         }
         #endregion
+
+        public override void OnDropGameServerConnection(Exception ex)
+        {
+            base.OnDropGameServerConnection(ex);
+            attributeMenu.Disable();
+        }
 
         public override void Update(GameTime gameTime)
         {

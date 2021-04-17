@@ -242,7 +242,6 @@
             this.Name = "SignUpForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sign Up";
-            this.Load += new System.EventHandler(this.SignUpForm_Load);
             this.gpbAccount.ResumeLayout(false);
             this.gpbAccount.PerformLayout();
             this.gbxGender.ResumeLayout(false);

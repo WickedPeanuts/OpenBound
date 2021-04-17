@@ -1,25 +1,9 @@
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/azds.yaml
-**/bin
-**/charts
-**/docker-compose*
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
+OpenBound/Avatar Api
+OpenBound/OpenBound
+OpenBound/OpenBound Asset Tools
+OpenBound/OpenBound Management Tools
+OpenBound/WP Image Processing
+**/obj/
+**/bin/
+**/.git/
+**/.vs/

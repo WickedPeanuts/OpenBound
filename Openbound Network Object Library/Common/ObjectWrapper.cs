@@ -35,12 +35,12 @@ namespace OpenBound_Network_Object_Library.Common
 
         public static T ConvertByteArrayToObject<T>(byte[] param)
         {
-            return DeserializeRequest<T>(encoder.GetString(param));
+            return Deserialize<T>(encoder.GetString(param));
         }
 
         public static T ConvertByteArrayToObject<T>(Span<byte> param)
         {
-            return DeserializeRequest<T>(encoder.GetString(param));
+            return Deserialize<T>(encoder.GetString(param));
         }
 
         public static byte[] ConvertObjectToByteArray<T>(T Param, int ArraySize)
@@ -62,11 +62,11 @@ namespace OpenBound_Network_Object_Library.Common
             return array;
         }
 
-        public static T TryDeserializeRequest<T>(string Param)
+        public static T TryDeserialize<T>(string Param)
         {
             try
             {
-                return DeserializeRequest<T>(Param);
+                return Deserialize<T>(Param);
             }
             catch (Exception)
             {
@@ -74,23 +74,28 @@ namespace OpenBound_Network_Object_Library.Common
             }
         }
 
-        public static T DeserializeRequest<T>(string Param)
+        public static T Deserialize<T>(string param)
         {
-            if (!ObjectValidator.ValidateString(Param)) throw new Exception();
-            return JsonConvert.DeserializeObject<T>(Param);
+            if (!ObjectValidator.ValidateString(param)) throw new Exception();
+            return JsonConvert.DeserializeObject<T>(param);
+        }
+
+        public static T DeserializeFile<T>(string filePath)
+        {
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath));
         }
 
         public static T DeserializeCommentedJSONFile<T>(string filePath)
         {
             string str = "";
 
-            System.IO.File.ReadAllLines(filePath)
+            File.ReadAllLines(filePath)
                 .ToList()
                 .Where((x) => x.Length > 0 && (x.Trim()[0] != '/'))
                 .ToList()
                 .ForEach((x) => str += x);
 
-            return DeserializeRequest<T>(str);
+            return Deserialize<T>(str);
         }
 
         public static string Serialize<T>(T param, Formatting formatting)

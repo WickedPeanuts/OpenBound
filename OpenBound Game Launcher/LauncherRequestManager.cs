@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenBound_Game_Launcher.Common;
 using OpenBound_Game_Launcher.Forms;
+using OpenBound_Game_Launcher.Forms.GenericLoadingScreen;
 using OpenBound_Game_Launcher.Helper;
 using OpenBound_Network_Object_Library.Common;
 using OpenBound_Network_Object_Library.Entity;
@@ -25,14 +26,14 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
         public LauncherRequestManager() { }
 
         #region Game Launcher
-        public void PrepareLoginThread(GameLauncher gameLauncher, string nickname, string password)
+        public void PrepareLoginThread(LoginLoadingScreen loadingScreen, string nickname, string password)
         {
-            RequestThread = new Thread(() => Login(gameLauncher, nickname, password));
+            RequestThread = new Thread(() => Login(loadingScreen, nickname, password));
             RequestThread.IsBackground = true;
             RequestThread.Start();
         }
 
-        public void Login(GameLauncher gameLauncher, string nickname, string password)
+        public void Login(LoginLoadingScreen loadingScreen, string nickname, string password)
         {
             try
             {
@@ -53,7 +54,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                     {
                         if (message.Length == 2)
                         {
-                            player = ObjectWrapper.DeserializeRequest<Player>(message[1]);
+                            player = ObjectWrapper.Deserialize<Player>(message[1]);
 
                             if (player == null)
                             {
@@ -63,7 +64,7 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                         }
                         else
                         {
-                            List<int> idList = ObjectWrapper.DeserializeRequest<List<int>>(message[2]);
+                            List<int> idList = ObjectWrapper.Deserialize<List<int>>(message[2]);
 
                             if (idList == null)
                             {
@@ -86,58 +87,43 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                         }
                     });
 
-                csp.OnFailToEstabilishConnection += () =>
-                {
-                    Feedback.CreateWarningMessageBox(Language.FailToEstabilishConnection);
-                    OnFailToEstabilishConnection(gameLauncher);
-                };
+                csp.OnFailToEstabilishConnection += loadingScreen.OnFailToStablishConnection;
                 csp.StartOperation();
                 csp.RequestQueue.Enqueue(NetworkObjectParameters.LoginServerLoginAttemptRequest, player);
 
-                while (!waiting) Thread.Sleep(100);
+                while (!waiting)
+                    Thread.Sleep(100);
 
                 csp.StopOperation();
 
                 if (player == null || player.ID == 0)
                 {
-                    //Error
-                    Feedback.CreateWarningMessageBox(Language.PlayerNotFound);
-                    OnFailToEstabilishConnection(gameLauncher);
-
+                    loadingScreen.OnFailToFindPlayer();
                     return;
                 }
 
                 player.LoadOwnedAvatarDictionary();
 
                 //Success
-                gameLauncher.TickAction += () => { gameLauncher.Close(); };
                 Parameter.Player = player;
+                loadingScreen.Close(DialogResult.OK);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ex: {ex.Message}");
             }
         }
-
-        public static void OnFailToEstabilishConnection(GameLauncher gameLauncher)
-        {
-            gameLauncher.TickAction = new Action(() =>
-            {
-                gameLauncher.SetEnableTextBox(true);
-                gameLauncher.SetEnableInterfaceButtons(true);
-            });
-        }
         #endregion
 
         #region Sign Up Form
-        public void PrepareRegistrationThread(SignUpForm signUpForm, PlayerDTO account)
+        public void PrepareRegistrationThread(SignUpLoadingScreen signUpLoadingForm, PlayerDTO account)
         {
-            RequestThread = new Thread(() => Register(signUpForm, account));
+            RequestThread = new Thread(() => Register(signUpLoadingForm, account));
             RequestThread.IsBackground = true;
             RequestThread.Start();
         }
 
-        public void Register(SignUpForm signUpForm, PlayerDTO account)
+        public void Register(SignUpLoadingScreen signUpLoadingScreen, PlayerDTO account)
         {
             try
             {
@@ -151,14 +137,11 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
                     NetworkObjectParameters.LoginServerBufferSize,
                     (serviceProvider, message) =>
                     {
-                        newPlayer = ObjectWrapper.DeserializeRequest<Player>(message[1]);
+                        newPlayer = ObjectWrapper.Deserialize<Player>(message[1]);
                         waiting = true;
                     });
-                csp.OnFailToEstabilishConnection += () =>
-                {
-                    Feedback.CreateWarningMessageBox(Language.FailToEstabilishConnection);
-                    OnFailToEstabilishConnection(signUpForm);
-                };
+                csp.OnFailToEstabilishConnection += signUpLoadingScreen.OnFailToStablishConnection;
+
                 csp.StartOperation();
                 csp.RequestQueue.Enqueue(NetworkObjectParameters.LoginServerAccountCreationRequest, account);
 
@@ -167,42 +150,32 @@ namespace OpenBound_Game_Launcher.Launcher.Connection
 
                 csp.StopOperation();
 
-                bool wasAccountCreated = true;
-
                 if (newPlayer == null)
                 {
                     //Unnable to create player (unknown reason)
-                    signUpForm.TickAction += () => signUpForm.SetEnableInterfaceElements(true);
-                    Feedback.CreateWarningMessageBox(Language.RegisterFailureMessage);
+                    signUpLoadingScreen.OnFailToCreateAccount();
                     return;
                 }
 
                 string errorMessage = "";
+
+                //Invalid Nickname
                 if (newPlayer.Nickname == null)
-                {
-                    //Invalid Nickname
                     errorMessage += Language.RegisterFailureNickname;
-                    wasAccountCreated = false;
-                }
 
+                //Invalid Email
                 if (newPlayer.Email == null)
-                {
-                    //Invalid Email
                     errorMessage += Language.RegisterFailureEmail;
-                    wasAccountCreated = false;
+                
+                //Fail
+                if (errorMessage.Length > 0)
+                {
+                    signUpLoadingScreen.OnFailToCreateAccount();
+                    return;
                 }
 
-                if (wasAccountCreated)
-                {
-                    //Success
-                    signUpForm.TickAction += () => signUpForm.Close();
-                    Feedback.CreateInformationMessageBox($"{Language.RegisterSuccess}");
-                }
-                else
-                {
-                    signUpForm.TickAction += () => signUpForm.SetEnableInterfaceElements(true);
-                    Feedback.CreateWarningMessageBox($"{Language.RegisterFailureMessage}{errorMessage}");
-                }
+                //Success
+                signUpLoadingScreen.OnCreateAccount();
             }
             catch (Exception ex)
             {

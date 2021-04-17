@@ -50,7 +50,9 @@ namespace OpenBound.GameComponents.Level.Scene
 
         internal static void InitializeObjects()
         {
-            
+            ConfigFileManager.CreateConfigFile(RequesterApplication.Launcher);
+            ConfigFileManager.LoadConfigFile(RequesterApplication.Launcher);
+
             Parameter.Initialize(new LauncherInformation(
                 LauncherOperationStatus.AuthConfirmed,
                 ConfigFileManager.ReadClientInformation(),
@@ -58,7 +60,7 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     ID = 0,
                     Gender = Gender.Female,
-                    Nickname = "Jebomancer",
+                    Nickname = "Winged",
                     //SelectedItemTypeList,
                 }));
 
@@ -68,19 +70,8 @@ namespace OpenBound.GameComponents.Level.Scene
             GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.BungeShot);
             GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.Blood);
             GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.Blood);
-            //GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.PowerUp);
-
-            /*
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            GameInformation.Instance.PlayerInformation.SelectedItemTypeList.Add(ItemType.EnergyUp1);
-            */
 
             #region Sync Mobile List
-
             List<Player> pList = new List<Player>()
             {
                 new Player()
@@ -135,7 +126,7 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 3,
-                    Nickname = "Winged",
+                    Nickname = "Wicko",
                     Password = "123",
                     PlayerRank = PlayerRank.GM,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
@@ -150,7 +141,7 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 4,
-                    Nickname = "You woke me up!",
+                    Nickname = "WickoWicko",
                     Password = "123",
                     PlayerRank = PlayerRank.DGoldenAxe2,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
@@ -180,7 +171,7 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 6,
-                    Nickname = "JonathanJoestar",
+                    Nickname = "KonoDioDa",
                     Password = "123",
                     PlayerRank = PlayerRank.Champion1,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
@@ -425,9 +416,9 @@ namespace OpenBound.GameComponents.Level.Scene
             if (InputHandler.IsBeingPressed(Keys.F1))
             {
                 //CurrentTurnOwner.LoseTurn();
-                MobileList[1].GrantTurn();
+                MobileList[0].GrantTurn();
                 MobileList[0].LayerDepth = 0.6f;
-                //MobileList.ForEach((x) => x.Movement.RemainingStepsThisTurn = 100000);
+                MobileList.ForEach((x) => x.Movement.RemainingStepsThisTurn = 100000);
             }
 
             if (InputHandler.IsBeingPressed(Keys.F4))

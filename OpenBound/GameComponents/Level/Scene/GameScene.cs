@@ -101,5 +101,11 @@ namespace OpenBound.GameComponents.Level.Scene
         }
 
         public virtual void Dispose() { }
+
+        public virtual void OnDropGameServerConnection(Exception ex)
+        {
+            if (ex != null)
+                PopupHandler.Add(PopupAlertMessageBuilder.GameServerDisconnection());
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace OpenBound.GameComponents.Interface.Popup
     public enum AlertMessageType
     {
         AcceptCancel,
-        Accept,
+        Cancel,
     }
 
     public class PopupAlertMessage : PopupMenu
@@ -39,7 +39,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
             buttonList.Add(new Button(ButtonType.Cancel, DepthParameter.InterfacePopupMessageButtons, CloseAction, PositionOffset + new Vector2(160, 65)));
             
-            if (alertMessageType != AlertMessageType.Accept)
+            if (alertMessageType != AlertMessageType.Cancel)
                 buttonList.Add(new Button(ButtonType.Accept, DepthParameter.InterfacePopupMessageButtons, (sender) => { OnConfirm?.Invoke(sender); }, PositionOffset + new Vector2(125, 65)));
 
             ShouldRender = true;

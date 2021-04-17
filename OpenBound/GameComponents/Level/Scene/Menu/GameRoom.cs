@@ -30,6 +30,7 @@ using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.Entity.Text;
 using OpenBound_Network_Object_Library.Extension;
 using OpenBound.GameComponents.Pawn;
+using System;
 
 namespace OpenBound.GameComponents.Level.Scene.Menu
 {
@@ -533,6 +534,11 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
         public override void Dispose()
         {
             textBox.Dispose();
+        }
+
+        public override void OnDropGameServerConnection(Exception ex)
+        {
+            base.OnDropGameServerConnection(ex);
         }
     }
 }

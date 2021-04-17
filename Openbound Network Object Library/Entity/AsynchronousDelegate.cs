@@ -11,6 +11,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenBound_Network_Object_Library.Entity
 {
@@ -19,29 +20,20 @@ namespace OpenBound_Network_Object_Library.Entity
         #region Async Variable 
         private readonly object asyncLock;
 
-        private Action value;
-        public Action Value
-        {
-            get
-            {
-                lock (asyncLock)
-                    return value;
-            }
-            set
-            {
-                lock (asyncLock)
-                {
-                    this.value = value;
-                }
-            }
-        }
+        private Queue<Action> _value;
         #endregion
 
         #region Operators
         public static AsynchronousAction operator +(AsynchronousAction a, AsynchronousAction b)
         {
             lock (a.asyncLock)
-                a.value += b.Value;
+            {
+                lock (b.asyncLock)
+                {
+                    foreach (Action act in b._value)
+                        a._value.Enqueue(act);
+                }
+            }
 
             return a;
         }
@@ -49,7 +41,7 @@ namespace OpenBound_Network_Object_Library.Entity
         public static AsynchronousAction operator +(AsynchronousAction a, Action b)
         {
             lock (a.asyncLock)
-                a.value += b;
+                a._value.Enqueue(b);
 
             return a;
         }
@@ -63,21 +55,38 @@ namespace OpenBound_Network_Object_Library.Entity
         public AsynchronousAction(Action action = default)
         {
             asyncLock = new object();
-            value = action;
+            _value = new Queue<Action>();
+
+            if (action != default)
+                _value.Enqueue(action);
+        }
+
+        public void Clear()
+        {
+            lock (asyncLock)
+                _value.Clear();
         }
 
         public void AsynchronousInvoke()
         {
             lock (asyncLock)
-                value?.Invoke();
+            {
+                foreach (Action act in _value)
+                {
+                    act.Invoke();
+                }
+            }
         }
 
         public void AsynchronousInvokeAndDestroy()
         {
             lock (asyncLock)
             {
-                value?.Invoke();
-                value = default;
+                if (_value != null && _value.Count > 0)
+                {
+                    Action act = _value.Dequeue();
+                    act?.Invoke();
+                }
             }
         }
     }

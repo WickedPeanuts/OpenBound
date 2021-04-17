@@ -28,7 +28,7 @@ namespace OpenBound.GameComponents.Interface.Text
         {
             lock (asyncPadlock)
             {
-                textBalloonDictionary.ForEach((x) => x.Update(gameTime));
+                textBalloonDictionary.ForEachValues((x) => x.Update(gameTime));
                 toBeRemovedTextBalloonList.ForEach((x) => textBalloonDictionary.Remove(x.Mobile));
                 toBeRemovedTextBalloonList.Clear();
             }
@@ -50,7 +50,7 @@ namespace OpenBound.GameComponents.Interface.Text
         public static void Draw(SpriteBatch spriteBatch)
         {
             lock(asyncPadlock)
-                textBalloonDictionary.ForEach((x) => x.Draw(spriteBatch));
+                textBalloonDictionary.ForEachValues((x) => x.Draw(spriteBatch));
         }
     }
 }

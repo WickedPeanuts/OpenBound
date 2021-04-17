@@ -274,5 +274,10 @@ namespace OpenBound.GameComponents.Interface.Interactive.AvatarShop
 
             remainingPointsSpriteTextList.ForEach((x) => x.Draw(spriteBatch));
         }
+
+        public void Disable()
+        {
+            buttonList.ForEach((x) => x.Disable());
+        }
     }
 }
