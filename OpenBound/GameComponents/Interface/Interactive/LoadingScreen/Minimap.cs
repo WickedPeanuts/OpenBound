@@ -100,7 +100,7 @@ namespace OpenBound.GameComponents.Interface.Interactive.LoadingScreen
                 spawnPointsOffset.Add(boxPosition - mapFG.Position);
 
                 playerNameList.Add(new SpriteText(
-                        FontTextType.Consolas10, player.Nickname,
+                        FontTextType.NotoSans10Family, player.Nickname,
                         nameColor, Alignment.Center,
                         layerDepth: DepthParameter.LoadingScreenMinimapSpawnPointText, boxPosition - new Vector2(0, 20), Color.Black));
             }

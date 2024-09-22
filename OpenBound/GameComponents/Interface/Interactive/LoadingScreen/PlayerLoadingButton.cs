@@ -82,7 +82,7 @@ namespace OpenBound.GameComponents.Interface.Interactive.LoadingScreen
 
             spriteList.Add(PlayerStatus);
 
-            loadingPercentage = new SpriteText(FontTextType.Consolas10, "0%",
+            loadingPercentage = new SpriteText(FontTextType.Consolas10Family, "0%",
                 Color.White, Alignment.Center, DepthParameter.InterfaceButtonText,
                 ButtonOffset + new Vector2(78 * sidePositionFactor, 24), Color.Black);
 

@@ -18,10 +18,9 @@ using OpenBound.GameComponents.Interface.Builder;
 using OpenBound.GameComponents.Interface.Text;
 using OpenBound.GameComponents.Level.Scene;
 using OpenBound.GameComponents.Pawn;
-using OpenBound_Network_Object_Library.Entity;
-using System.Collections.Generic;
-using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.Entity.Text;
+using OpenBound_Network_Object_Library.Models;
+using System.Collections.Generic;
 
 namespace OpenBound.GameComponents.Interface
 {
@@ -65,20 +64,20 @@ namespace OpenBound.GameComponents.Interface
 
             if (showGuild && player.Guild != null)
             {
-                spTL.Add(new SpriteText(FontTextType.Consolas10, "[",
+                spTL.Add(new SpriteText(FontTextType.NotoSans10Family, "[",
                     Color.White, alignment, layerDepth,
                     outlineColor: Color.Black));
-                spTL.Add(new SpriteText(FontTextType.Consolas10, player.Guild.Tag,
+                spTL.Add(new SpriteText(FontTextType.NotoSans10Family, player.Guild.Tag,
                     Parameter.NameplateGuildColor, alignment, layerDepth,
                     outlineColor: Parameter.NameplateGuildOutlineColor));
-                spTL.Add(new SpriteText(FontTextType.Consolas10, "] ",
+                spTL.Add(new SpriteText(FontTextType.NotoSans10Family, "] ",
                     Color.White, alignment, layerDepth,
                     outlineColor: Color.Black));
             }
 
             PlayerColor = Message.TextToColor(player.Nickname);
 
-            spTL.Add(new SpriteText(FontTextType.Consolas10, player.Nickname,
+            spTL.Add(new SpriteText(FontTextType.NotoSans10Family, player.Nickname,
                 PlayerColor, alignment, layerDepth,
                 outlineColor: Color.Black));
 
@@ -112,12 +111,12 @@ namespace OpenBound.GameComponents.Interface
 
             if (player.Guild != null)
             {
-                spTL.Add(new SpriteText(FontTextType.Consolas10, $"[{player.Guild.Tag}] ",
+                spTL.Add(new SpriteText(FontTextType.NotoSans10Family, $"[{player.Guild.Tag}] ",
                     textColor, Alignment, DepthParameter.Nameplate,
                     outlineColor: Color.Black));
             }
 
-            spTL.Add(new SpriteText(FontTextType.Consolas10, player.Nickname,
+            spTL.Add(new SpriteText(FontTextType.NotoSans10Family, player.Nickname,
                 textColor, Alignment, DepthParameter.Nameplate,
                 outlineColor: Color.Black));
 
@@ -160,13 +159,15 @@ namespace OpenBound.GameComponents.Interface
             {
                 //Rank Indicator (Image)
                 rankIndicator.Position = NewPosition + new Vector2(rankIndicator.Pivot.X, 0);
-                compositeSpriteText.Position = rankIndicator.Position + new Vector2(rankIndicator.Pivot.X + 2, -7);
+                compositeSpriteText.Position = rankIndicator.Position +
+                    new Vector2(rankIndicator.Pivot.X + 2, -compositeSpriteText.ElementDimensions.Y / 2f);
             }
             else if (Alignment == Alignment.Center)
             {
                 Vector2 completeSentence = (compositeSpriteText.ElementDimensions + rankIndicator.Pivot) / 2;
                 rankIndicator.Position = NewPosition - completeSentence;
-                compositeSpriteText.Position = rankIndicator.Position + new Vector2(rankIndicator.Pivot.X + 2, -7);
+                compositeSpriteText.Position = rankIndicator.Position +
+                    new Vector2(rankIndicator.Pivot.X + 2, -compositeSpriteText.ElementDimensions.Y / 2f);
             }
         }
 

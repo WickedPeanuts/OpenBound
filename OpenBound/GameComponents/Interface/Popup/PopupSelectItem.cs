@@ -47,7 +47,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             itemButtonList = new List<Button>();
 
             itemName        = new SpriteText(FontTextType.Consolas11, Language.InGameItemName,      Color.White, Alignment.Left,  DepthParameter.InterfacePopupText, default, outlineColor: Color.Black);
-            itemDescription = new SpriteText(FontTextType.Consolas10, "",                           Color.White, Alignment.Left,  DepthParameter.InterfacePopupText, default, outlineColor: Color.Black);
+            itemDescription = new SpriteText(FontTextType.Consolas10Family, "",                           Color.White, Alignment.Left,  DepthParameter.InterfacePopupText, default, outlineColor: Color.Black);
             itemCost        = new SpriteText(FontTextType.Consolas11, Language.InGameItemCost,      Color.White, Alignment.Right, DepthParameter.InterfacePopupText, default, outlineColor: Color.Black);
             itemDelayCost   = new SpriteText(FontTextType.Consolas11, Language.InGameItemDelayCost, Color.White, Alignment.Left,  DepthParameter.InterfacePopupText, default, outlineColor: Color.Black);
 

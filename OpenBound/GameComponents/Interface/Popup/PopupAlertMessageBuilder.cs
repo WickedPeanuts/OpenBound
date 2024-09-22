@@ -63,12 +63,12 @@ namespace OpenBound.GameComponents.Interface.Popup
             titleSTList.Add(new SpriteText(FontTextType.Consolas11, Language.PopupAlertMessageLeaveGameTitle, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
 
             messageSTList1 = new List<SpriteText>();
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageLeaveGameMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageLeaveGameMessage12, Color.LightSalmon, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageLeaveGameMessage13, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageLeaveGameMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageLeaveGameMessage12, Color.LightSalmon, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageLeaveGameMessage13, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
 
             messageSTList2 = new List<SpriteText>();
-            messageSTList2.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageLeaveGameMessage21, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
+            messageSTList2.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageLeaveGameMessage21, Color.White, Alignment.Left, layerDepth: DepthParameter.SceneTransitioningEffectBase));
 
             stMatrix = new List<List<SpriteText>>();
             stMatrix.Add(messageSTList1);
@@ -96,12 +96,12 @@ namespace OpenBound.GameComponents.Interface.Popup
             titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Star, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             messageSTList1 = new List<SpriteText>();
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageAvatarPurchaseSuccessMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, avatarMetadata.Gender + " - " + avatarMetadata.AvatarCategory + " - " +  avatarMetadata.Name, Color.LightSalmon, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageAvatarPurchaseSuccessMessage12, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageAvatarPurchaseSuccessMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, avatarMetadata.Gender + " - " + avatarMetadata.AvatarCategory + " - " +  avatarMetadata.Name, Color.LightSalmon, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageAvatarPurchaseSuccessMessage12, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             messageSTList2 = new List<SpriteText>();
-            messageSTList2.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageAvatarPurchaseSuccessMessage21, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList2.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageAvatarPurchaseSuccessMessage21, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             stMatrix = new List<List<SpriteText>>();
             stMatrix.Add(messageSTList1);
@@ -127,7 +127,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             titleSTList.Add(new SpriteText(FontTextType.Consolas11, Language.PopupAlertMessageAvatarPurchaseFailureTitle, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
             
             messageSTList1 = new List<SpriteText>();
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageAvatarPurchaseFailureMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageAvatarPurchaseFailureMessage11, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
             
             stMatrix = new List<List<SpriteText>>();
             stMatrix.Add(messageSTList1);
@@ -154,12 +154,12 @@ namespace OpenBound.GameComponents.Interface.Popup
             titleSTList.Add(new SpriteText(FontTextType.FontAwesome11, "" + (char)FontAwesomeIconIndex.Exclamation_Triangle, Color.Red,   Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             messageSTList1 = new List<SpriteText>();
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageServerDisconnection,       Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageGameServer,                Color.CadetBlue, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
-            messageSTList1.Add(new SpriteText(FontTextType.Consolas10, ".",                                                 Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageServerDisconnection,       Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageGameServer,                Color.CadetBlue, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList1.Add(new SpriteText(FontTextType.Consolas10Family, ".",                                                 Color.White,     Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             messageSTList2 = new List<SpriteText>();
-            messageSTList2.Add(new SpriteText(FontTextType.Consolas10, Language.PopupAlertMessageGameServerDisconnection, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
+            messageSTList2.Add(new SpriteText(FontTextType.Consolas10Family, Language.PopupAlertMessageGameServerDisconnection, Color.White, Alignment.Left, layerDepth: DepthParameter.InterfacePopupMessageText));
 
             stMatrix = new List<List<SpriteText>>();
             stMatrix.Add(messageSTList1);

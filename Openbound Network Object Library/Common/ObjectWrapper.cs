@@ -21,7 +21,7 @@ namespace OpenBound_Network_Object_Library.Common
 {
     public class ObjectWrapper
     {
-        private static ASCIIEncoding encoder = new ASCIIEncoding();
+        private static UTF8Encoding encoder = new UTF8Encoding();
 
         static ObjectWrapper()
         {

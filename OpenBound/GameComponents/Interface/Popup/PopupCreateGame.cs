@@ -61,25 +61,27 @@ namespace OpenBound.GameComponents.Interface.Popup
             buttonList.Add(new Button(ButtonType.Accept, DepthParameter.InterfacePopupButtons, CreateRoomAction));
             buttonList.Add(new Button(ButtonType.Cancel, DepthParameter.InterfacePopupButtons, CloseAction));
 
-            compositeSpriteTextSentenceList = new List<SpriteText>();
-            compositeSpriteTextSentenceList.Add(new SpriteText(FontTextType.Consolas10, "", Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black));
-            compositeSpriteTextSentenceList.Add(new SpriteText(FontTextType.Consolas10, "", Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black));
+            compositeSpriteTextSentenceList =
+            [
+                new SpriteText(FontTextType.NotoSans10Family, "", Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
+                new SpriteText(FontTextType.NotoSans10Family, "", Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
+            ];
 
             compositeSpriteTextList.Add(CompositeSpriteText.CreateCompositeSpriteText(compositeSpriteTextSentenceList, Orientation.Vertical, Alignment.Left, new Vector2(0, 0), 5));
 
             compositeSpriteTextList.Add(CompositeSpriteText.CreateCompositeSpriteText(
                 new List<SpriteText>()
                 {
-                    new SpriteText(FontTextType.Consolas10, Language.PopupCreateRoomTitle,    Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
-                    new SpriteText(FontTextType.Consolas10, Language.PopupCreateRoomPassword, Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black)
+                    new SpriteText(FontTextType.NotoSans10Family, Language.PopupCreateRoomTitle,    Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
+                    new SpriteText(FontTextType.NotoSans10Family, Language.PopupCreateRoomPassword, Color.White, Alignment.Left, DepthParameter.InterfacePopupText, outlineColor: Color.Black)
                 },
                 Orientation.Vertical, Alignment.Right, Vector2.Zero, 9));
 
             //Button Texts
-            spriteTextList.Add(new SpriteText(FontTextType.Consolas10, Language.GameModeJewel, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
-            spriteTextList.Add(new SpriteText(FontTextType.Consolas10, Language.GameModeTag, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
-            spriteTextList.Add(new SpriteText(FontTextType.Consolas10, Language.GameModeScore, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
-            spriteTextList.Add(new SpriteText(FontTextType.Consolas10, Language.GameModeSolo, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
+            spriteTextList.Add(new SpriteText(FontTextType.NotoSans10Family, Language.GameModeJewel, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
+            spriteTextList.Add(new SpriteText(FontTextType.NotoSans10Family, Language.GameModeTag, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
+            spriteTextList.Add(new SpriteText(FontTextType.NotoSans10Family, Language.GameModeScore, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
+            spriteTextList.Add(new SpriteText(FontTextType.NotoSans10Family, Language.GameModeSolo, Color.White, Alignment.Center, DepthParameter.InterfacePopupText));
 
             //Room default configurations
             buttonList[3].ChangeButtonState(ButtonAnimationState.Activated, true);
@@ -96,8 +98,8 @@ namespace OpenBound.GameComponents.Interface.Popup
 
             //Textfields
             textFieldList = new List<TextField>() {
-                new TextField(default, 185, 14, 16, FontTextType.Consolas10, Color.White, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
-                new TextField(default, 185, 14, 16, FontTextType.Consolas10, Color.White, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
+                new TextField(default, 185, 14, 16, FontTextType.NotoSans10Family, Color.White, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
+                new TextField(default, 185, 14, 16, FontTextType.NotoSans10Family, Color.White, DepthParameter.InterfacePopupText, outlineColor: Color.Black),
             };
 
             textFieldList[0].TabIndex = textFieldList[1].TabIndex = textFieldList;

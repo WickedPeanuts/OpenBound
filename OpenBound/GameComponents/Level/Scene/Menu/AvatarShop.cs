@@ -282,7 +282,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
 
             inventoryRiderPreview.Hide();
 
-            avatarPreviewSpriteText = new SpriteText(FontTextType.Consolas10, Language.PreviewTextAvatarShop,
+            avatarPreviewSpriteText = new SpriteText(FontTextType.Consolas10Family, Language.PreviewTextAvatarShop,
                 Color.White, Alignment.Left, DepthParameter.InterfaceButton,
                 Parameter.ScreenCenter - new Vector2(385, 110), Color.Black);
 
@@ -293,7 +293,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
             inventoryInGamePreview = new InGamePreview(Parameter.ScreenCenter + new Vector2(-290, 80));
             inventoryInGamePreview.Hide();
 
-            inGamePreviewSpriteText = new SpriteText(FontTextType.Consolas10, Language.InGamePreviewTextAvatarShop,
+            inGamePreviewSpriteText = new SpriteText(FontTextType.Consolas10Family, Language.InGamePreviewTextAvatarShop,
                 Color.White, Alignment.Left, DepthParameter.InterfaceButton,
                 Parameter.ScreenCenter - new Vector2(385, -17), Color.Black);
 
@@ -306,7 +306,7 @@ namespace OpenBound.GameComponents.Level.Scene.Menu
                 Parameter.ScreenCenter + new Vector2(242, -253), Color.Black);
             spriteTextList.Add(spriteText);
 
-            searchTextField = new TextField(Parameter.ScreenCenter + new Vector2(260, -252), 120, 16, 16, FontTextType.Consolas10, Color.White, DepthParameter.InterfaceButtonText, Color.Black);
+            searchTextField = new TextField(Parameter.ScreenCenter + new Vector2(260, -252), 120, 16, 16, FontTextType.Consolas10Family, Color.White, DepthParameter.InterfaceButtonText, Color.Black);
             searchTextField.ActivateElement();
             searchTextField.OnTextChange = OnFilterTextChange;
         }

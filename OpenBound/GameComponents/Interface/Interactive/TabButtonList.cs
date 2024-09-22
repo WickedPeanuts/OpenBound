@@ -37,7 +37,7 @@ namespace OpenBound.GameComponents.Interface.Interactive
 
             foreach(TabButtonParameter tbp in tabButtonParameterList)
             {
-                SpriteText st = new SpriteText(FontTextType.Consolas10, tbp.ButtonText, Color.Gray, Alignment.Center, DepthParameter.InterfacePopupButtonIcon, default, Color.Black);
+                SpriteText st = new SpriteText(FontTextType.Consolas10Family, tbp.ButtonText, Color.Gray, Alignment.Center, DepthParameter.InterfacePopupButtonIcon, default, Color.Black);
                 st.PositionOffset = basePos;// + (-st.MeasureSize * Vector2.UnitY / 3f);
                 spriteTextList.Add(st);
 

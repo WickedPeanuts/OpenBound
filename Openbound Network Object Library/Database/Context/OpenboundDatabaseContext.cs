@@ -22,7 +22,15 @@ namespace OpenBound_Network_Object_Library.Database.Context
         private readonly string _connectionString;
         public OpenBoundDatabaseContext() : base()
         {
-            _connectionString = $"Data Source={NetworkObjectParameters.DatabaseAddress};Initial Catalog={NetworkObjectParameters.DatabaseName};Persist Security Info=True;User ID={NetworkObjectParameters.DatabaseLogin};Password={NetworkObjectParameters.DatabasePassword};PersistSecurityInfo=True";
+            _connectionString = $"""
+                Data Source={NetworkObjectParameters.DatabaseAddress};
+                Initial Catalog={NetworkObjectParameters.DatabaseName};
+                Persist Security Info=True;
+                User ID={NetworkObjectParameters.DatabaseLogin};
+                Password={NetworkObjectParameters.DatabasePassword};
+                PersistSecurityInfo=True;
+                TrustServerCertificate=True;
+                """;
             //_connectionString = "Data Source=localhost,1433;User ID=sa;Password=my-secret-pw-xD;Database=Openbound;Initial Catalog=Openbound;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             Database.EnsureCreated();
         }
@@ -64,7 +72,7 @@ namespace OpenBound_Network_Object_Library.Database.Context
                 .WithMany(c => c.PlayerRelationshipList)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Guild>().HasIndex(x => x.Tag).IsUnique();   
+            modelBuilder.Entity<Guild>().HasIndex(x => x.Tag).IsUnique();
 
             // Seeders
             seeder.SeedAvatarMetadata(modelBuilder);

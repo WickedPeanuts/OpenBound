@@ -26,6 +26,7 @@ namespace OpenBound.GameComponents.Interface.Text
     {
         public SpriteFont SpriteFont { get; private set; }
         public FontTextType FontTextType { get; private set; }
+        public FontFamilyMetadata FontFamilyMetadata { get; private set; }
 
         //public int FontSize { get; set; }
         private Vector2 position;
@@ -35,6 +36,7 @@ namespace OpenBound.GameComponents.Interface.Text
             //Prevent font of blurrying when it is in the middle of a coordinate
             set => position = value.ToIntegerDomain();
         }
+
 
         private Vector2 positionOffset;
         public Vector2 PositionOffset {
@@ -86,16 +88,17 @@ namespace OpenBound.GameComponents.Interface.Text
 
         public SpriteText(FontTextType fontTextType, string text, Color color, Alignment alignment, float layerDepth, Vector2 position = default, Color outlineColor = default)
         {
-            SpriteFont = AssetHandler.Instance.RequestFont($@"Fonts/{fontTextType}");
+            (SpriteFont, FontTextType) = AssetHandler.Instance.RequestFont(fontTextType, text);
             Position = position;
 
             //this.FontSize = FontSize;
             BaseColor = Color = color;
             this.alignment = alignment;
             LayerDepth = layerDepth;
-            FontTextType = fontTextType;
 
             hasOutline = false;
+
+            FontFamilyMetadata = FontFamilyMetadata.GetMetadata(FontTextType);
 
             if (outlineColor == default)
                 outlineColor = Color.Black;
@@ -246,7 +249,7 @@ namespace OpenBound.GameComponents.Interface.Text
             Color outlineColor = Color.Black;
 
             foreach (string s in strList)
-                sTextList.Add(new SpriteText(FontTextType.Consolas10, s, color, Alignment.Center, layerDepth, outlineColor: outlineColor));
+                sTextList.Add(new SpriteText(FontTextType.Consolas10Family, s, color, Alignment.Center, layerDepth, outlineColor: outlineColor));
 
             return sTextList;
         }

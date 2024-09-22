@@ -17,14 +17,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using OpenBound.Common;
 using OpenBound.Extension;
-using OpenBound.GameComponents.Pawn.Unit;
-using OpenBound_Network_Object_Library.Common;
-using OpenBound_Network_Object_Library.Entity;
+using OpenBound.GameComponents.Level.Scene;
+using OpenBound_Network_Object_Library.Entity.Text;
 using OpenBound_Network_Object_Library.FileManagement;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace OpenBound.GameComponents.Asset
 {
@@ -75,6 +73,52 @@ namespace OpenBound.GameComponents.Asset
                             .Replace(".xnb", ""));
                 }
             }
+        }
+
+        public (SpriteFont, FontTextType) RequestFont(FontTextType type, string text)
+        {
+            if ((type & FontTextType.FONT_FAMILY_MASK) == type)
+            {
+                return RequestLocalizedFont(type, text);
+            }
+
+            return (RequestFont($@"Fonts/{type}"), type);
+        }
+
+        public (SpriteFont, FontTextType) RequestLocalizedFont(FontTextType type, string text)
+        {
+            FontTextType family = type & FontTextType.FONT_FAMILY_MASK;
+
+            if (family <= 0)
+            {
+                throw new Exception("This method only supports font families");
+            }
+
+            if (!FontFamilyMetadata.FontFamilyInstances.TryGetValue(family, out IReadOnlyList<FontTextType> fonts))
+            {
+                throw new Exception("The given font family does not exist");
+            }
+
+            foreach (FontTextType font in fonts)
+            {
+                SpriteFont sf = RequestFont($@"Fonts/{font}");
+
+                bool containsAllCharacters = true;
+
+                foreach (char c in text)
+                {
+                    containsAllCharacters &= sf.Characters.Contains(c);
+                    if (!containsAllCharacters)
+                    {
+                        break;
+                    }
+                }
+
+                if (containsAllCharacters)
+                    return (sf, font);
+            }
+
+            throw new Exception("Font has glyphs from different alphabets");
         }
 
         public SpriteFont RequestFont(string path)

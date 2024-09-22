@@ -59,7 +59,7 @@ namespace OpenBound.GameComponents.Interface
                     break;
             }
 
-            spriteText = new SpriteText(FontTextType.Consolas10, text, Color.White, Alignment.Center, layerDepth: 1);
+            spriteText = new SpriteText(FontTextType.Consolas10Family, text, Color.White, Alignment.Center, layerDepth: 1);
 
             flipbook.Position = new Vector2(position.X, -(GameScene.Camera.CameraOffset + Parameter.ScreenResolution / 2).Y);
             spriteText.Position = flipbook.Position + new Vector2(0, 0);

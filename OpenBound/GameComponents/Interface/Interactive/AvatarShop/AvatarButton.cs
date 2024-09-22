@@ -104,14 +104,14 @@ namespace OpenBound.GameComponents.Interface.Interactive.AvatarShop
             if (name.Length > 13)
                 name = name.Substring(0, 12) + ".";
 
-            itemNameSpriteText = new SpriteText(FontTextType.Consolas10, name, Color.White, Alignment.Left, layerDepth + 0.002f, position, Color.Black);
+            itemNameSpriteText = new SpriteText(FontTextType.Consolas10Family, name, Color.White, Alignment.Left, layerDepth + 0.002f, position, Color.Black);
             itemNameSpriteText.PositionOffset = position + new Vector2(-44, -36);
             spriteTextList.Add(itemNameSpriteText);
 
             int pricePos = 0;
             if (avatarMetadata.GoldPrice != 0)
             {
-                goldSpriteText = new SpriteText(FontTextType.Consolas10, string.Format("{0:N0}", avatarMetadata.GoldPrice), Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Right, layerDepth + 0.003f, position, Parameter.InterfaceAvatarShopButtonGoldOutlineColor);
+                goldSpriteText = new SpriteText(FontTextType.Consolas10Family, string.Format("{0:N0}", avatarMetadata.GoldPrice), Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Right, layerDepth + 0.003f, position, Parameter.InterfaceAvatarShopButtonGoldOutlineColor);
                 goldSpriteText.PositionOffset = position + new Vector2(30, 20 - 10 * pricePos);
                 goldIcon = new Sprite("Interface/StaticButtons/AvatarShop/AvatarButton/GoldIcon",
                     position + new Vector2(38, 26 - 10 * pricePos++), layerDepth + 0.002f, new Rectangle(0, 0, 26, 21));
@@ -124,7 +124,7 @@ namespace OpenBound.GameComponents.Interface.Interactive.AvatarShop
 
             if (avatarMetadata.CashPrice != 0)
             {
-                cashSpriteText = new SpriteText(FontTextType.Consolas10, string.Format("{0:N0}", avatarMetadata.CashPrice), Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Right, layerDepth + 0.003f, position, Parameter.InterfaceAvatarShopButtonCashOutlineColor);
+                cashSpriteText = new SpriteText(FontTextType.Consolas10Family, string.Format("{0:N0}", avatarMetadata.CashPrice), Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Right, layerDepth + 0.003f, position, Parameter.InterfaceAvatarShopButtonCashOutlineColor);
                 cashSpriteText.PositionOffset = position + new Vector2(30, 20 - 10 * pricePos);
                 cashIcon = new Sprite("Interface/StaticButtons/AvatarShop/AvatarButton/CashIcon",
                     position + new Vector2(38, 26 - 10 * pricePos++), layerDepth + 0.002f, new Rectangle(0, 0, 26, 21));

@@ -176,9 +176,9 @@ namespace OpenBound.GameComponents.Interface.Text
 
             //Load the first line with the player nickname
             List<SpriteText> line = new List<SpriteText>() {
-                new SpriteText(FontTextType.Consolas10, "[", color, Alignment.Left, layerDepth, outlineColor: outlineColor),
-                new SpriteText(FontTextType.Consolas10, playerMessage.Player.Nickname, Message.TextToColor(playerMessage.Player.Nickname), Alignment.Left, layerDepth, outlineColor: outlineColor),
-                new SpriteText(FontTextType.Consolas10, "]: ", color, Alignment.Left, layerDepth, outlineColor: outlineColor),
+                new SpriteText(FontTextType.NotoSans10Family, "[", color, Alignment.Left, layerDepth, outlineColor: outlineColor),
+                new SpriteText(FontTextType.NotoSans10Family, playerMessage.Player.Nickname, Message.TextToColor(playerMessage.Player.Nickname), Alignment.Left, layerDepth, outlineColor: outlineColor),
+                new SpriteText(FontTextType.NotoSans10Family, "]: ", color, Alignment.Left, layerDepth, outlineColor: outlineColor),
             };
 
             SpriteText st = line.Last();
@@ -195,7 +195,7 @@ namespace OpenBound.GameComponents.Interface.Text
                 cstList.Add(CreateCompositeSpriteText(line, Orientation.Horizontal, Alignment.Left, default));
 
                 line = new List<SpriteText>();
-                st = new SpriteText(FontTextType.Consolas10, "", color, Alignment.Left, layerDepth, outlineColor: outlineColor);
+                st = new SpriteText(FontTextType.NotoSans10Family, "", color, Alignment.Left, layerDepth, outlineColor: outlineColor);
                 line.Add(st);
             }
 
@@ -275,7 +275,8 @@ namespace OpenBound.GameComponents.Interface.Text
                 {
                     Vector2 elemSize = spriteText.MeasureSize;
 
-                    spriteText.Position = spriteText.PositionOffset = newPosition + new Vector2(offsetX, offsetY);
+                    spriteText.Position = spriteText.PositionOffset = newPosition + new Vector2(offsetX, offsetY)
+                        + spriteText.FontFamilyMetadata.ElementHeightOffset;
                     offsetX += elemSize.X + elementOffset.X;
                     maxY = Math.Max(maxY, elemSize.Y);
                 }

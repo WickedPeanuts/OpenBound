@@ -185,7 +185,7 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
             {
                 if (IsOperationStopped) return;
 
-                Console.WriteLine($"ConsumerThread: {genericException.Message}");
+                Debug.WriteLine($"ConsumerThread: {genericException.Message}");
 
                 if (OnFailToReceiveMessage != null && OnFailToSendMessage.Invoke(genericException))
                 {
@@ -197,7 +197,7 @@ namespace OpenBound_Network_Object_Library.TCP.ServiceProvider
                     }
                     catch (Exception streamException)
                     {
-                        Console.WriteLine($"ConsumerThread: {streamException.Message}");
+                        Debug.WriteLine($"ConsumerThread: {streamException.Message}");
                         disconnectionException = streamException;
                     }
 

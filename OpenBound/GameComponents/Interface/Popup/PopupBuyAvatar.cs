@@ -27,7 +27,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
             spriteTextList.Add(
                 new SpriteText(
-                    FontTextType.Consolas10, Language.PopupTextConfirmPuchase,
+                    FontTextType.Consolas10Family, Language.PopupTextConfirmPuchase,
                     Color.White, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Color.Black)
                 {
@@ -37,7 +37,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             //Before
             spriteTextList.Add(
                 new SpriteText(
-                    FontTextType.Consolas10, Language.PopupTextBalance,
+                    FontTextType.Consolas10Family, Language.PopupTextBalance,
                     Color.White, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Color.Black)
                 {
@@ -50,7 +50,7 @@ namespace OpenBound.GameComponents.Interface.Popup
                 //Gold
                 spriteTextList.Add(
                     new SpriteText(
-                        FontTextType.Consolas10, Language.PopupTextCurrencyGold,
+                        FontTextType.Consolas10Family, Language.PopupTextCurrencyGold,
                         Color.White, Alignment.Center, DepthParameter.InterfacePopupText,
                         default, outlineColor: Color.Black)
                     {
@@ -60,7 +60,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
                 //Gold Value
                 spriteTextList.Add(
-                    new SpriteText(FontTextType.Consolas10,
+                    new SpriteText(FontTextType.Consolas10Family,
                     string.Format("{0:N0}", GameInformation.Instance.PlayerInformation.Gold),
                     Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Parameter.InterfaceAvatarShopButtonGoldOutlineColor)
@@ -80,7 +80,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
                 //Gold Value 2
                 spriteTextList.Add(
-                    new SpriteText(FontTextType.Consolas10,
+                    new SpriteText(FontTextType.Consolas10Family,
                     string.Format("{0:N0}", GameInformation.Instance.PlayerInformation.Gold - avatarMetadata.GoldPrice),
                     Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Parameter.InterfaceAvatarShopButtonGoldOutlineColor)
@@ -103,7 +103,7 @@ namespace OpenBound.GameComponents.Interface.Popup
                 //Cash
                 spriteTextList.Add(
                     new SpriteText(
-                        FontTextType.Consolas10, Language.PopupTextCurrencyCash,
+                        FontTextType.Consolas10Family, Language.PopupTextCurrencyCash,
                         Color.White, Alignment.Center, DepthParameter.InterfacePopupText,
                         default, outlineColor: Color.Black)
                     {
@@ -112,7 +112,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
                 //Cash Value
                 spriteTextList.Add(
-                    new SpriteText(FontTextType.Consolas10,
+                    new SpriteText(FontTextType.Consolas10Family,
                     string.Format("{0:N0}", GameInformation.Instance.PlayerInformation.Cash),
                     Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Parameter.InterfaceAvatarShopButtonCashOutlineColor)
@@ -132,7 +132,7 @@ namespace OpenBound.GameComponents.Interface.Popup
 
                 //Cash Value 2
                 spriteTextList.Add(
-                    new SpriteText(FontTextType.Consolas10,
+                    new SpriteText(FontTextType.Consolas10Family,
                     string.Format("{0:N0}", GameInformation.Instance.PlayerInformation.Cash - avatarMetadata.CashPrice),
                     Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Center, DepthParameter.InterfacePopupText,
                     default, outlineColor: Parameter.InterfaceAvatarShopButtonCashOutlineColor)

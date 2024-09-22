@@ -224,7 +224,7 @@ namespace OpenBound.Common
         #endregion
 
         #region Fonts
-        public static readonly FontTextType AnimatedButtonFont = FontTextType.Consolas10;
+        public static readonly FontTextType AnimatedButtonFont = FontTextType.Consolas10Family;
         public static readonly FontTextType ServerButtonFont = FontTextType.Consolas11;
         #endregion
 

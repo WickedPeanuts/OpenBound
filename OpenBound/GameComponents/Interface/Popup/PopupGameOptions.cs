@@ -58,80 +58,80 @@ namespace OpenBound.GameComponents.Interface.Popup
 
             //SpriteText Session
             //Gameplay
-            SpriteText sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplay, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            SpriteText sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplay, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-120, -120) };
             spriteTextList.Add(sp);
 
             //Gameplay / Shooting Mode
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplayAimingMode, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplayAimingMode, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, -100) };
             spriteTextList.Add(sp);
 
             //Gameplay / Shooting Mode / Drag
-            SpriteText spDrag = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplayAimingModeDrag, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spDrag = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplayAimingModeDrag, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Gameplay / Shooting Mode / Slice
-            SpriteText spSlice = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplayAimingModeSlice, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spSlice = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplayAimingModeSlice, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Gameplay / Scroll Speed
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplayScrollSpeed, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplayScrollSpeed, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, -80) };
             spriteTextList.Add(sp);
 
             //Gameplay / Mouse Speed
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsGameplayMouseSpeed, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsGameplayMouseSpeed, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, -60) };
             spriteTextList.Add(sp);
 
             //Sound
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsSound, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsSound, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-120, -40) };
             spriteTextList.Add(sp);
 
             //Sound / BGM
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsSoundBGM, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsSoundBGM, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, -20) };
             spriteTextList.Add(sp);
 
             //Sound / SFX
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsSoundSFX, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsSoundSFX, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, 0) };
             spriteTextList.Add(sp);
 
             //Misc
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMisc, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMisc, Parameter.TextColorPopupIngameOptionsCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-120, 20) };
             spriteTextList.Add(sp);
 
             //Misc / Background
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscBackground, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscBackground, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, 40) };
             spriteTextList.Add(sp);
 
             //Misc / Background / On
-            SpriteText spOn = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscBackgroundOn, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            SpriteText spOn = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscBackgroundOn, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(20, 40) };
 
             //Misc / Background / Off
-            SpriteText spOff = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscBackgroundOff, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
+            SpriteText spOff = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscBackgroundOff, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(90, 40) };
 
             //Misc / Interface
-            sp = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscInterface, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
+            sp = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscInterface, Parameter.TextColorPopupIngameOptionsSubCategory, Alignment.Left, DepthParameter.InterfacePopupText)
             { PositionOffset = position + new Vector2(-110, 60) };
             spriteTextList.Add(sp);
 
             //Misc / Interface / Classic
-            SpriteText spClassic = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscInterfaceClassic, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spClassic = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscInterfaceClassic, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Misc / Interface / TH Blue
-            SpriteText spTHBlue = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscInterfaceTHBlue, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spTHBlue = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscInterfaceTHBlue, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Misc / Interface / TH White 
-            SpriteText spTHWhite = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscInterfaceTHWhite, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spTHWhite = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscInterfaceTHWhite, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Misc / Interface / OpenBound
-            SpriteText spOpenBound = new SpriteText(FontTextType.Consolas10, Language.PopupGameOptionsMiscInterfaceOpenBound, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
+            SpriteText spOpenBound = new SpriteText(FontTextType.Consolas10Family, Language.PopupGameOptionsMiscInterfaceOpenBound, Parameter.TextColorPopupIngameOptionsElement, Alignment.Left, DepthParameter.InterfacePopupText);
 
             //Radio Button Sections
             aimingRadioSet = new RadioButtonSet(RadioButtonType.InterfaceRadioButton, position + new Vector2(10, -94), new Vector2(70, 0), new List<SpriteText>() { spDrag, spSlice }, new Vector2(5, 1), 1, DepthParameter.InterfacePopupButtons);

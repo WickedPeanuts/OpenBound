@@ -21,7 +21,8 @@ namespace OpenBound_Network_Object_Library.Database.Context
                 new Player { ID = 2, Nickname = "Wicked", Email = "dev01@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 },
                 new Player { ID = 3, Nickname = "Willow", Email = "dev02@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 },
                 new Player { ID = 4, Nickname = "Vinny", Email = "dev03@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 },
-                new Player { ID = 5, Nickname = "Test", Email = "test0@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 }
+                new Player { ID = 5, Nickname = "전설의", Email = "test0@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 },
+                new Player { ID = 6, Nickname = "นักรบผู้", Email = "test1@dev.com", Password = defaultPassword, Gold = 30000, Cash = 30000, Token = 30000 },
             };
 
             List<PlayerAvatarMetadata> pAM = new List<PlayerAvatarMetadata>();

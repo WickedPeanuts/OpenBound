@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenBound_Network_Object_Library.Models;
 using OpenBound_Network_Object_Library.Entity.Text;
-using SharpDX.WIC;
 
 namespace OpenBound.GameComponents.Interface.Interactive.GameList
 {

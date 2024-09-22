@@ -61,14 +61,14 @@ namespace OpenBound.GameComponents.Interface.Interactive.AvatarShop
             nameplate = new Nameplate(player, Alignment.Left, basePosition + new Vector2(15, 43));
 
             //Gold/Cash
-            goldSpriteText = new SpriteText(FontTextType.Consolas10, "", Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Right, DepthParameter.InterfaceButton, basePosition, Parameter.InterfaceAvatarShopButtonGoldOutlineColor);
+            goldSpriteText = new SpriteText(FontTextType.Consolas10Family, "", Parameter.InterfaceAvatarShopButtonGoldColor, Alignment.Right, DepthParameter.InterfaceButton, basePosition, Parameter.InterfaceAvatarShopButtonGoldOutlineColor);
             goldSpriteText.Position = basePosition + new Vector2(192, 133);
             goldIcon = new Sprite("Interface/StaticButtons/AvatarShop/AvatarButton/GoldIcon",
                 basePosition + new Vector2(202, 138), DepthParameter.InterfaceButton, new Rectangle(0, 0, 26, 21));
             goldIcon.Pivot = new Vector2(13, 10.5f);
             goldIcon.Scale /= 2;
 
-            cashSpriteText = new SpriteText(FontTextType.Consolas10, "", Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Right, DepthParameter.InterfaceButton, basePosition, Parameter.InterfaceAvatarShopButtonCashOutlineColor);
+            cashSpriteText = new SpriteText(FontTextType.Consolas10Family, "", Parameter.InterfaceAvatarShopButtonCashColor, Alignment.Right, DepthParameter.InterfaceButton, basePosition, Parameter.InterfaceAvatarShopButtonCashOutlineColor);
             cashSpriteText.Position = basePosition + new Vector2(192, 152);
             cashIcon = new Sprite("Interface/StaticButtons/AvatarShop/AvatarButton/CashIcon",
                 basePosition + new Vector2(202, 157), DepthParameter.InterfaceButton, new Rectangle(0, 0, 26, 21));
@@ -86,8 +86,8 @@ namespace OpenBound.GameComponents.Interface.Interactive.AvatarShop
             //Remaining Points
             remainingPointsSpriteTextList =
                 new List<SpriteText>() {
-                    new SpriteText(FontTextType.Consolas10, "Remaining", Color.White, Alignment.Center, DepthParameter.InterfaceButtonText, outlineColor: Color.Black),
-                    new SpriteText(FontTextType.Consolas10, "Points", Color.White, Alignment.Center, DepthParameter.InterfaceButtonText, outlineColor: Color.Black),
+                    new SpriteText(FontTextType.Consolas10Family, "Remaining", Color.White, Alignment.Center, DepthParameter.InterfaceButtonText, outlineColor: Color.Black),
+                    new SpriteText(FontTextType.Consolas10Family, "Points", Color.White, Alignment.Center, DepthParameter.InterfaceButtonText, outlineColor: Color.Black),
                 };
 
             remainingPointsSpriteTextList[0].Position = basePosition + new Vector2(53, 60);

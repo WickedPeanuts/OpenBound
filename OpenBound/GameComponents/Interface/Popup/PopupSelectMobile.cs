@@ -123,7 +123,7 @@ namespace OpenBound.GameComponents.Interface.Popup
             foreach (MobileType mt in mTL)
             {
                 buttonList[index].Tag = mt;
-                SpriteText tmp = new SpriteText(FontTextType.Consolas10, mTL[index].ToString(), Color.White, Alignment.Center, DepthParameter.InterfacePopupText, outlineColor: Color.Black);
+                SpriteText tmp = new SpriteText(FontTextType.Consolas10Family, mTL[index].ToString(), Color.White, Alignment.Center, DepthParameter.InterfacePopupText, outlineColor: Color.Black);
                 tmp.PositionOffset = buttonList[index].ButtonOffset + new Vector2(0, 15);
                 spriteTextList.Add(tmp);
                 index++;

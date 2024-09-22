@@ -23,25 +23,19 @@ namespace OpenBound_Network_Object_Library.Common
             return Param != null && Param.Length > 0;
         }
 
-        public static bool ValidateDate(DateTime Param)
-        {
-            return Param != null;
-        }
-
         public static bool WasBeforeDate(DateTime Param, DateTime ComparingDate)
         {
-            return ValidateDate(Param) && Param.CompareTo(ComparingDate) == -1;
+            return Param.CompareTo(ComparingDate) == -1;
         }
 
         public static bool WasAfterDate(DateTime Param, DateTime ComparingDate)
         {
-            return ValidateDate(Param) && Param.CompareTo(ComparingDate) == 1;
+            return Param.CompareTo(ComparingDate) == 1;
         }
 
         public static bool WasOnSameDate(DateTime Param, DateTime ComparingDate)
         {
-            return ValidateDate(Param) &&
-                Param.Day == ComparingDate.Day &&
+            return Param.Day == ComparingDate.Day &&
                 Param.Month == ComparingDate.Month &&
                 Param.Year == ComparingDate.Year;
         }

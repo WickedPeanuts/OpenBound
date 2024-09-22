@@ -1152,6 +1152,39 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/FontAwesome11.spritefont
 
+#begin Fonts/NotoSans10.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NotoSans10.spritefont
+
+#begin Fonts/NotoSans10KR.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NotoSans10KR.spritefont
+
+#begin Fonts/NotoSans10Thai.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NotoSans10Thai.spritefont
+
+#begin Fonts/NotoSansKR-Regular.ttf
+/copy:Fonts/NotoSansKR-Regular.ttf
+
+#begin Fonts/NotoSansMono-Medium.ttf
+/copy:Fonts/NotoSansMono-Medium.ttf
+
+#begin Fonts/NotoSansThai-Regular.ttf
+/copy:Fonts/NotoSansThai-Regular.ttf
+
+#begin Fonts/SarasaMonoSC-Regular.ttf
+/copy:Fonts/SarasaMonoSC-Regular.ttf
+
 #begin Graphics/Avatar/Female/Body/Basic.png
 /importer:TextureImporter
 /processor:TextureProcessor

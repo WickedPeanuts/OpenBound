@@ -125,7 +125,7 @@ namespace OpenBound.GameComponents.Interface
                 playerRankingIcon.Pivot = new Vector2(0, 0);
 
                 //Nicknames
-                SpriteText nicknameST = new SpriteText(FontTextType.Consolas10, mob.Owner.Nickname, entryColor, Alignment.Left, DepthParameter.HUDL2, default, Color.Black);
+                SpriteText nicknameST = new SpriteText(FontTextType.NotoSans10Family, mob.Owner.Nickname, entryColor, Alignment.Left, DepthParameter.HUDL2, default, Color.Black);
 
                 //Delay
                 NumericSpriteFont delayCounterSF = new NumericSpriteFont(FontType.HUDBlueDelay, 5, DepthParameter.HUDForeground, textAnchor: TextAnchor.Right, StartingValue: mob.SyncMobile.Delay);
@@ -232,6 +232,7 @@ namespace OpenBound.GameComponents.Interface
             for (int i = 0; i < playerScoreboardEntryList.Count; i++)
             {
                 PlayerScoreboardEntry entry = playerScoreboardEntryList[i];
+
                 NumericSpriteFont tNSF = entry.TurnCounterSpriteFont;
                 Sprite rS = entry.RankingSprite;
                 SpriteText nST = entry.NicknameSpriteText;
@@ -239,8 +240,11 @@ namespace OpenBound.GameComponents.Interface
 
                 tNSF.PositionOffset = tmpPos;
                 rS.PositionOffset = tmpPos + rankingSpritePosition;
-                nST.PositionOffset = new Vector2(rS.PositionOffset.X + rS.SourceRectangle.Width + xOffset, (int)(rS.PositionOffset.Y + 4));
-                dSF.PositionOffset = nST.PositionOffset + delayCounterPosition;
+                nST.PositionOffset = rS.PositionOffset +
+                    new Vector2(rS.SourceRectangle.Width + xOffset, 0) +
+                    //(Vector2.UnitY * nST.MeasureSize / 2f) +
+                    nST.FontFamilyMetadata.ElementHeightOffset;
+                dSF.PositionOffset = nST.PositionOffset + new Vector2(0, nST.MeasureSize.Y - 6) / 2f + delayCounterPosition;
 
                 tmpPos += new Vector2(0, (int)yOffset);
             }

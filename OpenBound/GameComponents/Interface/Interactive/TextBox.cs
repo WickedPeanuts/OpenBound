@@ -103,7 +103,7 @@ namespace OpenBound.GameComponents.Interface.Interactive
 
             if (hasTextField)
             {
-                textField = new TextField(default, (int)(boxSize.X - textFieldOffset.X * 2), 30, maximumTextLength, FontTextType.Consolas10, Color.White, layerDepth: DepthParameter.InterfaceButtonText, outlineColor: Color.Black);
+                textField = new TextField(default, (int)(boxSize.X - textFieldOffset.X * 2), 30, maximumTextLength, FontTextType.Consolas10Family, Color.White, layerDepth: DepthParameter.InterfaceButtonText, outlineColor: Color.Black);
                 textField.OnPressKey[Keys.Enter] = SendMessage;
 
                 Vector2 tfBGPosition;

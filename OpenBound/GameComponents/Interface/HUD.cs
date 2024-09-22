@@ -257,8 +257,8 @@ namespace OpenBound.GameComponents.Interface
             });
 
             textFilterButton = new Button(ButtonType.MessageFilter, DepthParameter.HUDForeground, OnTeamMessageFilterIsClicked, new Vector2(-40, -60) + origin);
-            allTextFilterSpriteFont = new SpriteText(FontTextType.Consolas10, Language.HUDTextAllText, Color.White, Alignment.Center, DepthParameter.HUDL1, outlineColor: Color.Black);
-            teamTextFilterSpriteFont = new SpriteText(FontTextType.Consolas10, Language.HUDTextTeamText, Color.White, Alignment.Center, DepthParameter.HUDL1, outlineColor: Color.Black);
+            allTextFilterSpriteFont = new SpriteText(FontTextType.NotoSans10Family, Language.HUDTextAllText, Color.White, Alignment.Center, DepthParameter.HUDL1, outlineColor: Color.Black);
+            teamTextFilterSpriteFont = new SpriteText(FontTextType.NotoSans10Family, Language.HUDTextTeamText, Color.White, Alignment.Center, DepthParameter.HUDL1, outlineColor: Color.Black);
 
             allTextFilterSpriteFont.PositionOffset = teamTextFilterSpriteFont.PositionOffset = new Vector2(-40, -55) + origin;
             teamTextFilterSpriteFont.SetTransparency(0);

@@ -86,7 +86,7 @@ namespace OpenBound.GameComponents.Level.Scene
                     PrimaryMobile = MobileType.Ice,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Red,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    //Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" },
                     Attribute = new int[]{ 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -96,14 +96,14 @@ namespace OpenBound.GameComponents.Level.Scene
                     Gender = Gender.Male,
                     Email = "c@c.com",
                     ID = 1,
-                    Nickname = "Zicoman",
+                    Nickname = "전설의용사박지훈",
                     Password = "123",
                     PlayerRank = PlayerRank.Dragon1,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Lightning,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Blue,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    //Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -111,14 +111,14 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 2,
-                    Nickname = "Big String  To Test The Box Size Calc",
+                    Nickname = "BympeQ",
                     Password = "123",
                     PlayerRank = PlayerRank.Axe1,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Knight,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Red,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    //Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -126,14 +126,14 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 3,
-                    Nickname = "Wicko",
+                    Nickname = "นักรบผู้กล้าหาญกานดา",
                     Password = "123",
                     PlayerRank = PlayerRank.GM,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Dragon,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Blue,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 2, Name = "ChannelMasters", Tag = "CM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -141,14 +141,14 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 4,
-                    Nickname = "WickoWicko",
+                    Nickname = "ไอติม",
                     Password = "123",
                     PlayerRank = PlayerRank.DGoldenAxe2,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Dragon,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Blue,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 3, Name = "Concede", Tag = "CD" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -156,14 +156,14 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 5,
-                    Nickname = "Ordinary World",
+                    Nickname = "빛나는별이준서와",
                     Password = "123",
                     PlayerRank = PlayerRank.Chick,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Turtle,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Blue,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -171,14 +171,14 @@ namespace OpenBound.GameComponents.Level.Scene
                 {
                     Email = "c@c.com",
                     ID = 6,
-                    Nickname = "KonoDioDa",
+                    Nickname = "วีรบุรุษในตำนานจันทร์ทิพย์",
                     Password = "123",
                     PlayerRank = PlayerRank.Champion1,
                     PlayerRoomStatus = PlayerRoomStatus.Ready,
                     PrimaryMobile = MobileType.Dragon,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Red,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    //Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 },
@@ -194,7 +194,7 @@ namespace OpenBound.GameComponents.Level.Scene
                     PrimaryMobile = MobileType.RaonLauncher,
                     SecondaryMobile = MobileType.Knight,
                     PlayerTeam = PlayerTeam.Red,
-                    Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "Zica", Tag = "zicamasters" },
+                    //Guild = new Guild() { GuildMembers = new List<Player>(), ID = 1, Name = "GameMasters", Tag = "GM" },
                     PlayerStatus = PlayerStatus.Normal,
                     SecurityToken = new SecurityToken() { DateTime = DateTime.Now, Token = "123123123", UnifiedSecurityToken = "123123123" }
                 }
@@ -306,10 +306,10 @@ namespace OpenBound.GameComponents.Level.Scene
                 SpawnPositions = new Dictionary<int, int[]>()
                 {
                     { 0, new int[] { 1150, 700 } },
-                    { 1, new int[] { 300, 700 } }, { 2, new int[] { 700, 700 } },
-                    { 3, new int[] { 400, 700 } }, { 4, new int[] { 800, 700 } },
-                    { 5, new int[] { 500, 700 } }, { 6, new int[] { 900, 700 } },
-                    { 7, new int[] { 600, 700 } }, { 8, new int[] { 1000, 700 } },
+                    { 1, new int[] { 100, 700 } }, { 2, new int[] { 300, 700 } },
+                    { 3, new int[] { 500, 700 } }, { 4, new int[] { 700, 700 } },
+                    { 5, new int[] { 300, 1300 } }, { 6, new int[] { 500, 1300 } },
+                    { 7, new int[] { 700, 1300 } }, { 8, new int[] { 1000, 1300 } },
                 },
                 TeamA = new List<Player>() { sMobList[0].Owner , sMobList[1].Owner, sMobList[2].Owner, sMobList[3].Owner  },
                 TeamB = new List<Player>() { sMobList[4].Owner, sMobList[5].Owner, sMobList[6].Owner, sMobList[7].Owner },
@@ -547,7 +547,7 @@ namespace OpenBound.GameComponents.Level.Scene
 
                 HUD.OnReceiveMessageAsyncCallback(new CustomMessage()
                 {
-                    FontTextType = FontTextType.Consolas10,
+                    FontTextType = FontTextType.Consolas10Family,
                     TextBorderColor = Color.Red.PackedValue,
                     TextColor = Color.Blue.PackedValue,
                     Text = "Abiruindjo abirual"
